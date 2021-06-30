@@ -1,0 +1,11 @@
+{
+    "name": "pom/form",
+    "type": "library",
+    "authors": [
+        {
+            "name": "POM",
+            "email": "info@pom.es"
+        }
+    ],
+    "require": {}
+}
