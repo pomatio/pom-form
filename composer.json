@@ -7,5 +7,13 @@
             "email": "info@pom.es"
         }
     ],
-    "require": {}
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "POM_Form": "/"
+        }
+    }
 }
