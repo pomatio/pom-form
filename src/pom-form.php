@@ -7,8 +7,11 @@ define('POM_FORM_PATH', trailingslashit(__DIR__));
 class Form {
 
     public function __construct() {
-        foreach (glob(POM_FORM_PATH . "fields/*.php") as $filename) {
-            include $filename;
+        /**
+         * Dynamically includes all the files that are inside the directory
+         */
+        foreach (glob(POM_FORM_PATH . 'fields/*.php') as $filename) {
+            include_once $filename;
         }
     }
 
@@ -41,7 +44,7 @@ class Form {
     }
 
     /**
-     * Returns the HTML of the field
+     * Returns the HTML of the field.
      *
      * @param array $args
      * @return string
