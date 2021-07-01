@@ -7,13 +7,12 @@
             "email": "info@pom.es"
         }
     ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=7.2"
-    },
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {},
     "autoload": {
         "psr-4": {
-            "POM_Form": "/"
+            "POM\\Form": "src/"
         }
     }
 }
