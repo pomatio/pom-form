@@ -43,7 +43,15 @@ class Form {
             unset($field_args[$key]);
         }
 
-        $custom_attrs = urldecode(str_replace("=", '="', http_build_query($field_args, null, '" '))) . '"';
+        /**
+         * Convert the remaining values of the associative array into valid HTML attributes
+         */
+        $custom_attrs = implode(' ', array_map(static function($key) use ($field_args) {
+            if (is_bool($field_args[$key])) {
+                return $field_args[$key] ? $key:'';
+            }
+            return $key . '="' . $field_args[$key] . '"';
+        }, array_keys($field_args)));
 
         return array_merge($required_attrs, ['custom_attrs' => $custom_attrs]);
     }
