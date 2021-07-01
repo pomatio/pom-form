@@ -2,7 +2,7 @@
 
 namespace POM\Form;
 
-class Password {
+class Textarea {
 
     public static function render_field(array $args): void {
 
@@ -18,7 +18,7 @@ class Password {
 
             ?>
 
-            <input type="password" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?>>
+            <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" <?= $args['custom_attrs'] ?>><?= $args['value'] ?></textarea>
 
             <?php
 

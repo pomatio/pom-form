@@ -1,2 +1,47 @@
 # POM Form
 An easy way to render form fields.
+
+## Install
+```
+composer install --save pom-form
+```
+
+## Key Features
+* Transform PHP arrays into HTML fields
+* Bootstrap integration
+
+## How to use
+Example of how to render a field
+```
+echo (new \POM\Form\Form())::add_field([
+    'type' => 'text',
+    'label' => 'Lorem Ipsum',
+    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+    'placeholder' => 'Lorem Ipsum',
+    'name' => 'name',
+    'class' => 'regular-text',
+    'value' => '',
+    'description_position' => 'below_label'
+]);
+```
+
+The parameters added in the array when generating the fields are converted into attributes of the rendered field.
+They can be standard parameters such as name, id, class, data- * or customized to your needs.
+
+### Personalization parameters
+Parameter key | Description
+------------- | -------------
+description_position  | It allows two values (below_label / under_field) and it is used to specify if we want the description of the field to appear below the label or below the field.
+
+## Allowed field types
+Field | Description
+------------- | -------------
+button |
+email |
+file |
+hidden |
+password |
+tel |
+text |
+textarea |
+url |

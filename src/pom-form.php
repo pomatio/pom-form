@@ -33,10 +33,15 @@ class Form {
             'label' => $field_args['label'] ?? '',
             'description' => $field_args['description'] ?? '',
             'name' => $field_args['name'],
-            'id' => $field_args['id'] ?? $field_args['name']
+            'id' => $field_args['id'] ?? $field_args['name'],
+            'value' => $field_args['value'] ?? '',
+            'class' => $field_args['class'] ?? '',
+            'description_position' => $field_args['description_position'] ?? 'under_field'
         ];
 
-        unset($field_args['type'], $field_args['label'], $field_args['description'], $field_args['name'], $field_args['id']);
+        foreach ($required_attrs as $key => $value) {
+            unset($field_args[$key]);
+        }
 
         $custom_attrs = urldecode(str_replace("=", '="', http_build_query($field_args, null, '" '))) . '"';
 

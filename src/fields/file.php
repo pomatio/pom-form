@@ -6,19 +6,28 @@ class File {
 
     public static function render_field(array $args): void {
 
+        echo '<div class="form-group">';
+
         if (!empty($args['label'])) {
             echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
         }
 
+        if (!empty($args['description']) && $args['description_position'] === 'below_label') {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+        }
+
         ?>
 
-        <input type="file" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" <?= $args['custom_attrs'] ?>>
+        <input type="file" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?>>
 
         <?php
 
-        if (!empty($args['description'])) {
-            echo '<p class="description">' . $args['description'] . '</p>';
+        if (!empty($args['description']) && $args['description_position'] === 'under_field') {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
+
+        echo '</div>';
+
     }
 
 }
