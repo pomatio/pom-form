@@ -48,8 +48,9 @@ class Form {
          */
         $custom_attrs = implode(' ', array_map(static function($key) use ($field_args) {
             if (is_bool($field_args[$key])) {
-                return $field_args[$key] ? $key:'';
+                return $field_args[$key] ? $key : '';
             }
+
             return $key . '="' . $field_args[$key] . '"';
         }, array_keys($field_args)));
 

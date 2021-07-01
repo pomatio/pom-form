@@ -27,6 +27,7 @@ class Text {
             }
 
         echo '</div>';
+
     }
 
 }

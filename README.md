@@ -37,6 +37,7 @@ description_position  | It allows two values (below_label / under_field) and it 
 Field | Description
 ------------- | -------------
 button |
+checkbox |
 email |
 file |
 hidden |
