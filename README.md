@@ -10,6 +10,11 @@ composer install --save pom-form
 * PHP 7 or higher
 * WordPress 5.0 or higher.
 
+## Dependencies
+This package uses the following third party libraries:
+* Bootstrap: v3.4.1
+* select2: v4.0.13
+
 ## How to use
 Example of how to render a field
 ```
@@ -43,7 +48,7 @@ file |
 hidden |
 password |
 radio |
-select |
+select | Allows optgroup
 tel |
 text |
 textarea |
