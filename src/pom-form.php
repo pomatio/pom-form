@@ -32,11 +32,12 @@ class Form {
             'type' => $field_args['type'] ?? 'text',
             'label' => $field_args['label'] ?? '',
             'description' => $field_args['description'] ?? '',
-            'name' => $field_args['name'],
-            'id' => $field_args['id'] ?? $field_args['name'],
+            'name' => sanitize_title($field_args['name']),
+            'id' => $field_args['id'] ?? sanitize_title($field_args['name']),
             'value' => $field_args['value'] ?? '',
             'class' => $field_args['class'] ?? '',
-            'description_position' => $field_args['description_position'] ?? 'under_field'
+            'description_position' => $field_args['description_position'] ?? 'under_field',
+            'options' => $field_args['options'] ?? [],
         ];
 
         foreach ($required_attrs as $key => $value) {

@@ -6,9 +6,9 @@ An easy way to render form fields.
 composer install --save pom-form
 ```
 
-## Key Features
-* Transform PHP arrays into HTML fields
-* Bootstrap integration
+## Requirements
+* PHP 7 or higher
+* WordPress 5.0 or higher.
 
 ## How to use
 Example of how to render a field
@@ -42,6 +42,7 @@ email |
 file |
 hidden |
 password |
+radio |
 tel |
 text |
 textarea |
