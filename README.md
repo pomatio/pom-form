@@ -43,6 +43,7 @@ file |
 hidden |
 password |
 radio |
+select |
 tel |
 text |
 textarea |
