@@ -19,7 +19,23 @@ class Select {
             echo '<select id="' . $args['id'] . '" class="form-control ' . $args['class'] . '">';
 
                 foreach ($args['options'] as $select_value => $select_label) {
-                    echo '<option value="' . $select_value . '">' . $select_label . '</option>';
+
+                    // optgroup options
+                    if (is_array($select_label)) {
+                        $label = isset($select_label['group_name']) ? ' label="' . $select_label['group_name'] . '"' : '';
+                        echo '<optgroup' . $label . '>';
+                        foreach ($select_label['group_options'] as $optgroup_key => $optgroup_label) {
+                            $selected = $args['value'] === $optgroup_key ? 'selected' : '';
+                            echo '<option value="' . $optgroup_key . '" ' . $selected . '>' . $optgroup_label . '</option>';
+                        }
+                        echo '</optgroup>';
+
+                        continue;
+                    }
+
+                    // default option
+                    $selected = $args['value'] === $select_value ? 'selected' : '';
+                    echo '<option value="' . $select_value . '" ' . $selected . '>' . $select_label . '</option>';
                 }
 
             echo '</select>';
