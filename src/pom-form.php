@@ -10,7 +10,7 @@ class Form {
         /**
          * Dynamically includes all the files that are inside the directory
          */
-        foreach (glob(POM_FORM_PATH . 'fields/*.php') as $filename) {
+        foreach (glob(POM_Form_Helper::get_path() . 'fields/*.php') as $filename) {
             include_once $filename;
         }
     }
