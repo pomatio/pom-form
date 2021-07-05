@@ -23,6 +23,9 @@ class Form {
     public function add_bootstrap_enqueues(): void {
         wp_enqueue_style('pom-form-bootstrap', POM_Form_Helper::get_uri() . 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css', [], POM_FORM_VERSION);
         wp_enqueue_style('pom-form-styles', POM_Form_Helper::get_uri() . 'src/dist/css/fields.min.css', [], POM_FORM_VERSION);
+
+        // fields JS
+        wp_enqueue_script('pom-form-range', POM_Form_Helper::get_uri() . 'src/dist/js/range.js', ['jquery'], POM_FORM_VERSION, true);
     }
 
     /**

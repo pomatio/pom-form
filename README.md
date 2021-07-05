@@ -48,8 +48,10 @@ file |
 hidden |
 password |
 radio |
+range |
 select | Allows optgroup
 tel |
 text |
 textarea |
+toggle |
 url |
