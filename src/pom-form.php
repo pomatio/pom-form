@@ -2,7 +2,7 @@
 
 namespace POM\Form;
 
-define('POM_FORM_PATH', trailingslashit(__DIR__));
+const POM_FORM_VERSION = '0.1.0';
 
 class Form {
 
