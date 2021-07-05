@@ -1,0 +1,91 @@
+input[type=checkbox].web-toggle {
+    display: none;
+    box-sizing: border-box;
+
+    &:after, &:before {
+        box-sizing: border-box;
+    }
+
+    * {
+        box-sizing: border-box;
+
+        &:after, &:before {
+            box-sizing: border-box;
+        }
+    }
+
+    + .web-toggle-btn {
+        box-sizing: border-box;
+    }
+
+    &::-moz-selection, &:after::-moz-selection, &:before::-moz-selection {
+        background: none;
+    }
+
+    * {
+        &::-moz-selection, &:after::-moz-selection, &:before::-moz-selection {
+            background: none;
+        }
+    }
+
+    + .web-toggle-btn::-moz-selection, &::selection, &:after::selection, &:before::selection {
+        background: none;
+    }
+
+    * {
+        &::selection, &:after::selection, &:before::selection {
+            background: none;
+        }
+    }
+
+    + .web-toggle-btn {
+        &::selection {
+            background: none;
+        }
+
+        outline: 0;
+        display: block;
+        width: 4em;
+        height: 2em;
+        position: relative;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: #ccc;
+        border-radius: 2em;
+        padding: 2px;
+        -webkit-transition: all .4s ease;
+        transition: all .4s ease;
+        margin: 0 auto;
+
+        &:after, &:before {
+            position: relative;
+            display: block;
+            content: "";
+            width: 50%;
+            height: 100%;
+        }
+
+        &:after {
+            left: 0;
+            border-radius: 50%;
+            background: #fff;
+            -webkit-transition: all .2s ease;
+            transition: all .2s ease;
+        }
+
+        &:before {
+            display: none;
+        }
+    }
+
+    &:checked + .web-toggle-btn {
+        background: #000;
+
+        &:after {
+            left: 50%;
+        }
+    }
+}

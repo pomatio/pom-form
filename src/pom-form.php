@@ -13,6 +13,16 @@ class Form {
         foreach (glob(POM_Form_Helper::get_path() . 'fields/*.php') as $filename) {
             include_once $filename;
         }
+
+        /**
+         * Include required Bootstrap files
+         */
+        add_action('wp_enqueue_scripts', [$this, 'add_bootstrap_enqueues'], 1);
+    }
+
+    public function add_bootstrap_enqueues(): void {
+        wp_enqueue_style('pom-form-bootstrap', POM_Form_Helper::get_uri() . 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css', [], POM_FORM_VERSION);
+        wp_enqueue_style('pom-form-styles', POM_Form_Helper::get_uri() . 'src/dist/css/fields.min.css', [], POM_FORM_VERSION);
     }
 
     /**
