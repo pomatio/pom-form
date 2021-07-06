@@ -21,10 +21,14 @@ class Form {
     }
 
     public function add_bootstrap_enqueues(): void {
+        // CSS
+        wp_enqueue_style('pom-form-select2', POM_Form_Helper::get_uri() . 'vendor/select2/select2/dist/css/select2.min.css', [], POM_FORM_VERSION);
         wp_enqueue_style('pom-form-bootstrap', POM_Form_Helper::get_uri() . 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css', [], POM_FORM_VERSION);
         wp_enqueue_style('pom-form-styles', POM_Form_Helper::get_uri() . 'src/dist/css/fields.min.css', [], POM_FORM_VERSION);
 
-        // fields JS
+        // JS
+        wp_enqueue_script('pom-form-select2', POM_Form_Helper::get_uri() . 'vendor/select2/select2/dist/js/select2.min.js', [], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-select', POM_Form_Helper::get_uri() . 'src/dist/js/select.js', ['jquery', 'pom-form-select2'], POM_FORM_VERSION, true);
         wp_enqueue_script('pom-form-range', POM_Form_Helper::get_uri() . 'src/dist/js/range.js', ['jquery'], POM_FORM_VERSION, true);
     }
 

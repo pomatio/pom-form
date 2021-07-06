@@ -49,7 +49,7 @@ hidden |
 password |
 radio |
 range |
-select | Allows optgroup
+select | Allows optgroup, compatible with select2 (In the class parameter you have to add the class select2)
 tel |
 text |
 textarea |
