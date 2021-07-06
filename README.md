@@ -13,7 +13,7 @@ composer install --save pom-form
 ## Dependencies
 This package uses the following third party libraries:
 * jQuery
-* Bootstrap: v3.4.1
+* Bootstrap: v4.6.0
 * select2: v4.0.13
 
 ## How to use
@@ -44,6 +44,8 @@ Field | Description
 ------------- | -------------
 button |
 checkbox | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.
+date |
+datetime |
 email |
 file |
 hidden |
@@ -54,5 +56,6 @@ select | Allows optgroup, compatible with select2 (In the class parameter you ha
 tel |
 text |
 textarea |
+time |
 toggle |
 url |
