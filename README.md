@@ -42,7 +42,7 @@ description_position  | It allows two values (below_label / under_field) and it 
 Field | Description
 ------------- | -------------
 button |
-checkbox |
+checkbox | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.
 email |
 file |
 hidden |
