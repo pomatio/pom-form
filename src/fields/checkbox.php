@@ -6,10 +6,14 @@ class Checkbox {
 
     public static function render_field(array $args): void {
 
-        if (isset($args['options']) && is_array($args['options'])) {
+        if (isset($args['options']) && is_array($args['options']) && !empty($args['options'])) {
 
             if (!empty($args['label'])) {
                 echo '<label>' . $args['label'] . '</label>';
+            }
+
+            if (!empty($args['description']) && $args['description_position'] === 'below_label') {
+                echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
             }
 
             foreach ($args['options'] as $option_value => $option_label) {
@@ -28,21 +32,19 @@ class Checkbox {
         }
         else {
 
-            if (!empty($args['label'])) {
-                echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
-            }
-
             $checked = isset($args['value']) && $args['value'] !== false && $args['value'] !== 'false' && $args['value'] !== '' ? 'checked="checked"' : '';
 
             ?>
+
             <div class="form-check">
                 <input type="checkbox" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
                 <label class="form-check-label" for="<?= $args['id'] ?>"><?= $args['label'] ?></label>
             </div>
+
             <?php
         }
 
-        if (!empty($args['description'])) {
+        if (!empty($args['description']) && $args['description_position'] === 'under_field') {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 

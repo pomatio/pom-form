@@ -12,6 +12,7 @@ composer install --save pom-form
 
 ## Dependencies
 This package uses the following third party libraries:
+* jQuery
 * Bootstrap: v3.4.1
 * select2: v4.0.13
 

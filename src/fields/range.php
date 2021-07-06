@@ -10,6 +10,10 @@ class Range {
             echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
         }
 
+        if (!empty($args['description']) && $args['description_position'] === 'below_label') {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+        }
+
         ?>
 
         <div class="range">
@@ -21,8 +25,8 @@ class Range {
 
         <?php
 
-        if (!empty($args['description'])) {
-            echo '<p class="description">' . $args['description'] . '</p>';
+        if (!empty($args['description']) && $args['description_position'] === 'under_field') {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
     }
 
