@@ -15,6 +15,7 @@ This package uses the following third party libraries:
 * jQuery
 * Bootstrap: v4.6.0
 * select2: v4.0.13
+* CodeMirror
 
 ## How to use
 Example of how to render a field
@@ -44,6 +45,7 @@ Field | Description
 ------------- | -------------
 button |
 checkbox | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.
+code | Special 'code_language' attribute can be used to specify code editor language. The values supported by this parameter are the same as those supported by CodeMirror.
 date |
 datetime |
 email |
