@@ -26,4 +26,29 @@ class POM_Form_Helper {
         return $url . '/vendor/pom/form/';
     }
 
+    /**
+     * Convert an associative array into valid HTML attributes
+     */
+    public static function convert_array_to_html_attributes($field_args): string {
+        return implode(' ', array_map(static function($key) use ($field_args) {
+            if (is_bool($field_args[$key])) {
+                return $field_args[$key] ? $key : '';
+            }
+
+            return $key . '="' . $field_args[$key] . '"';
+        }, array_keys($field_args)));
+    }
+
+    public static function convert_html_attributes_to_array($string) : array {
+        $array = [];
+
+        $asArr = explode(' ', $string);
+        foreach ($asArr as $val) {
+            $tmp = explode('=', $val);
+            $array[$tmp[0]] = $tmp[1];
+        }
+
+        return $array;
+    }
+
 }
