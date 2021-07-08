@@ -52,6 +52,7 @@ email |
 file |
 hidden |
 password |
+quantity |
 radio |
 range |
 select | Allows optgroup, compatible with select2 (In the class parameter you have to add the class select2)

@@ -2,7 +2,7 @@
 
 namespace POM\Form;
 
-class Code {
+class Quantity {
 
     public static function render_field(array $args): void {
 
@@ -18,7 +18,11 @@ class Code {
 
         ?>
 
-        <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control code-editor <?= $args['class'] ?>" <?= $args['custom_attrs'] ?>><?= stripslashes($args['value']) ?></textarea>
+        <div class="quantity">
+            <span class="number-down"></span>
+            <input type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control input-text qty text <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?> pattern="[0-9]*" inputmode="numeric" aria-labelledby="">
+            <span class="number-up"></span>
+        </div>
 
         <?php
 
@@ -27,18 +31,6 @@ class Code {
         }
 
         echo '</div>';
-
-        $codemirror_settings = wp_enqueue_code_editor( array() );
-        wp_enqueue_script('wp-theme-plugin-editor');
-        wp_enqueue_style('wp-codemirror');
-        wp_enqueue_script('pom-form-code', POM_Form_Helper::get_uri() . 'src/dist/js/code.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
-        wp_localize_script(
-            'pom-form-code',
-            'settings',
-            [
-                'codeMirrorSettings' => $codemirror_settings
-            ]
-        );
 
     }
 

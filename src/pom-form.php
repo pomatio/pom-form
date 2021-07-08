@@ -30,6 +30,7 @@ class Form {
         wp_enqueue_script('pom-form-select2', POM_Form_Helper::get_uri() . 'vendor/select2/select2/dist/js/select2.min.js', [], POM_FORM_VERSION, true);
         wp_enqueue_script('pom-form-select', POM_Form_Helper::get_uri() . 'src/dist/js/select.js', ['jquery', 'pom-form-select2'], POM_FORM_VERSION, true);
         wp_enqueue_script('pom-form-range', POM_Form_Helper::get_uri() . 'src/dist/js/range.js', ['jquery'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-quantity', POM_Form_Helper::get_uri() . 'src/dist/js/quantity.js', ['jquery'], POM_FORM_VERSION, true);
     }
 
     /**
