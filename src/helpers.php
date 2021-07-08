@@ -44,7 +44,7 @@ class POM_Form_Helper {
 
         $asArr = explode(' ', $string);
         foreach ($asArr as $val) {
-            $tmp = explode('=', $val);
+            $tmp = explode('=', str_replace(['"', "'"], '', $val));
             $array[$tmp[0]] = $tmp[1];
         }
 
