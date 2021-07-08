@@ -60,5 +60,6 @@ tel |
 text |
 textarea |
 time |
+tinymce | This field supports the following specific parameters: textarea_rows (number), teeny (boolean), quicktags (boolean), wpautop (boolean), media_buttons (boolean)
 toggle |
 url |
