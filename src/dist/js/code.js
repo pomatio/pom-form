@@ -1,7 +1,6 @@
 jQuery(function($) {
     $('textarea.form-control.pom-form-code-editor').each(function() {
         let $this = $(this);
-        console.log($this);
 
         settings.codeMirrorSettings.codemirror.mode = $this.attr('language');
         let $editor = wp.codeEditor.initialize($this, settings.codeMirrorSettings);
