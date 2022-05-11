@@ -19,7 +19,8 @@ This package uses the following third party libraries:
 
 ## How to use
 Example of how to render a field
-```
+
+```PHP
 echo (new \POM\Form\Form())::add_field([
     'type' => 'text',
     'label' => 'Lorem Ipsum',
@@ -36,30 +37,31 @@ The parameters added in the array when generating the fields are converted into 
 They can be standard parameters such as name, id, class, data- * or customized to your needs.
 
 ### Personalization parameters
-Parameter key | Description
-------------- | -------------
-description_position  | It allows two values (below_label / under_field) and it is used to specify if we want the description of the field to appear below the label or below the field.
+| Parameter key        | Description                                                                                                                                                      |
+|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| description_position | It allows two values (below_label / under_field) and it is used to specify if we want the description of the field to appear below the label or below the field. |
 
 ## Allowed field types
-Field | Description
-------------- | -------------
-button |
-checkbox | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.
-code | Special 'code_language' attribute can be used to specify code editor language. The values supported by this parameter are the same as those supported by CodeMirror.
-date |
-datetime |
-email |
-file |
-hidden |
-password |
-quantity |
-radio |
-range |
-select | Allows optgroup, compatible with select2 (In the class parameter you have to add the class select2)
-tel |
-text |
-textarea |
-time |
-tinymce | This field supports the following specific parameters: textarea_rows (number), teeny (boolean), quicktags (boolean), wpautop (boolean), media_buttons (boolean)
-toggle |
-url |
+| Field    | Description                                                                                                                                                                                                                                                                      |
+|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| button   |                                                                                                                                                                                                                                                                                  |
+| checkbox | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.<br>The checkbox has the value 'yes' if it is selected and 'no' otherwise. |
+| code     | Special 'language' attribute can be used to specify code editor language. The values supported by this parameter are the same as those supported by CodeMirror.                                                                                                                  |
+| date     |                                                                                                                                                                                                                                                                                  |
+| color    | Renders the native WordPress color picker.                                                                                                                                                                                                                                       |
+| datetime |                                                                                                                                                                                                                                                                                  |
+| email    |                                                                                                                                                                                                                                                                                  |
+| file     |                                                                                                                                                                                                                                                                                  |
+| hidden   |                                                                                                                                                                                                                                                                                  |
+| password |                                                                                                                                                                                                                                                                                  |
+| quantity |                                                                                                                                                                                                                                                                                  |
+| radio    |                                                                                                                                                                                                                                                                                  |
+| range    |                                                                                                                                                                                                                                                                                  |
+| select   | Allows optgroup, compatible with select2 (In the class parameter you have to add the class select2)                                                                                                                                                                              |
+| tel      |                                                                                                                                                                                                                                                                                  |
+| text     |                                                                                                                                                                                                                                                                                  |
+| textarea |                                                                                                                                                                                                                                                                                  |
+| time     |                                                                                                                                                                                                                                                                                  |
+| tinymce  | This field supports the following specific parameters: textarea_rows (number), teeny (boolean), quicktags (boolean), wpautop (boolean), media_buttons (boolean)                                                                                                                  |
+| toggle   |                                                                                                                                                                                                                                                                                  |
+| url      |                                                                                                                                                                                                                                                                                  |

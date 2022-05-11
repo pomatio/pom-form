@@ -3,34 +3,34 @@
 namespace POM\Form;
 
 const POM_FORM_VERSION = '0.1.0';
+define('POM_FORM_SRC_PATH', __DIR__);
+define('POM_FORM_SRC_URI', str_replace($_SERVER['DOCUMENT_ROOT'], '', POM_FORM_SRC_PATH));
 
 class Form {
 
     public function __construct() {
         /**
-         * Dynamically includes all the files that are inside the directory
+         * Functions available throughout the framework.
          */
-        foreach (glob(POM_Form_Helper::get_path() . 'fields/*.php') as $filename) {
-            include_once $filename;
-        }
+        require_once 'helpers.php';
 
         /**
-         * Include required Bootstrap files
+         * Include required Bootstrap files.
          */
-        add_action('wp_enqueue_scripts', [$this, 'add_bootstrap_enqueues'], 1);
+        //add_action('wp_enqueue_scripts', [$this, 'add_bootstrap_enqueues'], 1);
     }
 
     public function add_bootstrap_enqueues(): void {
         // CSS
-        wp_enqueue_style('pom-form-select2', POM_Form_Helper::get_uri() . 'vendor/select2/select2/dist/css/select2.min.css', [], POM_FORM_VERSION);
-        wp_enqueue_style('pom-form-bootstrap', POM_Form_Helper::get_uri() . 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css', [], POM_FORM_VERSION);
-        wp_enqueue_style('pom-form-styles', POM_Form_Helper::get_uri() . 'src/dist/css/fields.min.css', [], POM_FORM_VERSION);
+        wp_enqueue_style('pom-form-select2', POM_FORM_SRC_PATH . 'vendor/select2/select2/dist/css/select2.min.css', [], POM_FORM_VERSION);
+        wp_enqueue_style('pom-form-bootstrap', POM_FORM_SRC_PATH . 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css', [], POM_FORM_VERSION);
+        wp_enqueue_style('pom-form-styles', POM_FORM_SRC_PATH . 'dist/css/fields.min.css', [], POM_FORM_VERSION);
 
         // JS
-        wp_enqueue_script('pom-form-select2', POM_Form_Helper::get_uri() . 'vendor/select2/select2/dist/js/select2.min.js', [], POM_FORM_VERSION, true);
-        wp_enqueue_script('pom-form-select', POM_Form_Helper::get_uri() . 'src/dist/js/select.js', ['jquery', 'pom-form-select2'], POM_FORM_VERSION, true);
-        wp_enqueue_script('pom-form-range', POM_Form_Helper::get_uri() . 'src/dist/js/range.js', ['jquery'], POM_FORM_VERSION, true);
-        wp_enqueue_script('pom-form-quantity', POM_Form_Helper::get_uri() . 'src/dist/js/quantity.js', ['jquery'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-select2', POM_FORM_SRC_PATH . 'vendor/select2/select2/dist/js/select2.min.js', [], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-select', POM_FORM_SRC_PATH . 'dist/js/select.js', ['jquery', 'pom-form-select2'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-range', POM_FORM_SRC_PATH . 'dist/js/range.js', ['jquery'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-quantity', POM_FORM_SRC_PATH . 'dist/js/quantity.js', ['jquery'], POM_FORM_VERSION, true);
     }
 
     /**
@@ -53,7 +53,7 @@ class Form {
             'name' => sanitize_title($field_args['name']),
             'id' => $field_args['id'] ?? sanitize_title($field_args['name']),
             'value' => $field_args['value'] ?? '',
-            'class' => $field_args['class'] ?? '',
+            'class' => isset($field_args['class']) ? sanitize_html_class($field_args['class']) :  '',
             'description_position' => $field_args['description_position'] ?? 'under_field',
             'options' => $field_args['options'] ?? [],
         ];
@@ -78,17 +78,21 @@ class Form {
      */
     public static function add_field(array $args): string {
 
-        $class = '\POM\Form\\' . ucfirst($args['type']);
+        $type = strtolower($args['type']);
 
-        if (!class_exists($class)) {
+        if (!file_exists($filename = POM_Form_Helper::get_path() . "fields/$type.php")) {
             return '';
         }
+
+        include_once $filename;
+
+        $class = 'POM\Form\\' . ucfirst($args['type']);
+        $field_class = new $class();
 
         $field_args = self::parse_args($args);
 
         ob_start();
 
-        $field_class = new $class();
         $field_class::render_field($field_args);
 
         return ob_get_clean();
@@ -96,3 +100,4 @@ class Form {
     }
 
 }
+new Form();

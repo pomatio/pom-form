@@ -17,13 +17,12 @@ class POM_Form_Helper {
     }
 
     public static function get_path(): string {
-        $path = self::is_plugin() ? plugin_dir_path(__FILE__) : get_template_directory();
-        return $path . '/vendor/pom/form/';
+        return self::is_plugin() ? plugin_dir_path(__FILE__) : get_template_directory();
     }
 
-    public static function get_uri(): string {
-        $url = self::is_plugin() ? plugin_dir_url(__FILE__) : get_template_directory_uri();
-        return $url . '/vendor/pom/form/';
+    public static function get_uri($file = ''): string {
+        $file = !empty($file) ? $file : __FILE__;
+        return self::is_plugin() ? plugin_dir_url($file) : get_template_directory_uri();
     }
 
     /**
