@@ -32,12 +32,13 @@ class Checkbox {
         }
         else {
 
-            $checked = isset($args['value']) && $args['value'] !== false && $args['value'] !== 'false' && $args['value'] !== '' ? 'checked="checked"' : '';
+            $checked = isset($args['value']) && $args['value'] === 'yes' ? 'checked="checked"' : '';
 
             ?>
 
             <div class="form-check">
-                <input type="checkbox" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
+                <input type="hidden" name="<?= $args['name'] ?>" value="no">
+                <input type="checkbox" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="yes" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
                 <label class="form-check-label" for="<?= $args['id'] ?>"><?= $args['label'] ?></label>
             </div>
 
