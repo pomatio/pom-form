@@ -11,8 +11,8 @@ jQuery(function($) {
         });
 
         $range.on('input', function() {
-            let suffix = ($(this).attr('suffix')) ? $(this).attr('suffix') : '';
-            $(this).next($value).html(this.value + suffix);
+            let $suffix = ($(this).attr('suffix')) ? $(this).attr('suffix') : '';
+            $(this).next($value).html(this.value + $suffix);
         });
     });
 });

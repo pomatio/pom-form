@@ -56,6 +56,8 @@ class Form {
             'class' => isset($field_args['class']) ? sanitize_html_class($field_args['class']) :  '',
             'description_position' => $field_args['description_position'] ?? 'under_field',
             'options' => $field_args['options'] ?? [],
+            'prefix' => $field_args['prefix'] ?? '',
+            'suffix' => $field_args['suffix'] ?? '',
         ];
 
         foreach ($required_attrs as $key => $value) {

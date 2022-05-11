@@ -17,10 +17,17 @@ class Range {
         ?>
 
         <div class="range">
-            <span>
-                <input type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" <?= $args['custom_attrs'] ?>>
-                <span class="value"><?= $args['value'] ?></span>
-            </span>
+            <input type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" <?= $args['custom_attrs'] ?>>
+            <span class="value"><?= $args['value'] ?></span>
+            <?php
+
+            if (isset($args['suffix']) && !empty($args['suffix'])) {
+                ?>
+                <span class="suffix"><?= $args['suffix'] ?></span>
+                <?php
+            }
+
+            ?>
         </div>
 
         <?php
@@ -28,6 +35,9 @@ class Range {
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
+
+        wp_enqueue_script('pom-form-range',  POM_FORM_SRC_URI . '/dist/js/range.js', ['jquery'], null, true);
+
     }
 
 }
