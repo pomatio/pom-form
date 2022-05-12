@@ -2,7 +2,7 @@
 
 namespace POM\Form;
 
-class Code {
+class Code_JS {
 
     public static function render_field(array $args): void {
 
@@ -18,7 +18,7 @@ class Code {
 
         ?>
 
-        <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor <?= $args['class'] ?>" <?= $args['custom_attrs'] ?>><?= stripslashes($args['value']) ?></textarea>
+        <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-js <?= $args['class'] ?>" <?= $args['custom_attrs'] ?>><?= stripslashes($args['value']) ?></textarea>
 
         <?php
 
