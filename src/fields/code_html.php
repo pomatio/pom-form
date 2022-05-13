@@ -18,7 +18,7 @@ class Code_HTML {
 
         ?>
 
-        <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" <?= $args['custom_attrs'] ?>><?= stripslashes($args['value']) ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" <?= $args['custom_attrs'] ?>><?= $args['value'] ?></textarea>
 
         <?php
 
