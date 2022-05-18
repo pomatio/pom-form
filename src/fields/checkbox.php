@@ -17,7 +17,6 @@ class Checkbox {
             }
 
             foreach ($args['options'] as $option_value => $option_label) {
-
                 $checked = (is_array($args['value']) && !empty($args['value']) && in_array($option_value, $args['value'], true)) || $option_value === $args['value'] ? 'checked="checked"' : '';
 
                 ?>
