@@ -50,4 +50,22 @@ class POM_Form_Helper {
         return $array;
     }
 
+    public static function path_to_url($path = ''): string {
+        $url = str_replace(
+            wp_normalize_path(untrailingslashit(ABSPATH)),
+            site_url(),
+            wp_normalize_path($path)
+        );
+
+        return esc_url_raw($url);
+    }
+
+    public static function get_icon_libraries(): array {
+        return apply_filters('pom_form_icon_libraries', []);
+    }
+
+    public static function get_icon_libraries_path(): string {
+        return apply_filters('pom_form_icon_libraries_path', '');
+    }
+
 }

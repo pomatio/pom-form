@@ -12,25 +12,8 @@ class Form {
         /**
          * Functions available throughout the framework.
          */
-        require_once 'helpers.php';
-
-        /**
-         * Include required Bootstrap files.
-         */
-        //add_action('wp_enqueue_scripts', [$this, 'add_bootstrap_enqueues'], 1);
-    }
-
-    public function add_bootstrap_enqueues(): void {
-        // CSS
-        wp_enqueue_style('pom-form-select2', POM_FORM_SRC_PATH . 'vendor/select2/select2/dist/css/select2.min.css', [], POM_FORM_VERSION);
-        wp_enqueue_style('pom-form-bootstrap', POM_FORM_SRC_PATH . 'vendor/twbs/bootstrap/dist/css/bootstrap.min.css', [], POM_FORM_VERSION);
-        wp_enqueue_style('pom-form-styles', POM_FORM_SRC_PATH . 'dist/css/fields.min.css', [], POM_FORM_VERSION);
-
-        // JS
-        wp_enqueue_script('pom-form-select2', POM_FORM_SRC_PATH . 'vendor/select2/select2/dist/js/select2.min.js', [], POM_FORM_VERSION, true);
-        wp_enqueue_script('pom-form-select', POM_FORM_SRC_PATH . 'dist/js/select.js', ['jquery', 'pom-form-select2'], POM_FORM_VERSION, true);
-        wp_enqueue_script('pom-form-range', POM_FORM_SRC_PATH . 'dist/js/range.js', ['jquery'], POM_FORM_VERSION, true);
-        wp_enqueue_script('pom-form-quantity', POM_FORM_SRC_PATH . 'dist/js/quantity.js', ['jquery'], POM_FORM_VERSION, true);
+        require_once 'class-helpers.php';
+        require_once 'class-ajax.php';
     }
 
     /**
@@ -79,7 +62,6 @@ class Form {
      * @return string
      */
     public static function add_field(array $args): string {
-
         $type = strtolower($args['type']);
 
         if (!file_exists($filename = POM_Form_Helper::get_path() . "fields/$type.php")) {
@@ -98,7 +80,6 @@ class Form {
         $field_class::render_field($field_args);
 
         return ob_get_clean();
-
     }
 
 }
