@@ -81,7 +81,25 @@ jQuery(function($) {
         $('#pom-form-icons-modal').dialog('close');
     });
 
-    $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', function() {
+    /**
+     * The delay function will return a wrapped function that internally handles an individual timer,
+     * in each execution the timer is restarted with the time delay provided,
+     * if multiple executions occur before this time passes, the timer will just reset and start again.
+     * When the timer finally ends, the callback function is executed, passing the original context and arguments.
+     *
+     * @param fn
+     * @param ms
+     * @returns {(function(...[*]): void)|*}
+     */
+    function delay_search(fn, ms) {
+        let timer = 0;
+        return function(...args) {
+            clearTimeout(timer)
+            timer = setTimeout(fn.bind(this, ...args), ms || 0)
+        }
+    }
+
+    $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', delay_search(function () {
         let $this = $(this);
         let $search = $this.val();
 
@@ -98,6 +116,6 @@ jQuery(function($) {
                 $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);
             }
         });
-    });
+    }, 500));
 
 });
