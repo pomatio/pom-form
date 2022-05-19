@@ -84,8 +84,8 @@ jQuery(function($) {
 
         let $icon_url = $('#pom-form-icons-modal .attachment.selected img').attr('src');
         $clicked_button.closest('.icon-picker-wrapper').find('input[type="hidden"]').val($icon_url);
-
         $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
+        $clicked_button.closest('.icon-picker-wrapper').find('.remove-selected-icon').css('display', 'inherit');
 
         $icon_picker_modal.dialog('close');
     });
@@ -135,7 +135,7 @@ jQuery(function($) {
 
         $wrapper.find('.icon-wrapper').empty();
         $wrapper.find('input[type="hidden"]').val('');
-        $this.remove();
+        $this.css('display', 'none');
     });
 
 });
