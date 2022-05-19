@@ -19,6 +19,7 @@ class Icon_Picker {
         ?>
 
         <div class="icon-picker-wrapper">
+            <span class="remove-selected-icon dashicons dashicons-trash"></span>
             <div class="icon-wrapper">
                 <?php
 

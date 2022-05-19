@@ -1,5 +1,14 @@
 jQuery(function($) {
 
+    // Display remove button only if icon is selected.
+    $('.icon-picker-wrapper .icon-wrapper').each(function() {
+        let $this = $(this);
+
+        if ($this.find('img').length) {
+            $(this).closest('.icon-picker-wrapper').find('.remove-selected-icon').css('display', 'inherit');
+        }
+    });
+
     // Store the icon picker button that has been clicked
     let $clicked_button;
 
@@ -117,5 +126,16 @@ jQuery(function($) {
             }
         });
     }, 500));
+
+    $(document).on('click', '.icon-picker-wrapper .remove-selected-icon', function(e) {
+        e.preventDefault();
+
+        let $this = $(this);
+        let $wrapper = $this.closest('.icon-picker-wrapper');
+
+        $wrapper.find('.icon-wrapper').empty();
+        $wrapper.find('input[type="hidden"]').val('');
+        $this.remove();
+    });
 
 });
