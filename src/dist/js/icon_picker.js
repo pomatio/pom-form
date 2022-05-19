@@ -76,9 +76,28 @@ jQuery(function($) {
         let $icon_url = $('#pom-form-icons-modal .attachment.selected img').attr('src');
         $clicked_button.closest('.icon-picker-wrapper').find('input[type="hidden"]').val($icon_url);
 
-        $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img src="' + $icon_url + '">');
+        $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
 
         $('#pom-form-icons-modal').dialog('close');
+    });
+
+    $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', function() {
+        let $this = $(this);
+        let $search = $this.val();
+
+        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('Loading...');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            data: {
+                action: 'pom_form_get_icon_by_name',
+                search: $search,
+            },
+            success: function ($response) {
+                $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);
+            }
+        });
     });
 
 });

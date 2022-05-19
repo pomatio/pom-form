@@ -19,7 +19,15 @@ class Icon_Picker {
         ?>
 
         <div class="icon-picker-wrapper">
-            <div class="icon-wrapper"></div>
+            <div class="icon-wrapper">
+                <?php
+
+                if (!empty($args['value'])) {
+                    echo '<img alt="" src="' . $args['value'] . '">';
+                }
+
+                ?>
+            </div>
             <button class="button open-icon-picker-modal"><?php _e('Select icon', 'pom-form') ?></button>
             <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
         </div>
@@ -67,8 +75,13 @@ class Icon_Picker {
                         </div>
                     </div>
                     <div class="media-frame-tab-panel">
+                        <div class="media-frame-router">
+                            <div role="tablist" aria-orientation="horizontal" class="media-router">
+                                <input placeholder="<?php _e('Search icon', 'pom-form') ?>" aria-label="<?php _e('Search icon', 'pom-form') ?>" id="icon-search" type="search">
+                            </div>
+                        </div>
                         <div class="media-frame-content">
-                            <?php _e('Choose a library from the menu to see its icons.', 'pom-form') ?>
+                            <?php _e('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') ?>
                         </div>
                     </div>
                     <div class="media-frame-toolbar">
