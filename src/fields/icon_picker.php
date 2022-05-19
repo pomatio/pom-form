@@ -42,6 +42,7 @@ class Icon_Picker {
 
         echo '</div>';
 
+        wp_enqueue_style('pom-form-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon_picker.min.css');
         wp_enqueue_script('pom-form-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker.js', [], null, true);
         wp_localize_script(
             'pom-form-icon_picker',
@@ -88,7 +89,7 @@ class Icon_Picker {
                             </div>
                         </div>
                         <div class="media-frame-content">
-                            <?php _e('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') ?>
+                            <span class="centered-text"><?php _e('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') ?></span>
                         </div>
                     </div>
                     <div class="media-frame-toolbar">
