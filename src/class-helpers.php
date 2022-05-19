@@ -68,4 +68,8 @@ class POM_Form_Helper {
         return apply_filters('pom_form_icon_libraries_path', '');
     }
 
+    public static function get_color_palette(): array {
+        return apply_filters('pom_form_color_palette', []);
+    }
+
 }
