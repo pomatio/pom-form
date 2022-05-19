@@ -12,7 +12,7 @@ class POM_Form_Ajax {
     public function get_library_icons(): void {
         $library = $_REQUEST['library'] ?? '';
         if (empty($library)) {
-            wp_die(__('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form'));
+            wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
 
         $icons_dir = POM_Form_Helper::get_icon_libraries_path();
@@ -33,7 +33,7 @@ class POM_Form_Ajax {
     public function get_icon_by_name(): void {
         $search = $_REQUEST['search'] ?? '';
         if (empty($search)) {
-            wp_die(__('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form'));
+            wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
 
         $icons_dir = POM_Form_Helper::get_icon_libraries_path();
@@ -45,7 +45,7 @@ class POM_Form_Ajax {
 
 
         foreach ($icon_libraries as $icon_library => $label) {
-            foreach(glob("$icons_dir$icon_library/$search*.svg") as $file) {
+            foreach(glob("$icons_dir$icon_library/*$search*.svg") as $file) {
                 echo $this->get_icon_attachment_html($file);
             }
         }
@@ -67,6 +67,7 @@ class POM_Form_Ajax {
                 <div class="thumbnail">
                     <div class="centered">
                         <img alt="" src="<?= POM_Form_Helper::path_to_url($file) ?>">
+                        <span class="icon-name"><?= pathinfo($file, PATHINFO_FILENAME) ?></span>
                     </div>
                 </div>
             </div>
