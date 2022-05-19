@@ -3,7 +3,7 @@ jQuery(function($) {
     // Store the icon picker button that has been clicked
     let $clicked_button;
 
-    $('#pom-form-icons-modal').dialog({
+    let $icon_picker_modal = $('#pom-form-icons-modal').dialog({
         title: '',
         dialogClass: 'wp-dialog pom-form-icons-modal',
         autoOpen: false,
@@ -31,12 +31,12 @@ jQuery(function($) {
     $(document).on('click', '.open-icon-picker-modal', function(e) {
         e.preventDefault();
         $clicked_button = $(this);
-        $('#pom-form-icons-modal').dialog('open');
+        $icon_picker_modal.dialog('open');
     });
 
     $(document).on('click', '.close-icon-picker-modal', function(e) {
         e.preventDefault();
-        $('#pom-form-icons-modal').dialog('close');
+        $icon_picker_modal.dialog('close');
     });
 
     $(document).on('click', '#pom-form-icons-modal .media-menu-item', function() {
@@ -78,7 +78,7 @@ jQuery(function($) {
 
         $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
 
-        $('#pom-form-icons-modal').dialog('close');
+        $icon_picker_modal.dialog('close');
     });
 
     /**
