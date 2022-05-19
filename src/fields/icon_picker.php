@@ -43,6 +43,13 @@ class Icon_Picker {
         echo '</div>';
 
         wp_enqueue_script('pom-form-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker.js', [], null, true);
+        wp_localize_script(
+            'pom-form-icon_picker',
+            'pom_form_icon_picker',
+            [
+                'loading' => __('Loading...', 'pom-form')
+            ]
+        );
     }
 
     private function dialog_html(): void {

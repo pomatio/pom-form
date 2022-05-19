@@ -42,7 +42,7 @@ jQuery(function($) {
     $(document).on('click', '#pom-form-icons-modal .media-menu-item', function() {
         let $this = $(this);
 
-        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('Loading...');
+        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append(pom_form_icon_picker.loading);
 
         $('#pom-form-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
         $this.addClass('active').attr('aria-selected', 'true');
@@ -103,7 +103,7 @@ jQuery(function($) {
         let $this = $(this);
         let $search = $this.val();
 
-        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('Loading...');
+        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append(pom_form_icon_picker.loading);
 
         $.ajax({
             url: ajaxurl,

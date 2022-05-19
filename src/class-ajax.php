@@ -12,7 +12,7 @@ class POM_Form_Ajax {
     public function get_library_icons(): void {
         $library = $_REQUEST['library'] ?? '';
         if (empty($library)) {
-            wp_die($library);
+            wp_die(__('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form'));
         }
 
         $icons_dir = POM_Form_Helper::get_icon_libraries_path();
@@ -33,7 +33,7 @@ class POM_Form_Ajax {
     public function get_icon_by_name(): void {
         $search = $_REQUEST['search'] ?? '';
         if (empty($search)) {
-            wp_die($search);
+            wp_die(__('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form'));
         }
 
         $icons_dir = POM_Form_Helper::get_icon_libraries_path();
