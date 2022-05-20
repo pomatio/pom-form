@@ -1,0 +1,19 @@
+.pom-form-image-wrapper {
+    width: 100%;
+    max-width: 282px;
+    display: inline-block;
+    position: relative;
+
+    .remove-selected-image {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        color: #dc3333;
+        cursor: pointer;
+        display: none;
+
+        &:hover {
+            color: #ff0000;
+        }
+    }
+}

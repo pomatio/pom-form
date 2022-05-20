@@ -62,7 +62,7 @@ class POM_Form_Ajax {
 
         ?>
 
-        <li class="attachment" style="width: 8.3332%;">
+        <li class="attachment" style="width: 9%;">
             <div class="attachment-preview landscape">
                 <div class="thumbnail">
                     <div class="centered">

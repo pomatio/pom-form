@@ -43,7 +43,7 @@ class Icon_Picker {
 
         echo '</div>';
 
-        wp_enqueue_style('pom-form-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon_picker.min.css');
+        wp_enqueue_style('pom-form-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker.min.css');
         wp_enqueue_script('pom-form-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker.js', [], null, true);
         wp_localize_script(
             'pom-form-icon_picker',
