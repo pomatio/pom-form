@@ -15,13 +15,13 @@ class POM_Form_Ajax {
             wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
 
-        $icons_dir = POM_Form_Helper::get_icon_libraries_path();
+        $icons = POM_Form_Helper::get_icon_libraries();
 
         ob_start();
 
         echo '<ul class="attachments">';
 
-        foreach(glob("$icons_dir$library/*.svg") as $file) {
+        foreach (glob("{$icons[$library]['path']}$library/*.svg") as $file) {
             echo $this->get_icon_attachment_html($file);
         }
 
@@ -36,16 +36,15 @@ class POM_Form_Ajax {
             wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
 
-        $icons_dir = POM_Form_Helper::get_icon_libraries_path();
-        $icon_libraries = POM_Form_Helper::get_icon_libraries();
+        $icons = POM_Form_Helper::get_icon_libraries();
 
         ob_start();
 
         echo '<ul class="attachments">';
 
 
-        foreach ($icon_libraries as $icon_library => $label) {
-            foreach(glob("$icons_dir$icon_library/*$search*.svg") as $file) {
+        foreach ($icons as $icon_library => $data) {
+            foreach(glob("{$data['path']}$icon_library/*$search*.svg") as $file) {
                 echo $this->get_icon_attachment_html($file);
             }
         }

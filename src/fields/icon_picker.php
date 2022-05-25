@@ -72,10 +72,10 @@ class Icon_Picker {
                             <?php
 
                             $icon_libraries = POM_Form_Helper::get_icon_libraries();
-                            foreach ($icon_libraries as $slug => $label) {
+                            foreach ($icon_libraries as $library => $data) {
                                 ?>
 
-                                <button type="button" role="tab" class="media-menu-item" id="menu-item-<?= $slug ?>" data-slug="<?= $slug ?>" data-label="<?= $label ?>"><?= $label ?></button>
+                                <button type="button" role="tab" class="media-menu-item" id="menu-item-<?= $library ?>" data-slug="<?= $library ?>" data-label="<?= $data['name'] ?>"><?= $data['name'] ?></button>
 
                                 <?php
                             }
