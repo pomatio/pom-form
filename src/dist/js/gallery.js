@@ -80,6 +80,34 @@ jQuery(function($) {
 
             $display_delete_button();
         });
+
+        /**
+         * On open, get the id from the hidden input
+         * and select the appropriate images in the media manager.
+         */
+        $gallery_modal.on('open',function() {
+            let $selection =  $gallery_modal.state().get('selection');
+            let $ids = $clicked_button.closest('.gallery-wrapper').find('input[type="hidden"]').val();
+
+            if (!$ids) {
+                return;
+            }
+
+            let $values = $clicked_button.closest('.gallery-wrapper').find('input[type="hidden"]').val().split(',');
+
+            if (!$values) {
+                return;
+            }
+
+            $values.forEach(function(id) {
+                let attachment = wp.media.attachment(id);
+                attachment.fetch();
+                if (attachment) {
+                    $selection.add([attachment]);
+                    $values.push(attachment.cid);
+                }
+            });
+        });
     });
 
     $(document).on('click', '.gallery-wrapper .remove-selected-item', function(e) {
