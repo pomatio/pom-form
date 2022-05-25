@@ -1,0 +1,23 @@
+.gallery-wrapper {
+    .items-wrapper {
+        display: flex;
+        gap: 10px;
+
+        .item-wrapper {
+            position: relative;
+
+            .remove-selected-item {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                color: #dc3333;
+                cursor: pointer;
+                display: none;
+
+                &:hover {
+                    color: #ff0000;
+                }
+            }
+        }
+    }
+}

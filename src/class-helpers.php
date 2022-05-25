@@ -61,6 +61,12 @@ class POM_Form_Helper {
     }
 
     public static function get_icon_libraries(): array {
+        /**
+         * Libraries are added as associative arrays.
+         * The primary key has to match the name of the
+         * folder that contains the icons.
+         * Then the array contains the name and the path.
+         */
         return apply_filters('pom_form_icon_libraries', []);
     }
 
