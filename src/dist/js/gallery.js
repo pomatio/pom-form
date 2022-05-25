@@ -12,6 +12,29 @@ jQuery(function($) {
     }
     $display_delete_button();
 
+    if (typeof $.fn.sortable !== 'undefined') {
+        $('.items-wrapper').sortable({
+            update: function (event, ui) {
+                let $this = $(this);
+
+                let $values = $this.closest('.gallery-wrapper').find('input[type="hidden"]').val().split(',');
+                if (!$values) {
+                    return true;
+                }
+
+                let $ids = [];
+
+                let $items_wrapper = $this.children('.item-wrapper');
+
+                $items_wrapper.each(function () {
+                    $ids.push($(this).find('.remove-selected-item').attr('data-id'));
+                });
+
+                $this.closest('.gallery-wrapper').find('input[type="hidden"]').val($ids.toString());
+            }
+        });
+    }
+
     // Store the icon picker button that has been clicked
     let $clicked_button;
     let $gallery_modal;
