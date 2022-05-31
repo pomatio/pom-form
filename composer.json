@@ -11,7 +11,8 @@
     "minimum-stability": "dev",
     "require": {
         "twbs/bootstrap": "v4.6.0",
-        "select2/select2": "4.0.13"
+        "select2/select2": "4.0.13",
+      "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

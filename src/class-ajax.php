@@ -7,6 +7,8 @@ class POM_Form_Ajax {
     public function __construct() {
         add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
         add_action('wp_ajax_pom_form_get_icon_by_name', [$this, 'get_icon_by_name']);
+
+        add_action('wp_ajax_pom_form_get_repeater_item_html', [$this, 'get_repeater_item_html']);
     }
 
     public function get_library_icons(): void {
@@ -75,6 +77,38 @@ class POM_Form_Ajax {
         <?php
 
         return ob_get_clean();
+    }
+
+    public function get_repeater_item_html(): void {
+        $config = $_REQUEST['config'] ?? '';
+
+        if (empty($config)) {
+            wp_die();
+        }
+
+        $config = json_decode(base64_decode($config), true);
+
+        ob_start();
+
+        ?>
+
+        <div class="repeater closed">
+            <div class="title"><?= $config['title'] ?></div>
+            <div class="repeater-fields">
+                <?php
+
+                foreach ($config['fields'] as $field) {
+                    echo (new Form())::add_field($field);
+                }
+
+                ?>
+                <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+            </div>
+        </div>
+
+        <?php
+
+        wp_die(ob_get_clean());
     }
 
 }

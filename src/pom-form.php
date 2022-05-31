@@ -29,30 +29,19 @@ class Form {
         $field_args = wp_parse_args($args);
 
         // Make sure the basic attributes have valid values.
-        $required_attrs = [
-            'type' => $field_args['type'] ?? 'text',
-            'label' => $field_args['label'] ?? '',
-            'description' => $field_args['description'] ?? '',
-            'name' => sanitize_title($field_args['name']),
-            'id' => $field_args['id'] ?? sanitize_title($field_args['name']),
-            'value' => $field_args['value'] ?? '',
-            'class' => isset($field_args['class']) ? sanitize_html_class($field_args['class']) :  '',
-            'description_position' => $field_args['description_position'] ?? 'under_field',
-            'options' => $field_args['options'] ?? [],
-            'prefix' => $field_args['prefix'] ?? '',
-            'suffix' => $field_args['suffix'] ?? '',
-        ];
+        $field_args['type'] = $field_args['type'] ?? 'text';
+        $field_args['label'] = $field_args['label'] ?? '';
+        $field_args['description'] = $field_args['description'] ?? '';
+        $field_args['name'] = sanitize_title($field_args['name']);
+        $field_args['id'] = $field_args['id'] ?? sanitize_title($field_args['name']);
+        $field_args['value'] = $field_args['value'] ?? '';
+        $field_args['class'] = isset($field_args['class']) ? sanitize_html_class($field_args['class']) :  '';
+        $field_args['description_position'] = $field_args['description_position'] ?? 'under_field';
+        $field_args['options'] = $field_args['options'] ?? [];
+        $field_args['prefix'] = $field_args['prefix'] ?? '';
+        $field_args['suffix'] = $field_args['suffix'] ?? '';
 
-        foreach ($required_attrs as $key => $value) {
-            unset($field_args[$key]);
-        }
-
-        /**
-         * Convert the remaining values of the associative array into valid HTML attributes
-         */
-        $custom_attrs = POM_Form_Helper::convert_array_to_html_attributes($field_args);
-
-        return array_merge($required_attrs, ['custom_attrs' => $custom_attrs]);
+        return $field_args;
     }
 
     /**
