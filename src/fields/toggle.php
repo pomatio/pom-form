@@ -14,7 +14,7 @@ class Toggle {
 
         <div class="row toggle-input">
             <div class="col-auto pr-15 pl-15">
-                <input id="<?= $args['id'] ?>" type="checkbox" class="web-toggle" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
+                <input id="<?= $args['id'] ?>" type="checkbox" class="web-toggle" <?= $checked ?>>
                 <label class="web-toggle-btn <?= $args['class'] ?? '' ?>" for="<?= $args['id'] ?>"></label>
             </div>
             <div class="col">

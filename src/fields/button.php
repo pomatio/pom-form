@@ -11,7 +11,7 @@ class Button {
 
         ?>
 
-        <input type="button" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $label ?>" <?= $args['custom_attrs'] ?>>
+        <input type="button" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $label ?>">
 
         <?php
 

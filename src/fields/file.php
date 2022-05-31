@@ -18,7 +18,7 @@ class File {
 
         ?>
 
-        <input type="file" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?>>
+        <input type="file" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
 
         <?php
 

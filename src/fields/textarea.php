@@ -18,7 +18,7 @@ class Textarea {
 
             ?>
 
-            <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" <?= $args['custom_attrs'] ?>><?= $args['value'] ?></textarea>
+            <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>"><?= $args['value'] ?></textarea>
 
             <?php
 

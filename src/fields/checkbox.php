@@ -22,7 +22,7 @@ class Checkbox {
                 ?>
 
                 <div class="form-check">
-                    <input type="checkbox" id="<?= $args['id'] . '-' . $option_value ?>" name="<?= $args['name'] ?>" value="<?= $option_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
+                    <input type="checkbox" id="<?= $args['id'] . '-' . $option_value ?>" name="<?= $args['name'] ?>" value="<?= $option_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?>>
                     <label class="form-check-label" for="<?= $args['id'] . '-' . $option_value ?>"><?= $option_label ?></label>
                 </div>
 
@@ -37,7 +37,7 @@ class Checkbox {
 
             <div class="form-check">
                 <input type="hidden" name="<?= $args['name'] ?>" value="no">
-                <input type="checkbox" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="yes" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
+                <input type="checkbox" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="yes" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?>>
                 <label class="form-check-label" for="<?= $args['id'] ?>"><?= $args['label'] ?></label>
             </div>
 

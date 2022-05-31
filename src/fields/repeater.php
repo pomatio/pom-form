@@ -42,7 +42,7 @@ class Repeater {
             <button class="button add-new-repeater-item"><?php _e('Add new', 'pom-form') ?></button>
             <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
             <input type="hidden" name="config" value="<?= $repeater_config ?>">
-            <input type="hidden" name="<?= $args['name'] ?>" value="" class="repeater-value">
+            <input type="hidden" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="repeater-value">
         </div>
 
         <?php

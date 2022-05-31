@@ -19,7 +19,7 @@ class Radio {
             ?>
 
             <div class="form-check">
-                <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?: '' ?> <?= $checked ?>>
+                <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?>>
                 <label class="form-check-label" for="<?= $args['name'] . '-' . $radio_value ?>"><?= $radio_label ?></label>
             </div>
 

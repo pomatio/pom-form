@@ -18,7 +18,7 @@ class Tel {
 
             ?>
 
-            <input type="tel" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" <?= $args['custom_attrs'] ?>>
+            <input type="tel" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
 
             <?php
 
