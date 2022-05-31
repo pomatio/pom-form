@@ -2,6 +2,8 @@
     .items-wrapper {
         display: flex;
         gap: 10px;
+        columns: 4;
+        flex-wrap: wrap;
 
         .item-wrapper {
             position: relative;
