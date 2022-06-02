@@ -76,4 +76,12 @@ jQuery(function($) {
         $wrapper.find('.repeater-value').val(JSON.stringify($value));
     }
 
+    if (typeof $.fn.sortable !== 'undefined') {
+        $('.repeater-wrapper.sortable').sortable({
+            update: function (event, ui) {
+                $update_repeater($(this));
+            }
+        });
+    }
+
 });

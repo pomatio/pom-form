@@ -1,4 +1,8 @@
 .repeater-wrapper {
+    &.sortable .repeater .title {
+        cursor: move;
+    }
+
     .repeater {
         margin: 0 auto 10px;
         position: relative;
@@ -26,10 +30,6 @@
             -ms-user-select: none;
             user-select: none;
             cursor: pointer;
-
-            &.sortable {
-                cursor: move;
-            }
         }
 
         .repeater-fields {

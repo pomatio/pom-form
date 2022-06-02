@@ -24,9 +24,11 @@ class Repeater {
 
         $json = json_decode(htmlspecialchars_decode($args['value']), true);
 
+        $sortable = isset($args['sortable']) && $args['sortable'] ? ' sortable' : '';
+
         ?>
 
-        <div class="repeater-wrapper">
+        <div class="repeater-wrapper<?= $sortable ?>">
 
             <?php
 
