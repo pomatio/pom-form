@@ -61,10 +61,12 @@ jQuery(function($) {
 
         let $value = [];
 
+        // For each repeater element
         for (let $i = 0; $i < $repeater_elements.length; $i++) {
             let $repeater_fields = $repeater_elements[$i].querySelectorAll("input, select, checkbox, textarea");
             let $obj = {};
 
+            // For each field inside the repeater element
             for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
                 let $field_name = $repeater_fields[$i2].getAttribute("name");
                 $obj[$field_name] = $repeater_fields[$i2].value;
@@ -91,7 +93,7 @@ jQuery(function($) {
      * Update repeater title live
      */
     $(document).on('keyup', '.repeater .use-for-title', function() {
-        let $title_holder =  $(this).closest('.repeater').find('.title span');
+        let $title_holder =  $(this).closest('.repeater').find('.title span').first();
 
         if ($(this).val()) {
             $title_holder.html(' - ' + $(this).val());
@@ -104,7 +106,7 @@ jQuery(function($) {
     let $append_to_title = function() {
         $('.repeater-wrapper .use-for-title').each(function(i,v) {
             let $input_value = $(this).val();
-            let $title_holder =  $(this).closest('.repeater').find('.title span');
+            let $title_holder =  $(this).closest('.repeater').find('.title span').first();
 
             if ($input_value) {
                 $title_holder.html(' - ' + $input_value);

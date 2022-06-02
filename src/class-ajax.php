@@ -92,7 +92,7 @@ class POM_Form_Ajax {
 
         ?>
 
-        <div class="repeater closed">
+        <div class="repeater">
             <div class="title"><strong><?= $config['title'] ?></strong><span></span></div>
             <div class="repeater-fields">
                 <?php

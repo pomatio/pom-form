@@ -1,4 +1,9 @@
 <?php
+/**
+ * New repeater elements are added via ajax.
+ * If changes are made to the HTML of a repeater element,
+ * update it in class-ajax.php as well --> get_repeater_item_html().
+ */
 
 namespace POM\Form;
 
@@ -24,7 +29,7 @@ class Repeater {
 
         $json = json_decode(htmlspecialchars_decode($args['value']), true);
 
-        $sortable = isset($args['sortable']) && $args['sortable'] ? ' sortable' : '';
+        $sortable = isset($args['sortable']) && $args['sortable'] === true ? ' sortable' : '';
 
         ?>
 
@@ -32,11 +37,11 @@ class Repeater {
 
             <?php
 
-            if (count($json) > 0) {
+            if (!empty($json) && count($json) > 0) {
                 foreach ($json as $repeater_item) {
                     ?>
 
-                    <div class="repeater closed" data-name="<?= $args['name'] ?>">
+                    <div class="repeater closed">
                         <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
                         <div class="repeater-fields">
                             <?php
@@ -45,6 +50,7 @@ class Repeater {
                                 if (array_key_exists($field['name'], $repeater_item)) {
                                     $field['value'] = $repeater_item[$field['name']];
                                 }
+
                                 echo (new Form())::add_field($field);
                             }
 
@@ -60,8 +66,8 @@ class Repeater {
             else {
                 ?>
 
-                <div class="repeater closed" data-name="<?= $args['name'] ?>">
-                    <div class="title"><?= $args['title'] ?></div>
+                <div class="repeater closed">
+                    <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
                     <div class="repeater-fields">
                         <?php
 
