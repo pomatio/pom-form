@@ -22,23 +22,62 @@ class Repeater {
         ];
         $repeater_config = base64_encode(json_encode($repeater_config));
 
+        $json = json_decode(htmlspecialchars_decode($args['value']), true);
+
         ?>
 
         <div class="repeater-wrapper">
-            <div class="repeater closed" data-name="<?= $args['name'] ?>">
-                <div class="title"><?= $args['title'] ?></div>
-                <div class="repeater-fields">
-                    <?php
 
-                    foreach ($args['fields'] as $field) {
-                        echo (new Form())::add_field($field);
-                    }
+            <?php
 
+            if (count($json) > 0) {
+                foreach ($json as $repeater_item) {
                     ?>
 
-                    <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                    <div class="repeater closed" data-name="<?= $args['name'] ?>">
+                        <div class="title"><?= $args['title'] ?></div>
+                        <div class="repeater-fields">
+                            <?php
+
+                            foreach ($args['fields'] as $field) {
+                                if (array_key_exists($field['name'], $repeater_item)) {
+                                    $field['value'] = $repeater_item[$field['name']];
+                                }
+                                echo (new Form())::add_field($field);
+                            }
+
+                            ?>
+
+                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                        </div>
+                    </div>
+
+                    <?php
+                }
+            }
+            else {
+                ?>
+
+                <div class="repeater closed" data-name="<?= $args['name'] ?>">
+                    <div class="title"><?= $args['title'] ?></div>
+                    <div class="repeater-fields">
+                        <?php
+
+                        foreach ($args['fields'] as $field) {
+                            echo (new Form())::add_field($field);
+                        }
+
+                        ?>
+
+                        <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                    </div>
                 </div>
-            </div>
+
+                <?php
+            }
+
+            ?>
+
             <button class="button add-new-repeater-item"><?php _e('Add new', 'pom-form') ?></button>
             <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
             <input type="hidden" name="config" value="<?= $repeater_config ?>">
