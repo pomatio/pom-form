@@ -76,6 +76,9 @@ jQuery(function($) {
         $wrapper.find('.repeater-value').val(JSON.stringify($value));
     }
 
+    /**
+     * Make repeater elements sortable
+     */
     if (typeof $.fn.sortable !== 'undefined') {
         $('.repeater-wrapper.sortable').sortable({
             update: function (event, ui) {
@@ -83,5 +86,34 @@ jQuery(function($) {
             }
         });
     }
+
+    /**
+     * Update repeater title live
+     */
+    $(document).on('keyup', '.repeater .use-for-title', function() {
+        let $title_holder =  $(this).closest('.repeater').find('.title span');
+
+        if ($(this).val()) {
+            $title_holder.html(' - ' + $(this).val());
+        }
+        else {
+            $title_holder.html('');
+        }
+    });
+
+    let $append_to_title = function() {
+        $('.repeater-wrapper .use-for-title').each(function(i,v) {
+            let $input_value = $(this).val();
+            let $title_holder =  $(this).closest('.repeater').find('.title span');
+
+            if ($input_value) {
+                $title_holder.html(' - ' + $input_value);
+            }
+        });
+    }
+    $append_to_title();
+    $(document).ajaxComplete(function() {
+        $append_to_title();
+    });
 
 });

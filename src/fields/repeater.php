@@ -37,7 +37,7 @@ class Repeater {
                     ?>
 
                     <div class="repeater closed" data-name="<?= $args['name'] ?>">
-                        <div class="title"><?= $args['title'] ?></div>
+                        <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
                         <div class="repeater-fields">
                             <?php
 
