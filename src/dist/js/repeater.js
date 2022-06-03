@@ -69,7 +69,7 @@ jQuery(function($) {
             // For each field inside the repeater element
             for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
                 let $field_name = $repeater_fields[$i2].getAttribute("name");
-                $obj[$field_name] = $repeater_fields[$i2].value;
+                $obj[$field_name] = $repeater_fields[$i2].value.trim();
             }
 
             $value.push($obj);

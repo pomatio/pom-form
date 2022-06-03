@@ -48,7 +48,7 @@ class Repeater {
 
                             foreach ($args['fields'] as $field) {
                                 if (array_key_exists($field['name'], $repeater_item)) {
-                                    $field['value'] = $repeater_item[$field['name']];
+                                    $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
                                 }
 
                                 echo (new Form())::add_field($field);
