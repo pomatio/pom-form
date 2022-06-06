@@ -3,17 +3,17 @@
     flex-wrap: wrap;
 
     label {
+        border: 2px solid #eee;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px #ddd inset;
+        box-sizing: border-box;
         display: block;
-        width: 8%;
         flex: 0 0 8%;
         max-width: 8%;
-        box-sizing: border-box;
-        border: 2px solid #eee;
-        box-shadow: 0 0 0 3px #ddd inset;
-        position: relative;
-        padding-top: 8%;
-        border-radius: 50%;
         min-height: 20px;
+        padding-top: 8%;
+        position: relative;
+        width: 8%;
     }
 
     input[type="radio"]:checked + label {
@@ -21,7 +21,7 @@
     }
 
     input[type="radio"] {
-        visibility: hidden;
         position: absolute;
+        visibility: hidden;
     }
 }

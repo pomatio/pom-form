@@ -4,12 +4,12 @@
     }
 
     .repeater {
-        margin: 0 auto 10px;
-        position: relative;
+        border: 1px solid #ccd0d4;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
         box-sizing: border-box;
         color: #23282d;
-        border: 1px solid #ccd0d4;
-        box-shadow: 0 1px 1px rgba(0,0,0,.04);
+        margin: 0 auto 10px;
+        position: relative;
 
         &.closed .repeater-fields {
             display: none;
@@ -17,25 +17,22 @@
 
         .title {
             background: #fafafa;
-            touch-action: none;
-            margin: 0;
-            padding: 15px;
+            cursor: pointer;
             font-size: 1em;
             line-height: 1;
+            margin: 0;
             overflow: hidden;
-            white-space: nowrap;
+            padding: 15px;
             text-overflow: ellipsis;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            touch-action: none;
             user-select: none;
-            cursor: pointer;
+            white-space: nowrap;
         }
 
         .repeater-fields {
-            border-top: none;
-            padding: 25px 15px;
             background: #fff;
+            border-top: 0;
+            padding: 25px 15px;
 
             .form-group {
                 display: block;
@@ -56,10 +53,10 @@
             }
 
             .delete {
-                cursor: pointer;
                 color: #dc3333;
-                text-align: center;
+                cursor: pointer;
                 float: right;
+                text-align: center;
             }
         }
     }
