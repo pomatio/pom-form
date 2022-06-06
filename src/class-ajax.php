@@ -7,17 +7,21 @@ class POM_Form_Ajax {
     public function __construct() {
         add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
         add_action('wp_ajax_pom_form_get_icon_by_name', [$this, 'get_icon_by_name']);
-
         add_action('wp_ajax_pom_form_get_repeater_item_html', [$this, 'get_repeater_item_html']);
     }
 
     public function get_library_icons(): void {
         $library = $_REQUEST['library'] ?? 'all';
+        $limit = 88;
+        $current_offset = isset($_REQUEST['offset']) ? (int)$_REQUEST['offset'] : 0;
+
         if (empty($library)) {
             wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
 
+
         $icons = POM_Form_Helper::get_icon_libraries();
+        $glob = [];
 
         ob_start();
 
@@ -25,18 +29,38 @@ class POM_Form_Ajax {
 
         if ($library === 'all') {
             foreach ($icons as $library_index => $data) {
-                foreach (glob("{$data['path']}$library_index/*.svg") as $file) {
+                $icons_array = glob("{$data['path']}$library_index/*.svg");
+                $glob = array_merge($glob, $icons_array);
+            }
+
+            if ($glob) {
+                foreach (array_slice($glob, $current_offset, $limit) as $file) {
                     echo $this->get_icon_attachment_html($file);
                 }
             }
         }
         else {
-            foreach (glob("{$icons[$library]['path']}$library/*.svg") as $file) {
-                echo $this->get_icon_attachment_html($file);
+            $glob = glob("{$icons[$library]['path']}$library/*.svg");
+            if ($glob) {
+                foreach (array_slice($glob, $current_offset, $limit) as $file) {
+                    echo $this->get_icon_attachment_html($file);
+                }
             }
         }
 
         echo '</ul>';
+
+        $glob_count = count($glob);
+        if ($glob_count > ($current_offset + $limit)) {
+            ?>
+
+            <div class="load-more-icons">
+                <button class="button button-secondary" data-total="<?= $glob_count ?>" data-offset="<?= $current_offset ?>"><?php _e('Load more', 'pom-form') ?></button>
+                <img class="icon-picker-spinner" src="<?= admin_url('images/loading.gif') ?>" style="display: none; padding-top: 7px;" alt="Spinner">
+            </div>
+
+            <?php
+        }
 
         wp_die(ob_get_clean());
     }
@@ -49,7 +73,7 @@ class POM_Form_Ajax {
          * If the search is empty all icons are returned.
          */
         if (empty($search)) {
-            add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
+            $this->get_library_icons();
         }
 
         $icons = POM_Form_Helper::get_icon_libraries();

@@ -36,6 +36,15 @@ jQuery(function($) {
                 $('#pom-form-icons-modal').dialog('close');
             });
         },
+        close: function() {
+            // Set defaults to all libraries on modal close.
+            $('#pom-form-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
+            $('#pom-form-icons-modal .media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
+
+            $('.pom-form-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
+            let $title = $('.pom-form-icons-modal [data-slug="all"]').attr('data-label');
+            $('#pom-form-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
+        },
         create: function() {
             $('.pom-form-icons-modal .ui-dialog-titlebar').css('display', 'none');
 
@@ -48,6 +57,7 @@ jQuery(function($) {
 
     $(document).on('click', '.open-icon-picker-modal', function(e) {
         e.preventDefault();
+
         $clicked_button = $(this);
         $icon_picker_modal.dialog('open');
 
@@ -106,6 +116,34 @@ jQuery(function($) {
         $('#pom-form-icons-modal li.attachment').removeClass('selected');
         $(this).addClass('selected');
         $('#pom-form-icons-modal .pom-form-icon-select-button').removeClass('disabled').prop('disabled', false);
+    });
+
+    /**
+     * Pagination. Load more icons.
+     */
+    $(document).on('click', '#pom-form-icons-modal .load-more-icons button', function() {
+       let $this = $(this);
+
+       $this.hide();
+       $this.next('.icon-picker-spinner').show();
+
+       let $offset = parseInt($this.attr('data-offset'));
+       let $library = $('#pom-form-icons-modal .media-menu-item.active').attr('data-slug');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            data: {
+                action: 'pom_form_get_icon_library_icons',
+                library: $library,
+                offset: $offset + 88
+            },
+            success: function ($response) {
+                let $content = $this.closest('#pom-form-icons-modal').find('.media-frame-content');
+                $content.find('.load-more-icons').remove();
+                $content.append($response);
+            }
+        });
     });
 
     /**
