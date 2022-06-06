@@ -1,5 +1,9 @@
 jQuery(function($) {
 
+    if (typeof $.fn.dialog === 'undefined') {
+        return;
+    }
+
     // Display remove button only if icon is selected.
     $('.icon-picker-wrapper .icon-wrapper').each(function() {
         let $this = $(this);
@@ -136,11 +140,10 @@ jQuery(function($) {
         }
     }
 
-    $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', delay_search(function () {
+    $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', delay_search(function() {
         let $this = $(this);
         let $search = $this.val();
         let $library = $this.closest('#pom-form-icons-modal').find('.media-menu button.active').attr('data-slug');
-
         $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
 
         $.ajax({

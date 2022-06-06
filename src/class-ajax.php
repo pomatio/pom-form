@@ -44,8 +44,12 @@ class POM_Form_Ajax {
     public function get_icon_by_name(): void {
         $search = $_REQUEST['search'] ?? '';
         $library = $_REQUEST['library'] ?? 'all';
+
+        /**
+         * If the search is empty all icons are returned.
+         */
         if (empty($search)) {
-            wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
+            add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
         }
 
         $icons = POM_Form_Helper::get_icon_libraries();
