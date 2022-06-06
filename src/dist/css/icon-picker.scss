@@ -1,24 +1,24 @@
 .icon-picker-wrapper {
-    width: 100%;
-    max-width: 250px;
-    display: inline-block;
-    text-align: center;
-    border-radius: 3px;
-    white-space: nowrap;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
     background: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 3px;
     box-shadow: 0 1px 0 #ccc;
+    box-sizing: border-box;
+    display: inline-block;
+    max-width: 250px;
     padding: 10px;
     position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: 100%;
 
     .remove-selected-icon {
-        position: absolute;
-        right: 5px;
-        top: 5px;
         color: #dc3333;
         cursor: pointer;
         display: none;
+        position: absolute;
+        right: 5px;
+        top: 5px;
 
         &:hover {
             color: #ff0000;
@@ -44,23 +44,27 @@
     }
 
     .attachment {
+        img {
+            max-height: 30px;
+            max-width: 30px;
+        }
         .icon-name {
+            font-size: 9px;
+            left: 0;
             position: absolute;
             top: 0;
-            left: 0;
             transform: translate(-50%, 12px);
-            font-size: 9px;
         }
     }
 
     .centered-text {
+        font-size: 16px;
+        left: 50%;
         margin: 0;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 16px;
         text-align: center;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
 }
 

@@ -34,6 +34,11 @@ jQuery(function($) {
         },
         create: function() {
             $('.pom-form-icons-modal .ui-dialog-titlebar').css('display', 'none');
+
+            // Set defaults to all libraries on modal creation.
+            $('.pom-form-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
+            let $title = $('.pom-form-icons-modal [data-slug="all"]').attr('data-label');
+            $('#pom-form-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
         }
     });
 
@@ -41,6 +46,18 @@ jQuery(function($) {
         e.preventDefault();
         $clicked_button = $(this);
         $icon_picker_modal.dialog('open');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            data: {
+                action: 'pom_form_get_icon_library_icons',
+                library: 'all'
+            },
+            success: function ($response) {
+                $icon_picker_modal.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);
+            }
+        });
     });
 
     $(document).on('click', '.close-icon-picker-modal', function(e) {
@@ -48,8 +65,13 @@ jQuery(function($) {
         $icon_picker_modal.dialog('close');
     });
 
+    /**
+     * Get the icons of selected library.
+     */
     $(document).on('click', '#pom-form-icons-modal .media-menu-item', function() {
         let $this = $(this);
+
+        $('#pom-form-icons-modal input[type="search"]').val('');
 
         $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
 
@@ -73,12 +95,18 @@ jQuery(function($) {
         });
     });
 
+    /**
+     * When clicking on the icon.
+     */
     $(document).on('click', '#pom-form-icons-modal li.attachment', function(e) {
         $('#pom-form-icons-modal li.attachment').removeClass('selected');
         $(this).addClass('selected');
         $('#pom-form-icons-modal .pom-form-icon-select-button').removeClass('disabled').prop('disabled', false);
     });
 
+    /**
+     * On Select icon button click.
+     */
     $(document).on('click', '#pom-form-icons-modal .pom-form-icon-select-button', function(e) {
         e.preventDefault();
 
@@ -111,6 +139,7 @@ jQuery(function($) {
     $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', delay_search(function () {
         let $this = $(this);
         let $search = $this.val();
+        let $library = $this.closest('#pom-form-icons-modal').find('.media-menu button.active').attr('data-slug');
 
         $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
 
@@ -120,6 +149,7 @@ jQuery(function($) {
             data: {
                 action: 'pom_form_get_icon_by_name',
                 search: $search,
+                library: $library
             },
             success: function ($response) {
                 $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);

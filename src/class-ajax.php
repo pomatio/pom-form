@@ -12,7 +12,7 @@ class POM_Form_Ajax {
     }
 
     public function get_library_icons(): void {
-        $library = $_REQUEST['library'] ?? '';
+        $library = $_REQUEST['library'] ?? 'all';
         if (empty($library)) {
             wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
@@ -23,8 +23,17 @@ class POM_Form_Ajax {
 
         echo '<ul class="attachments">';
 
-        foreach (glob("{$icons[$library]['path']}$library/*.svg") as $file) {
-            echo $this->get_icon_attachment_html($file);
+        if ($library === 'all') {
+            foreach ($icons as $library_index => $data) {
+                foreach (glob("{$data['path']}$library_index/*.svg") as $file) {
+                    echo $this->get_icon_attachment_html($file);
+                }
+            }
+        }
+        else {
+            foreach (glob("{$icons[$library]['path']}$library/*.svg") as $file) {
+                echo $this->get_icon_attachment_html($file);
+            }
         }
 
         echo '</ul>';
@@ -34,28 +43,42 @@ class POM_Form_Ajax {
 
     public function get_icon_by_name(): void {
         $search = $_REQUEST['search'] ?? '';
+        $library = $_REQUEST['library'] ?? 'all';
         if (empty($search)) {
             wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') . '</span>');
         }
 
         $icons = POM_Form_Helper::get_icon_libraries();
+        $found_files = 0;
 
         ob_start();
 
         echo '<ul class="attachments">';
 
-
-        foreach ($icons as $icon_library => $data) {
-            foreach(glob("{$data['path']}$icon_library/*$search*.svg") as $file) {
+        if ($library === 'all') {
+            foreach ($icons as $icon_library => $data) {
+                foreach (glob("{$data['path']}$icon_library/*$search*.svg") as $file) {
+                    echo $this->get_icon_attachment_html($file);
+                    $found_files++;
+                }
+            }
+        }
+        else {
+            $library_data = $icons[$library];
+            foreach (glob("{$library_data['path']}$library/*$search*.svg") as $file) {
                 echo $this->get_icon_attachment_html($file);
+                $found_files++;
             }
         }
 
-
         echo '</ul>';
 
-        wp_die(ob_get_clean());
+        if ($found_files === 0) {
+            ob_get_clean();
+            wp_die('<span class="centered-text">' . __('No icons found that match the search criteria.', 'pom-form') . '</span>');
+        }
 
+        wp_die(ob_get_clean());
     }
 
     private function get_icon_attachment_html($file) {

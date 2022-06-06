@@ -90,7 +90,7 @@ class Icon_Picker {
                             </div>
                         </div>
                         <div class="media-frame-content">
-                            <span class="centered-text"><?php _e('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-form') ?></span>
+                            <span class="centered-text"><?php _e('Loading...', 'pom-form') ?></span>
                         </div>
                     </div>
                     <div class="media-frame-toolbar">

@@ -67,7 +67,12 @@ class POM_Form_Helper {
          * folder that contains the icons.
          * Then the array contains the name and the path.
          */
-        return apply_filters('pom_form_icon_libraries', []);
+        $libraries['all'] = [
+            'name' => __('All', 'pom-form'),
+            'path' => ''
+        ];
+
+        return apply_filters('pom_form_icon_libraries', $libraries);
     }
 
     public static function get_color_palette(): array {
