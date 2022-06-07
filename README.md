@@ -1,5 +1,5 @@
 # POM Form
-An easy way to render form fields.
+An easy way to render form fields in WordPress.
 
 ## Install
 ```
