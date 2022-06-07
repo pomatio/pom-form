@@ -31,9 +31,17 @@ class POM_Form_Ajax {
             foreach ($icons as $library_index => $data) {
                 $icons_array = glob("{$data['path']}$library_index/*.svg");
                 $glob = array_merge($glob, $icons_array);
+
+                /**
+                 * As long as there is no offset, it is not necessary to load all the icons.
+                 * Only the first until reaching the limit.
+                 */
+                if ($current_offset === 0 && count($glob) > $limit) {
+                    break;
+                }
             }
 
-            if ($glob) {
+            if (!empty($glob)) {
                 foreach (array_slice($glob, $current_offset, $limit) as $file) {
                     echo $this->get_icon_attachment_html($file);
                 }
@@ -41,7 +49,7 @@ class POM_Form_Ajax {
         }
         else {
             $glob = glob("{$icons[$library]['path']}$library/*.svg");
-            if ($glob) {
+            if (!empty($glob)) {
                 foreach (array_slice($glob, $current_offset, $limit) as $file) {
                     echo $this->get_icon_attachment_html($file);
                 }
