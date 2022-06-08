@@ -53,10 +53,10 @@ class Repeater {
 
                             foreach ($args['fields'] as $field) {
                                 if ($field['type'] === 'repeater') {
-                                    $inner_repeater_saved_value = $repeater_item[$field['name']];
-                                    foreach ($inner_repeater_saved_value as $inner_repeater_saved_value_index => $inner_repeater_saved_value_data) {
-                                        foreach ($field['fields'] as $inner_repeater_field_index => $inner_repeater_field) {
-                                            $field['fields'][$inner_repeater_field_index]['value'] = $inner_repeater_saved_value_data[$inner_repeater_field['name']];
+                                    foreach ($field['fields'] as $inner_repeater_field) {
+                                        if (array_key_exists($field['name'], $repeater_item)) {
+                                            $inner_repeater_value = $repeater_item[$field['name']];
+                                            $field['value'] = htmlspecialchars(json_encode($inner_repeater_value), ENT_QUOTES, 'UTF-8');
                                         }
                                     }
                                 }
