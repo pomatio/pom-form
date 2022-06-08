@@ -12,7 +12,7 @@ class POM_Form_Ajax {
 
     public function get_library_icons(): void {
         $library = $_REQUEST['library'] ?? 'all';
-        $limit = 88;
+        $limit = 55;
         $current_offset = isset($_REQUEST['offset']) ? (int)$_REQUEST['offset'] : 0;
 
         if (empty($library)) {
@@ -154,6 +154,8 @@ class POM_Form_Ajax {
         <div class="repeater">
             <div class="title"><strong><?= $config['title'] ?></strong><span></span></div>
             <div class="repeater-fields">
+                <input type="hidden" name="repeater_identifier" value="<?= POM_Form_Helper::generate_random_string(10, false) ?>">
+
                 <?php
 
                 foreach ($config['fields'] as $field) {
@@ -161,6 +163,7 @@ class POM_Form_Ajax {
                 }
 
                 ?>
+
                 <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
             </div>
         </div>

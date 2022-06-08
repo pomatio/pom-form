@@ -5,6 +5,8 @@
  * update it in class-ajax.php as well --> get_repeater_item_html().
  */
 
+// TODO: Option to limit the number of repeater elements.
+
 namespace POM\Form;
 
 class Repeater {
@@ -31,6 +33,8 @@ class Repeater {
 
         $sortable = isset($args['sortable']) && $args['sortable'] === true ? ' sortable' : '';
 
+        $repeater_identifier = POM_Form_Helper::generate_random_string(10, false);
+
         ?>
 
         <div class="repeater-wrapper<?= $sortable ?>">
@@ -44,10 +48,19 @@ class Repeater {
                     <div class="repeater closed">
                         <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
                         <div class="repeater-fields">
+                            <input type="hidden" name="repeater_identifier" value="<?= $repeater_item['repeater_identifier'] ?? $repeater_identifier ?>">
                             <?php
 
                             foreach ($args['fields'] as $field) {
-                                if (array_key_exists($field['name'], $repeater_item)) {
+                                if ($field['type'] === 'repeater') {
+                                    $inner_repeater_saved_value = $repeater_item[$field['name']];
+                                    foreach ($inner_repeater_saved_value as $inner_repeater_saved_value_index => $inner_repeater_saved_value_data) {
+                                        foreach ($field['fields'] as $inner_repeater_field_index => $inner_repeater_field) {
+                                            $field['fields'][$inner_repeater_field_index]['value'] = $inner_repeater_saved_value_data[$inner_repeater_field['name']];
+                                        }
+                                    }
+                                }
+                                elseif (array_key_exists($field['name'], $repeater_item)) {
                                     $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
                                 }
 
@@ -69,6 +82,8 @@ class Repeater {
                 <div class="repeater closed">
                     <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
                     <div class="repeater-fields">
+                        <input type="hidden" name="repeater_identifier" value="<?= $repeater_identifier ?>">
+
                         <?php
 
                         foreach ($args['fields'] as $field) {
@@ -101,7 +116,7 @@ class Repeater {
         echo '</div>';
 
         wp_enqueue_style('pom-form-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
-        wp_enqueue_script('pom-form-repeater',  POM_FORM_SRC_URI . '/dist/js/repeater.js', [], null, true);
+        wp_enqueue_script('pom-form-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.js', [], null, true);
 
     }
 

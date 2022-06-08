@@ -57,7 +57,8 @@ jQuery(function($) {
     });
 
     let $update_repeater = function($wrapper) {
-        let $repeater_elements = $wrapper.find('.repeater');
+        let $repeater_elements = $wrapper.children('.repeater');
+        let $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
 
         let $value = [];
 
@@ -68,14 +69,40 @@ jQuery(function($) {
 
             // For each field inside the repeater element
             for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
-                let $field_name = $repeater_fields[$i2].getAttribute("name");
-                $obj[$field_name] = $repeater_fields[$i2].value.trim();
+                let $field = $repeater_fields[$i2];
+                let $field_name = $field.getAttribute("name");
+                let $is_child_repeater_field = $($field).parents('.repeater-wrapper').length > 1;
+
+                /**
+                 * Exclude config hidden field and
+                 * inner repeater fields in main repeater.
+                 */
+                if ($field_name === 'config' || (!$is_child_repeater && $is_child_repeater_field)) {
+                    continue;
+                }
+
+                $obj[$field_name] = $field.value.trim();
             }
 
             $value.push($obj);
-        }
 
-        $wrapper.find('.repeater-value').val(JSON.stringify($value));
+            $wrapper.children('.repeater-value').val(JSON.stringify($value));
+
+            /**
+             * Appends the content of possible child repeaters to the parent repeater.
+             */
+            if ($is_child_repeater) {
+                let $parent_index = $wrapper.closest('.repeater').index();
+                let $child_repeater_name = $wrapper.find('.repeater-value').attr('name');
+                let $parent_repeater = $wrapper.parents('.repeater-wrapper').last();
+                let $parent_value = $parent_repeater.find('.repeater-value').last().val();
+
+                $parent_value = JSON.parse($parent_value);
+                $parent_value[$parent_index][$child_repeater_name] = $value;
+
+                $parent_repeater.find('.repeater-value').last().val(JSON.stringify($parent_value));
+            }
+        }
     }
 
     /**

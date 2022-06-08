@@ -79,4 +79,21 @@ class POM_Form_Helper {
         return apply_filters('pom_form_color_palette', []);
     }
 
+    /**
+     * https://stackoverflow.com/questions/4356289/php-random-string-generator
+     * @param int $length
+     * @param bool $numbers
+     * @return string
+     */
+    public static function generate_random_string(int $length = 10, bool $numbers = true): string {
+        $number_string = $numbers ? '0123456789' : '';
+        $characters = $number_string . 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
 }
