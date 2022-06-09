@@ -52,16 +52,13 @@ class Repeater {
                             <?php
 
                             foreach ($args['fields'] as $field) {
-                                if ($field['type'] === 'repeater') {
-                                    foreach ($field['fields'] as $inner_repeater_field) {
-                                        if (array_key_exists($field['name'], $repeater_item)) {
-                                            $inner_repeater_value = $repeater_item[$field['name']];
-                                            $field['value'] = htmlspecialchars(json_encode($inner_repeater_value), ENT_QUOTES, 'UTF-8');
-                                        }
+                                if (array_key_exists($field['name'], $repeater_item)) {
+                                    if ($field['type'] === 'repeater') {
+                                        $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]), ENT_QUOTES, 'UTF-8');
                                     }
-                                }
-                                elseif (array_key_exists($field['name'], $repeater_item)) {
-                                    $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
+                                    else {
+                                        $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
+                                    }
                                 }
 
                                 echo (new Form())::add_field($field);
