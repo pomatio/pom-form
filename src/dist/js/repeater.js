@@ -7,55 +7,6 @@ jQuery(function($) {
         $(this).closest('.repeater').toggleClass('closed');
     });
 
-    /**
-     * Add new repeater element
-     */
-    $(document).on('click', '.add-new-repeater-item', function(e) {
-        e.preventDefault();
-
-        let $this = $(this);
-        let $spinner = $this.siblings('.repeater-spinner');
-
-        $spinner.show();
-
-        let $config = $this.siblings('[name="config"]').val();
-
-        $.ajax({
-            url: ajaxurl,
-            type: 'POST',
-            data: {
-                action: 'pom_form_get_repeater_item_html',
-                config: $config
-            },
-            success: function($response) {
-                $this.before($response);
-                $spinner.hide();
-            }
-        });
-    });
-
-    /**
-     * Delete repeater element
-     */
-    $(document).on('click', '.repeater-wrapper .delete', function(e) {
-        e.preventDefault();
-
-        let $this = $(this);
-
-        let $wrapper = $this.closest('.repeater-wrapper');
-        $wrapper.find('.repeater-value').val('');
-        $this.closest('.repeater').remove();
-        $update_repeater($wrapper);
-    });
-
-    /**
-     * Update repeater value
-     */
-    $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
-        let $this = $(this);
-        $update_repeater($this.closest('.repeater-wrapper'));
-    });
-
     let $update_repeater = function($wrapper) {
         let $repeater_elements = $wrapper.children('.repeater');
         let $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
@@ -92,9 +43,9 @@ jQuery(function($) {
              * Appends the content of possible child repeaters to the parent repeater.
              */
             if ($is_child_repeater) {
-                let $parent_index = $wrapper.closest('.repeater').index();
-                let $child_repeater_name = $wrapper.find('.repeater-value').attr('name');
-                let $parent_repeater = $wrapper.parents('.repeater-wrapper').last();
+                const $parent_index = $wrapper.closest('.repeater').index();
+                const $child_repeater_name = $wrapper.find('.repeater-value').attr('name');
+                const $parent_repeater = $wrapper.parents('.repeater-wrapper').last();
                 let $parent_value = $parent_repeater.find('.repeater-value').last().val();
 
                 $parent_value = JSON.parse($parent_value);
@@ -104,6 +55,73 @@ jQuery(function($) {
             }
         }
     }
+
+    /**
+     * Add new repeater element
+     */
+    $(document).on('click', '.add-new-repeater-item', function(e) {
+        e.preventDefault();
+
+        let $this = $(this);
+        let $spinner = $this.siblings('.repeater-spinner');
+
+        $spinner.show();
+
+        let $config = $this.siblings('[name="config"]').val();
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'pom_form_get_repeater_item_html',
+                config: $config
+            },
+            success: function($response) {
+                $this.before($response);
+                $spinner.hide();
+            }
+        });
+    });
+
+    /**
+     * Delete repeater element.
+     * If it is a parent repeater, we directly remove it from the value using its index.
+     * If it's a child repeater, we update the value of the child repeater and then call the function to update the parent repeater.
+     */
+    $(document).on('click', '.repeater-wrapper .delete', function(e) {
+        e.preventDefault();
+
+        const $this = $(this);
+        const $wrapper = $this.closest('.repeater-wrapper');
+
+        const $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
+
+        if (!$is_child_repeater) {
+            const $repeater_index = $this.closest('.repeater').index();
+            let $repeater_value = $wrapper.find('.repeater-value').last().val();
+
+            $repeater_value = JSON.parse($repeater_value);
+            $repeater_value.splice($repeater_index, 1);
+
+            $wrapper.find('.repeater-value').last().val(JSON.stringify($repeater_value));
+            $this.closest('.repeater').remove();
+
+            return;
+        }
+
+        $wrapper.find('.repeater-value').val('');
+        $this.closest('.repeater').remove();
+
+        $update_repeater($wrapper);
+    });
+
+    /**
+     * Update repeater value
+     */
+    $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
+        const $this = $(this);
+        $update_repeater($this.closest('.repeater-wrapper'));
+    });
 
     /**
      * Make repeater elements sortable
@@ -130,6 +148,9 @@ jQuery(function($) {
         }
     });
 
+    /**
+     * Add repeater title on page load
+     */
     let $append_to_title = function() {
         $('.repeater-wrapper .use-for-title').each(function(i,v) {
             let $input_value = $(this).val();

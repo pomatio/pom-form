@@ -20,7 +20,7 @@ class Repeater {
         }
 
         if (!empty($args['description']) && $args['description_position'] === 'below_label') {
-            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+            echo '<small class="description">' . $args['description'] . '</small>';
         }
 
         $repeater_config = [
@@ -41,6 +41,7 @@ class Repeater {
 
             <?php
 
+            // Render the saved values
             if (!empty($json) && count($json) > 0) {
                 foreach ($json as $repeater_item) {
                     ?>
@@ -73,6 +74,7 @@ class Repeater {
                     <?php
                 }
             }
+            // Render an empty repeater
             else {
                 ?>
 
@@ -107,7 +109,7 @@ class Repeater {
         <?php
 
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
-            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+            echo '<small class="description">' . $args['description'] . '</small>';
         }
 
         echo '</div>';
