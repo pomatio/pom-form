@@ -25,7 +25,7 @@ class Select {
                         $label = isset($select_label['group_name']) ? ' label="' . $select_label['group_name'] . '"' : '';
                         echo '<optgroup' . $label . '>';
                         foreach ($select_label['group_options'] as $optgroup_key => $optgroup_label) {
-                            $selected = $args['value'] === $optgroup_key ? 'selected' : '';
+                            $selected = (string)$args['value'] === (string)$optgroup_key ? 'selected' : '';
                             echo '<option value="' . $optgroup_key . '" ' . $selected . '>' . $optgroup_label . '</option>';
                         }
                         echo '</optgroup>';
@@ -34,7 +34,7 @@ class Select {
                     }
 
                     // default option
-                    $selected = $args['value'] === $select_value ? 'selected' : '';
+                    $selected = (string)$args['value'] === (string)$select_value ? 'selected' : '';
                     echo '<option value="' . $select_value . '" ' . $selected . '>' . $select_label . '</option>';
                 }
 
