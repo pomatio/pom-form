@@ -17,7 +17,7 @@ class Range {
         ?>
 
         <div class="range">
-            <input type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" data-type="range">
             <span class="value"><?= $args['value'] ?></span>
             <?php
 

@@ -16,7 +16,7 @@ class Select {
                 echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
             }
 
-            echo '<select id="' . $args['id'] . '" name="' . $args['name'] . '" class="form-control ' . $args['class'] . '">';
+            echo '<select id="' . $args['id'] . '" name="' . $args['name'] . '" class="form-control ' . $args['class'] . '" data-type="select">';
 
                 foreach ($args['options'] as $select_value => $select_label) {
 

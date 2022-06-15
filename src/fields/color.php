@@ -18,7 +18,7 @@ class Color {
 
 		?>
 
-		<input type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control pom-form-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff">
+		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control pom-form-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
 
 		<?php
 

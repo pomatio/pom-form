@@ -18,7 +18,7 @@ class Textarea {
 
             ?>
 
-            <textarea id="<?= $args['id'] ?>" name="<?= $args['name'] ?>"><?= $args['value'] ?></textarea>
+            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" data-type="textarea"><?= $args['value'] ?></textarea>
 
             <?php
 

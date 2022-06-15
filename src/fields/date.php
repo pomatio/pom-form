@@ -18,7 +18,7 @@ class Date {
 
         ?>
 
-        <input type="date" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
+        <input aria-label="<?= $args['label'] ?? '' ?>" type="date" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="date">
 
         <?php
 

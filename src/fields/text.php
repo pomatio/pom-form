@@ -21,7 +21,7 @@ class Text {
 
             ?>
 
-            <input type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="text">
 
             <?php
 

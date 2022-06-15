@@ -20,7 +20,7 @@ class Quantity {
 
         <div class="quantity">
             <span class="number-down"></span>
-            <input type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control input-text qty text <?= $args['class'] ?? '' ?>" pattern="[0-9]*" inputmode="numeric" aria-labelledby="">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control input-text qty text <?= $args['class'] ?? '' ?>" pattern="[0-9]*" inputmode="numeric" aria-labelledby="" data-type="quantity">
             <span class="number-up"></span>
         </div>
 
