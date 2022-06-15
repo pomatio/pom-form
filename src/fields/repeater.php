@@ -55,10 +55,10 @@ class Repeater {
                             foreach ($args['fields'] as $field) {
                                 if (array_key_exists($field['name'], $repeater_item)) {
                                     if ($field['type'] === 'repeater') {
-                                        $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]), ENT_QUOTES, 'UTF-8');
+                                        $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
                                     }
                                     else {
-                                        $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
+                                        $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']]['value'], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
                                     }
                                 }
 

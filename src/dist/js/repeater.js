@@ -32,7 +32,15 @@ jQuery(function($) {
                     continue;
                 }
 
-                $obj[$field_name] = $field.value.trim();
+                if ($field_name === 'repeater_identifier') {
+                    $obj[$field_name] = $field.value.trim();
+                }
+                else {
+                    $obj[$field_name] = {
+                        'value': $field.value.trim(),
+                        'type': $field.getAttribute('data-type') || ''
+                    };
+                }
             }
 
             $value.push($obj);
