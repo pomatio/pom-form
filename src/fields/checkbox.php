@@ -16,13 +16,14 @@ class Checkbox {
                 echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
             }
 
+            echo '<input type="hidden" name="' . $args["name"] . '" value="no">';
             foreach ($args['options'] as $option_value => $option_label) {
                 $checked = (is_array($args['value']) && !empty($args['value']) && in_array($option_value, $args['value'], true)) || $option_value === $args['value'] ? 'checked="checked"' : '';
 
                 ?>
 
                 <div class="form-check">
-                    <input type="checkbox" id="<?= $args['id'] . '-' . $option_value ?>" name="<?= $args['name'] ?>" value="<?= $option_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?>>
+                    <input type="checkbox" id="<?= $args['id'] . '-' . $option_value ?>" name="<?= $args['name'] ?>[]" value="<?= $option_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?>>
                     <label class="form-check-label" for="<?= $args['id'] . '-' . $option_value ?>"><?= $option_label ?></label>
                 </div>
 
