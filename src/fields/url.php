@@ -16,9 +16,12 @@ class Url {
                 echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
             }
 
+            // Repeater integration
+            $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
+
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="url" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="url">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="url" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="url">
 
             <?php
 

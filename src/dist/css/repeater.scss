@@ -64,4 +64,21 @@
     .repeater-spinner {
         display: none;
     }
+
+    .repeater-limit-warning {
+        -webkit-appearance: none;
+        background-color: rgba(242, 147, 147, 0.5);
+        border: #dc3333 1px solid;
+        border-radius: 3px;
+        box-sizing: border-box;
+        color: #dc3333;
+        display: inline-block;
+        font-size: 13px;
+        line-height: 2.15384615;
+        margin: 0 0 0 10px;
+        min-height: 30px;
+        padding: 0 10px;
+        text-decoration: none;
+        white-space: nowrap;
+    }
 }

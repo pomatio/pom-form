@@ -71,6 +71,19 @@ jQuery(function($) {
         e.preventDefault();
 
         let $this = $(this);
+
+        let $wrapper = $this.closest('.repeater-wrapper');
+        let $limit = parseInt($wrapper.attr('data-limit'));
+        let $item_count = $wrapper.find('> .repeater').length;
+
+        if ($item_count >= $limit) {
+            $this.after('<span class="repeater-limit-warning">' + pom_form_repeater.limit + '</span>');
+            setTimeout(function() {
+                $('.repeater-limit-warning').remove();
+            }, 2000);
+            return;
+        }
+
         let $spinner = $this.siblings('.repeater-spinner');
 
         $spinner.show();

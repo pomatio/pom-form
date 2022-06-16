@@ -35,9 +35,11 @@ class Repeater {
 
         $repeater_identifier = POM_Form_Helper::generate_random_string(10, false);
 
+        $limit = isset($args['limit']) ? ' data-limit="' . (int)$args['limit'] . '"' : '';
+
         ?>
 
-        <div class="repeater-wrapper<?= $sortable ?>">
+        <div class="repeater-wrapper<?= $sortable ?>"<?= $limit ?>>
 
             <?php
 
@@ -116,7 +118,13 @@ class Repeater {
 
         wp_enqueue_style('pom-form-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
         wp_enqueue_script('pom-form-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.js', [], null, true);
-
+        wp_localize_script(
+            'pom-form-repeater',
+            'pom_form_repeater',
+            [
+                'limit' => __('Element limit reached', 'pom-form')
+            ]
+        );
     }
 
 }
