@@ -95,7 +95,8 @@ jQuery(function($) {
             type: 'POST',
             data: {
                 action: 'pom_form_get_repeater_item_html',
-                config: $config
+                config: $config,
+                items: $item_count
             },
             success: function($response) {
                 $this.before($response);

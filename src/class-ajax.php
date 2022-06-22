@@ -140,12 +140,18 @@ class POM_Form_Ajax {
 
     public function get_repeater_item_html(): void {
         $config = $_REQUEST['config'] ?? '';
+        $items = $_REQUEST['items'] ?? '';
 
         if (empty($config)) {
             wp_die();
         }
 
         $config = json_decode(base64_decode($config), true);
+
+        // Avoid a new item if the limit has been reached.
+        if (!empty($items) && !empty($config['limit']) && (int)$items >= (int)$config['limit']) {
+            wp_die();
+        }
 
         ob_start();
 
