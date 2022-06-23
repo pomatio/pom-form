@@ -48,8 +48,18 @@
                 select,
                 small {
                     display: block;
+                    margin: 0;
+                    max-width: 100%;
                     width: 100%;
                 }
+            }
+
+            .restore-default {
+                color: #f0c33c;
+                cursor: pointer;
+                float: right;
+                margin-right: 15px;
+                text-align: center;
             }
 
             .delete {

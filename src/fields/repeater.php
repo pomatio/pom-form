@@ -46,61 +46,112 @@ class Repeater {
 
             <?php
 
-            // Render the saved values
-            if (!empty($json) && count($json) > 0) {
-                foreach ($json as $repeater_item) {
+            // Render defaults if set
+            if (empty($json['default']) && isset($args['defaults']) && !empty($args['defaults'])) {
+                $defaults_identifier = POM_Form_Helper::generate_random_string(10, false);
+
+                foreach ($args['defaults'] as $default) {
+                    $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');
+
                     ?>
 
-                    <div class="repeater closed">
-                        <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
+                    <div class="repeater default closed">
+                        <div class="title">
+                            <strong><?= $args['title'] ?></strong><span></span>
+                        </div>
                         <div class="repeater-fields">
-                            <input type="hidden" name="repeater_identifier" value="<?= $repeater_item['repeater_identifier'] ?? $repeater_identifier ?>">
+                            <input type="hidden" name="repeater_identifier" value="<?= $defaults_identifier ?>">
+                            <input type="hidden" name="default_values" value="<?= $default_json ?>">
+
                             <?php
 
                             foreach ($args['fields'] as $field) {
-                                if (array_key_exists($field['name'], $repeater_item)) {
-                                    if ($field['type'] === 'repeater') {
-                                        $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
-                                    }
-                                    else {
-                                        $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']]['value'], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
-                                    }
-                                }
-
+                                $field['value'] = $default[$field['name']]['value'];
+                                $field['disabled'] = $default[$field['name']]['disabled'];
                                 echo (new Form())::add_field($field);
+                            }
+
+                            if (isset($default['can_be_removed']) && $default['can_be_removed'] === true) {
+                                ?>
+
+                                <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                                <?php
                             }
 
                             ?>
 
-                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                            <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
                         </div>
                     </div>
 
                     <?php
                 }
             }
-            // Render an empty repeater
-            else {
-                ?>
 
-                <div class="repeater closed">
-                    <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
-                    <div class="repeater-fields">
-                        <input type="hidden" name="repeater_identifier" value="<?= $repeater_identifier ?>">
+            // Render the saved values
+            if (!empty($json)) {
+                foreach ($json as $repeater_type => $repeater_elements) {
+                    if (!empty($repeater_elements) && count($repeater_elements) > 0) {
+                        foreach ($repeater_elements as $repeater_item) {
+                            ?>
 
-                        <?php
+                            <div class="repeater <?= $repeater_type ?> closed">
+                                <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
+                                <div class="repeater-fields">
+                                    <input type="hidden" name="repeater_identifier" value="<?= $repeater_item['repeater_identifier'] ?? $repeater_identifier ?>">
+                                    <input type="hidden" name="default_values" value="<?= htmlspecialchars(json_encode($repeater_item['default_values']), ENT_QUOTES, 'UTF-8') ?? '' ?>">
 
-                        foreach ($args['fields'] as $field) {
-                            echo (new Form())::add_field($field);
+                                    <?php
+
+                                    foreach ($args['fields'] as $field) {
+                                        if (array_key_exists($field['name'], $repeater_item)) {
+                                            if ($field['type'] === 'repeater') {
+                                                $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
+                                            }
+                                            else {
+                                                $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']]['value'], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
+                                            }
+                                        }
+
+                                        if ($repeater_type === 'default' && $repeater_item['default_values'][$field['name']]['disabled']) {
+                                            $field['disabled'] = true;
+                                        }
+
+                                        echo (new Form())::add_field($field);
+                                    }
+
+                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
+                                        ?>
+
+                                        <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                                        <?php
+                                    }
+                                    elseif ($repeater_type === 'new') {
+                                        ?>
+
+                                        <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                                        <?php
+                                    }
+
+                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
+                                        ?>
+
+                                        <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+
+                                        <?php
+                                    }
+
+                                    ?>
+                                </div>
+                            </div>
+
+                            <?php
                         }
-
-                        ?>
-
-                        <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
-                    </div>
-                </div>
-
-                <?php
+                    }
+                }
             }
 
             ?>

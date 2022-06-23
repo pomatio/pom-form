@@ -11,10 +11,13 @@ jQuery(function($) {
         let $repeater_elements = $wrapper.children('.repeater');
         let $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
 
-        let $value = [];
+        let $value = {};
 
         // For each repeater element
         for (let $i = 0; $i < $repeater_elements.length; $i++) {
+            let $is_default = $repeater_elements[$i].classList.contains('default');
+            let $repeater_type = $is_default ? 'default' : 'new';
+
             let $repeater_fields = $repeater_elements[$i].querySelectorAll("input, select, checkbox, textarea");
             let $obj = {};
 
@@ -43,7 +46,13 @@ jQuery(function($) {
                 }
             }
 
-            $value.push($obj);
+            if ($value.hasOwnProperty($repeater_type)) {
+                $value[$repeater_type].push($obj);
+            }
+            else {
+                $value[$repeater_type] = [];
+                $value[$repeater_type].push($obj);
+            }
 
             $wrapper.children('.repeater-value').val(JSON.stringify($value));
 
@@ -77,10 +86,14 @@ jQuery(function($) {
         let $item_count = $wrapper.find('> .repeater').length;
 
         if ($item_count >= $limit) {
-            $this.after('<span class="repeater-limit-warning">' + pom_form_repeater.limit + '</span>');
+            if (!$('.repeater-limit-warning').length) {
+                $this.after('<span class="repeater-limit-warning">' + pom_form_repeater.limit + '</span>');
+            }
+
             setTimeout(function() {
                 $('.repeater-limit-warning').remove();
             }, 2000);
+
             return;
         }
 
@@ -186,6 +199,29 @@ jQuery(function($) {
     $append_to_title();
     $(document).ajaxComplete(function() {
         $append_to_title();
+    });
+
+    /**
+     * Restore repeater inputs to default value.
+     */
+    $(document).on('click', '.restore-default', function(e) {
+        e.preventDefault();
+
+        let $this = $(this);
+        let $repeater_defaults = $this.closest('.repeater').find('input[name="default_values"').val();
+        if ($repeater_defaults) {
+            let $decoded = JSON.parse($repeater_defaults);
+            Object.keys($decoded).map(function ($key) {
+                let $value = $decoded[$key]['value'];
+
+                $this.closest('.repeater').find('input, select, checkbox, textarea').each(function () {
+                    let $field_name = this.getAttribute("name");
+                    if ($field_name === $key) {
+                        this.value = $value;
+                    }
+                });
+            });
+        }
     });
 
 });
