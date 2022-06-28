@@ -5,6 +5,7 @@ namespace POM\Form;
 class Time {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -18,7 +19,7 @@ class Time {
 
         ?>
 
-        <input aria-label="<?= $args['label'] ?? '' ?>" type="time" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="time">
+        <input aria-label="<?= $args['label'] ?? '' ?>" type="time" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="time"<?= $disabled ?>>
 
         <?php
 
@@ -27,7 +28,6 @@ class Time {
         }
 
         echo '</div>';
-
     }
 
 }

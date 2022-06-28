@@ -54,7 +54,7 @@ class Gallery {
         echo '</div>';
 
         wp_enqueue_style('pom-form-gallery', POM_FORM_SRC_URI . '/dist/css/gallery.min.css');
-        wp_enqueue_script('pom-form-gallery',  POM_FORM_SRC_URI . '/dist/js/gallery.js', [], null, true);
+        wp_enqueue_script('pom-form-gallery',  POM_FORM_SRC_URI . '/dist/js/gallery.min.js', ['jquery'], null, true);
         wp_localize_script(
             'pom-form-gallery',
             'pom_form_gallery',

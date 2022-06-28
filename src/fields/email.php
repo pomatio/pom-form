@@ -5,6 +5,7 @@ namespace POM\Form;
 class Email {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -18,7 +19,7 @@ class Email {
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="email" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="email">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="email" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="email"<?= $disabled ?>>
 
             <?php
 
@@ -27,7 +28,6 @@ class Email {
             }
 
         echo '</div>';
-
     }
 
 }

@@ -5,6 +5,7 @@ namespace POM\Form;
 class Range {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         if (!empty($args['label'])) {
             echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
@@ -17,7 +18,7 @@ class Range {
         ?>
 
         <div class="range">
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" data-type="range">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" data-type="range"<?= $disabled ?>>
             <span class="value"><?= $args['value'] ?></span>
             <?php
 
@@ -36,8 +37,7 @@ class Range {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        wp_enqueue_script('pom-form-range',  POM_FORM_SRC_URI . '/dist/js/range.js', ['jquery'], null, true);
-
+        wp_enqueue_script('pom-form-range',  POM_FORM_SRC_URI . '/dist/js/range.min.js', ['jquery'], null, true);
     }
 
 }

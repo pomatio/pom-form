@@ -5,6 +5,7 @@ namespace POM\Form;
 class Select {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         if (!isset($args['options'])) {
             return;
@@ -16,7 +17,7 @@ class Select {
                 echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
             }
 
-            echo '<select id="' . $args['id'] . '" name="' . $args['name'] . '" class="form-control ' . $args['class'] . '" data-type="select">';
+            echo '<select id="' . $args['id'] . '" name="' . $args['name'] . '" class="form-control ' . $args['class'] . '" data-type="select"' . $disabled . '>';
 
                 foreach ($args['options'] as $select_value => $select_label) {
 
@@ -46,6 +47,7 @@ class Select {
 
         echo '</div>';
 
+        wp_enqueue_script('pom-form-select', POM_FORM_SRC_URI . '/dist/js/select.min.js', ['jquery'], null, true);
     }
 
 }

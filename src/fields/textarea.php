@@ -5,6 +5,7 @@ namespace POM\Form;
 class Textarea {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -18,7 +19,7 @@ class Textarea {
 
             ?>
 
-            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" data-type="textarea"><?= $args['value'] ?></textarea>
+            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" data-type="textarea"<?= $disabled ?>><?= $args['value'] ?></textarea>
 
             <?php
 
@@ -27,7 +28,6 @@ class Textarea {
             }
 
         echo '</div>';
-
     }
 
 }

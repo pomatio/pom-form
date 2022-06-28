@@ -5,6 +5,7 @@ namespace POM\Form;
 class Datetime {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -18,7 +19,7 @@ class Datetime {
 
         ?>
 
-        <input aria-label="<?= $args['label'] ?? '' ?>" type="datetime-local" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="datetime">
+        <input aria-label="<?= $args['label'] ?? '' ?>" type="datetime-local" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="datetime"<?= $disabled ?>>
 
         <?php
 
@@ -27,7 +28,6 @@ class Datetime {
         }
 
         echo '</div>';
-
     }
 
 }

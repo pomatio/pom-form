@@ -42,7 +42,7 @@ class Image_Picker {
         echo '</div>';
 
         wp_enqueue_style('pom-form-image_picker', POM_FORM_SRC_URI . '/dist/css/image-picker.min.css');
-        wp_enqueue_script('pom-form-image_picker',  POM_FORM_SRC_URI . '/dist/js/image_picker.js', [], null, true);
+        wp_enqueue_script('pom-form-image_picker',  POM_FORM_SRC_URI . '/dist/js/image_picker.min.js', ['jquery'], null, true);
         wp_localize_script(
             'pom-form-image_picker',
             'pom_form_image_picker',

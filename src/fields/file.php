@@ -5,6 +5,7 @@ namespace POM\Form;
 class File {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -18,7 +19,7 @@ class File {
 
         ?>
 
-        <input type="file" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="file">
+        <input type="file" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="file"<?= $disabled ?>>
 
         <?php
 
@@ -27,7 +28,6 @@ class File {
         }
 
         echo '</div>';
-
     }
 
 }

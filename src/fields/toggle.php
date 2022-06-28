@@ -5,6 +5,7 @@ namespace POM\Form;
 class Toggle {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         $checked = isset($args['value']) && $args['value'] !== false && $args['value'] !== 'false' && $args['value'] !== '' ? 'checked="checked"' : '';
 
@@ -14,7 +15,7 @@ class Toggle {
 
         <div class="row toggle-input">
             <div class="col-auto pr-15 pl-15">
-                <input id="<?= $args['id'] ?>" type="checkbox" class="web-toggle" <?= $checked ?> data-type="toggle">
+                <input id="<?= $args['id'] ?>" type="checkbox" class="web-toggle" <?= $checked ?> data-type="toggle"<?= $disabled ?>>
                 <label class="web-toggle-btn <?= $args['class'] ?? '' ?>" for="<?= $args['id'] ?>"></label>
             </div>
             <div class="col">
@@ -29,7 +30,6 @@ class Toggle {
         }
 
         echo '</div>';
-
     }
 
 }

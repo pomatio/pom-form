@@ -5,6 +5,7 @@ namespace POM\Form;
 class Url {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -21,7 +22,7 @@ class Url {
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="url" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="url">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="url" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="url"<?= $disabled ?>>
 
             <?php
 
@@ -30,7 +31,6 @@ class Url {
             }
 
         echo '</div>';
-
     }
 
 }

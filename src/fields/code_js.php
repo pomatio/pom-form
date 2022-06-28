@@ -31,7 +31,7 @@ class Code_JS {
         $codemirror_settings = wp_enqueue_code_editor([]);
         wp_enqueue_script('wp-theme-plugin-editor');
         wp_enqueue_style('wp-codemirror');
-        wp_enqueue_script('pom-form-code', POM_FORM_SRC_URI . '/dist/js/code.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pom-form-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
         wp_localize_script(
             'pom-form-code',
             'settings',

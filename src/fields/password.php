@@ -5,6 +5,7 @@ namespace POM\Form;
 class Password {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -18,7 +19,7 @@ class Password {
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="password" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="password">
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="password" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="password"<?= $disabled ?>>
 
             <?php
 
@@ -27,7 +28,6 @@ class Password {
             }
 
         echo '</div>';
-
     }
 
 }
