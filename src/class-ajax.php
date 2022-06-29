@@ -8,6 +8,7 @@ class POM_Form_Ajax {
         add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
         add_action('wp_ajax_pom_form_get_icon_by_name', [$this, 'get_icon_by_name']);
         add_action('wp_ajax_pom_form_get_repeater_item_html', [$this, 'get_repeater_item_html']);
+        add_action('wp_ajax_pom_form_restore_repeater_defaults', [$this, 'restore_repeater_defaults']);
     }
 
     public function get_library_icons(): void {
@@ -157,7 +158,7 @@ class POM_Form_Ajax {
 
         ?>
 
-        <div class="repeater">
+        <div class="repeater new">
             <div class="title"><strong><?= $config['title'] ?></strong><span></span></div>
             <div class="repeater-fields">
                 <input type="hidden" name="repeater_identifier" value="<?= POM_Form_Helper::generate_random_string(10, false) ?>">
@@ -170,11 +171,88 @@ class POM_Form_Ajax {
 
                 ?>
 
-                <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                <div class="repeater-action-row">
+
+                    <?php
+
+                    if (isset($config['cloneable']) && $config['cloneable'] === true) {
+                        ?>
+
+                        <span class="clone-repeater"><?php _e('Clone', 'pom-form') ?></span>
+
+                        <?php
+                    }
+
+                    ?>
+
+                    <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                </div>
             </div>
         </div>
 
         <?php
+
+        wp_die(ob_get_clean());
+    }
+
+    public function restore_repeater_defaults(): void {
+        $defaults = $_REQUEST['defaults'] ?? '';
+        $fields = $_REQUEST['fields'] ?? '';
+        $title = $_REQUEST['title'] ?? '';
+
+        if (empty($defaults)) {
+            wp_die($defaults);
+        }
+
+        ob_start();
+
+        $defaults = json_decode(base64_decode($defaults), true);
+        $fields = json_decode(base64_decode($fields), true);
+        foreach ($defaults as $default) {
+            $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');
+            $defaults_identifier = POM_Form_Helper::generate_random_string(10, false);
+
+            ?>
+
+            <div class="repeater default closed">
+                <div class="title">
+                    <strong><?= $title ?></strong><span></span>
+                </div>
+                <div class="repeater-fields">
+                    <input type="hidden" name="repeater_identifier" value="<?= $defaults_identifier ?>">
+                    <input type="hidden" name="default_values" value="<?= $default_json ?>">
+
+                    <?php
+
+                    foreach ($fields as $field) {
+                        $field['value'] = $default[$field['name']]['value'];
+                        $field['disabled'] = $default[$field['name']]['disabled'];
+                        echo (new Form())::add_field($field);
+                    }
+
+                    ?>
+
+                    <div class="repeater-action-row">
+                        <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+
+                        <?php
+
+                        if (isset($default['can_be_removed']) && $default['can_be_removed']) {
+                            ?>
+
+                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                            <?php
+                        }
+
+                        ?>
+
+                    </div>
+                </div>
+            </div>
+
+            <?php
+        }
 
         wp_die(ob_get_clean());
     }

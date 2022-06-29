@@ -1,5 +1,8 @@
-jQuery(function($) {
+/**
+ * @var pom_form_repeater Object containing the translation strings.
+ */
 
+jQuery(function($) {
     /**
      * Toggle the repeater
      */
@@ -126,7 +129,13 @@ jQuery(function($) {
     $(document).on('click', '.repeater-wrapper .delete', function(e) {
         e.preventDefault();
 
+        let $execute = confirm(pom_form_repeater.delete_repeater);
+        if (!$execute) {
+            return;
+        }
+
         const $this = $(this);
+        const $repeater_type = $this.closest('.repeater').hasClass('default') ? 'default' : 'new';
         const $wrapper = $this.closest('.repeater-wrapper');
 
         const $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
@@ -136,7 +145,7 @@ jQuery(function($) {
             let $repeater_value = $wrapper.find('.repeater-value').last().val();
 
             $repeater_value = JSON.parse($repeater_value);
-            $repeater_value.splice($repeater_index, 1);
+            $repeater_value[$repeater_type].splice($repeater_index, 1);
 
             $wrapper.find('.repeater-value').last().val(JSON.stringify($repeater_value));
             $this.closest('.repeater').remove();
@@ -208,6 +217,7 @@ jQuery(function($) {
         e.preventDefault();
 
         let $this = $(this);
+        let $wrapper = $this.closest('.repeater-wrapper');
         let $repeater_defaults = $this.closest('.repeater').find('input[name="default_values"').val();
         if ($repeater_defaults) {
             let $decoded = JSON.parse($repeater_defaults);
@@ -221,7 +231,97 @@ jQuery(function($) {
                     }
                 });
             });
+
+            $update_repeater($wrapper);
         }
     });
+
+    /**
+     * Restore all repeater defaults.
+     */
+    $(document).on('click', '.restore-repeater-defaults', function(e) {
+        e.preventDefault();
+
+        let $execute = confirm(pom_form_repeater.restore_msg);
+        if (!$execute) {
+            return;
+        }
+
+        let $this = $(this);
+        let $wrapper = $this.closest('.repeater-wrapper');
+
+        let $spinner = $this.closest('.repeater-wrapper').find('.repeater-spinner');
+        $spinner.show();
+
+        $('.repeater.default').remove();
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'pom_form_restore_repeater_defaults',
+                defaults: $this.attr('data-defaults'),
+                fields: $this.attr('data-fields'),
+                title: $this.attr('data-title'),
+            },
+            success: function($response) {
+                $this.closest('.repeater-wrapper').prepend($response);
+                $spinner.hide();
+
+                $update_repeater($wrapper);
+            }
+        });
+    });
+
+    /**
+     * Duplicates a repeater generating a new identifier for it.
+     */
+    $(document).on('click', '.clone-repeater', function(e) {
+        e.preventDefault();
+
+        let $this = $(this);
+        let $repeater = $this.closest('.repeater');
+        let $wrapper = $this.closest('.repeater-wrapper');
+        let $clone = $repeater.clone();
+
+        /**
+         * Generate repeater new identifier.
+         */
+        $clone.find('input[name="repeater_identifier"]').val($generate_random_string(10, false));
+
+        /**
+         * A cloned repeater can never be a default, so we change its key.
+         */
+        if ($clone.hasClass('default')) {
+            $clone = $clone.removeClass('default').addClass('new');
+            $clone.find('input[name="default_values"]').remove();
+        }
+
+        $repeater.after($clone);
+
+        $update_repeater($wrapper);
+    });
+
+    /**
+     * Generate a random string.
+     *
+     * The same helper exists but in PHP.
+     * @see POM_Form_Helper::generate_random_string()
+     *
+     * @param $length
+     * @param $numbers
+     * @returns {string}
+     */
+    let $generate_random_string = function($length = 10, $numbers = true) {
+        const $number_string = $numbers ? '0123456789' : '';
+        const $characters = $number_string + 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        let $randomString = '';
+        for (let $i = 0; $i < $length; $i++) {
+            $randomString += $characters[Math.floor(Math.random() * $characters.length)];
+        }
+
+        return $randomString;
+    }
 
 });

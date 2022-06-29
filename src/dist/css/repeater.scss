@@ -32,7 +32,7 @@
         .repeater-fields {
             background: #fff;
             border-top: 0;
-            padding: 25px 15px;
+            padding: 25px 15px 10px;
 
             .form-group {
                 display: block;
@@ -54,19 +54,26 @@
                 }
             }
 
-            .restore-default {
-                color: #f0c33c;
-                cursor: pointer;
-                float: right;
-                margin-right: 15px;
-                text-align: center;
-            }
+            .repeater-action-row {
+                display: flex;
+                justify-content: end;
+                width: 100%;
 
-            .delete {
-                color: #dc3333;
-                cursor: pointer;
-                float: right;
-                text-align: center;
+                .restore-default,
+                .clone-repeater,
+                .delete {
+                    background: #ccd0d4;
+                    cursor: pointer;
+                    margin-left: 15px;
+                    padding: 5px 10px;
+                    text-align: center;
+                    border-radius: 3px;
+                }
+
+                .delete {
+                    background: #dc3333;
+                    color: #fff;
+                }
             }
         }
     }
