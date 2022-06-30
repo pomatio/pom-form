@@ -38,7 +38,7 @@ jQuery(function($) {
                     continue;
                 }
 
-                if ($field_name === 'repeater_identifier') {
+                if ($field_name === 'repeater_identifier' || $field_name === 'default_values') {
                     $obj[$field_name] = $field.value.trim();
                 }
                 else {
@@ -49,6 +49,9 @@ jQuery(function($) {
                 }
             }
 
+            /**
+             * If the type exists add it, if it doesn't exist, create it first.
+             */
             if ($value.hasOwnProperty($repeater_type)) {
                 $value[$repeater_type].push($obj);
             }
@@ -77,7 +80,7 @@ jQuery(function($) {
     }
 
     /**
-     * Add new repeater element
+     * Add new repeater element.
      */
     $(document).on('click', '.add-new-repeater-item', function(e) {
         e.preventDefault();
@@ -150,6 +153,8 @@ jQuery(function($) {
             $wrapper.find('.repeater-value').last().val(JSON.stringify($repeater_value));
             $this.closest('.repeater').remove();
 
+            $update_repeater($wrapper);
+
             return;
         }
 
@@ -160,7 +165,7 @@ jQuery(function($) {
     });
 
     /**
-     * Update repeater value
+     * Update repeater value.
      */
     $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
         const $this = $(this);
@@ -168,7 +173,7 @@ jQuery(function($) {
     });
 
     /**
-     * Make repeater elements sortable
+     * Make repeater elements sortable.
      */
     if (typeof $.fn.sortable !== 'undefined') {
         $('.repeater-wrapper.sortable').sortable({
@@ -179,7 +184,7 @@ jQuery(function($) {
     }
 
     /**
-     * Update repeater title live
+     * Update repeater title live.
      */
     $(document).on('keyup', '.repeater .use-for-title', function() {
         let $title_holder =  $(this).closest('.repeater').find('.title span').first();
@@ -193,7 +198,7 @@ jQuery(function($) {
     });
 
     /**
-     * Add repeater title on page load
+     * Add repeater title on page load.
      */
     let $append_to_title = function() {
         $('.repeater-wrapper .use-for-title').each(function(i,v) {

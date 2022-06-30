@@ -5,8 +5,6 @@
  * update it in class-ajax.php as well --> get_repeater_item_html().
  */
 
-// TODO: Option to limit the number of repeater elements.
-
 namespace POM\Form;
 
 class Repeater {
@@ -29,6 +27,9 @@ class Repeater {
         ];
         if (isset($args['limit'])) {
             $repeater_config['limit'] = $args['limit'];
+        }
+        if (isset($args['cloneable'])) {
+            $repeater_config['cloneable'] = $args['cloneable'];
         }
         $repeater_config = base64_encode(json_encode($repeater_config));
 
@@ -71,17 +72,32 @@ class Repeater {
                                 echo (new Form())::add_field($field);
                             }
 
-                            if (isset($default['can_be_removed']) && $default['can_be_removed'] === true) {
-                                ?>
-
-                                <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
-
-                                <?php
-                            }
-
                             ?>
 
-                            <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+                            <div class="repeater-action-row">
+                                <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+
+                                <?php
+
+                                if (isset($args['cloneable']) && $args['cloneable'] === true) {
+                                    ?>
+
+                                    <span class="clone-repeater"><?php _e('Clone', 'pom-form') ?></span>
+
+                                    <?php
+                                }
+
+                                if (isset($default['can_be_removed']) && $default['can_be_removed']) {
+                                    ?>
+
+                                    <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                                    <?php
+                                }
+
+                                ?>
+
+                            </div>
                         </div>
                     </div>
 
@@ -100,9 +116,17 @@ class Repeater {
                                 <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
                                 <div class="repeater-fields">
                                     <input type="hidden" name="repeater_identifier" value="<?= $repeater_item['repeater_identifier'] ?? $repeater_identifier ?>">
-                                    <input type="hidden" name="default_values" value="<?= htmlspecialchars(json_encode($repeater_item['default_values']), ENT_QUOTES, 'UTF-8') ?? '' ?>">
 
                                     <?php
+
+                                    if ($repeater_type === 'default') {
+                                        ?>
+
+                                        <input type="hidden" name="default_values" value="<?= htmlspecialchars(json_encode($repeater_item['default_values']), ENT_QUOTES, 'UTF-8') ?? '' ?>">
+
+
+                                        <?php
+                                    }
 
                                     foreach ($args['fields'] as $field) {
                                         if (array_key_exists($field['name'], $repeater_item)) {
@@ -121,28 +145,40 @@ class Repeater {
                                         echo (new Form())::add_field($field);
                                     }
 
-                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
-                                        ?>
+                                    echo '<div class="repeater-action-row">';
 
-                                        <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                                        if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
+                                            ?>
 
-                                        <?php
-                                    }
-                                    elseif ($repeater_type === 'new') {
-                                        ?>
+                                            <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
 
-                                        <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                                            <?php
+                                        }
 
-                                        <?php
-                                    }
+                                        if (isset($args['cloneable']) && $args['cloneable'] === true) {
+                                            ?>
 
-                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
-                                        ?>
+                                            <span class="clone-repeater"><?php _e('Clone', 'pom-form') ?></span>
 
-                                        <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+                                            <?php
+                                        }
 
-                                        <?php
-                                    }
+                                        if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
+                                            ?>
+
+                                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                                            <?php
+                                        }
+                                        elseif ($repeater_type === 'new') {
+                                            ?>
+
+                                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+
+                                            <?php
+                                        }
+
+                                    echo '</div>';
 
                                     ?>
                                 </div>
@@ -158,6 +194,19 @@ class Repeater {
 
             <button class="button add-new-repeater-item"><?php _e('Add new', 'pom-form') ?></button>
             <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
+
+            <?php
+
+            if (isset($args['defaults']) && !empty($args['defaults'])) {
+                ?>
+
+                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pom-form') ?></button>
+
+                <?php
+            }
+
+            ?>
+
             <input type="hidden" name="config" value="<?= $repeater_config ?>">
             <input type="hidden" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="repeater-value">
         </div>
@@ -171,12 +220,14 @@ class Repeater {
         echo '</div>';
 
         wp_enqueue_style('pom-form-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
-        wp_enqueue_script('pom-form-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.js', [], null, true);
+        wp_enqueue_script('pom-form-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.min.js', ['jquery'], null, true);
         wp_localize_script(
             'pom-form-repeater',
             'pom_form_repeater',
             [
-                'limit' => __('Element limit reached', 'pom-form')
+                'limit' => __('Element limit reached', 'pom-form'),
+                'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pom-form'),
+                'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pom-form'),
             ]
         );
     }
