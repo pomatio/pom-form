@@ -295,6 +295,19 @@ jQuery(function($) {
         $clone.find('input[name="repeater_identifier"]').val($generate_random_string(10, false));
 
         /**
+         * If the repeater has code fields replace their id's in order to render Codemirror with unique IDs.
+         */
+        let $code_editor = $clone.find('.pom-form-code-editor-html, .pom-form-code-editor-js, .pom-form-code-editor-css');
+        for (let $i = 0; $i < $code_editor.length; $i++) {
+            $code_editor[$i].id = $generate_random_string(10, false);
+
+            // Delete existing code mirror instance
+            $($code_editor).next().remove();
+
+            wp.codeEditor.initialize($code_editor[$i], settings.codeMirrorSettings);
+        }
+
+        /**
          * A cloned repeater can never be a default, so we change its key.
          */
         if ($clone.hasClass('default')) {
