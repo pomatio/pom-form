@@ -68,6 +68,29 @@ class Form {
 
         $field_class::render_field($field_args);
 
+        /**
+         * If the field is of type repeater and has a code editor inside,
+         * it is necessary to do the enqueue from the beginning.
+         * Otherwise, the field is not rendered.
+         */
+        if ($field_args['type'] === 'repeater') {
+            foreach ($field_args['fields'] as $repeater_field) {
+                if (isset($repeater_field['type']) && ($repeater_field['type'] === 'code_html' || $repeater_field['type'] === 'code_css' || $repeater_field['type'] === 'code_js')) {
+                    $codemirror_settings = wp_enqueue_code_editor([]);
+                    wp_enqueue_script('wp-theme-plugin-editor');
+                    wp_enqueue_style('wp-codemirror');
+                    wp_enqueue_script('pom-form-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], NULL, true);
+                    wp_localize_script(
+                        'pom-form-code',
+                        'settings',
+                        [
+                            'codeMirrorSettings' => $codemirror_settings
+                        ]
+                    );
+                }
+            }
+        }
+
         return ob_get_clean();
     }
 
