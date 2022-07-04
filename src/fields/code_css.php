@@ -18,7 +18,7 @@ class Code_CSS {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-css <?= $args['class'] ?>"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-css <?= $args['class'] ?>" data-type="code_css"><?= $args['value'] ?></textarea>
 
         <?php
 

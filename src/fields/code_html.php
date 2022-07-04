@@ -18,7 +18,7 @@ class Code_HTML {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= POM_Form_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= POM_Form_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
 
         <?php
 
