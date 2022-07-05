@@ -8,6 +8,10 @@ jQuery(function($) {
      */
     $(document).on('click', '.repeater .title', function() {
         $(this).closest('.repeater').toggleClass('closed');
+
+        $('.CodeMirror').each(function(i, el) {
+            el.CodeMirror.refresh();
+        });
     });
 
     let $update_repeater = function($wrapper) {
