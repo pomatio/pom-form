@@ -16,6 +16,10 @@ class Code_JS {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        if (file_exists($args['value'])) {
+            $args['value'] = file_get_contents($args['value']);
+        }
+
         ?>
 
         <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-js <?= $args['class'] ?>" data-type="code_js"><?= $args['value'] ?></textarea>
