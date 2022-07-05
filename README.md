@@ -12,10 +12,10 @@ composer install --save pom-form
 
 ## Dependencies
 This package uses the following third party libraries:
-* jQuery
-* Bootstrap: v4.6.0
-* select2: v4.0.13
-* CodeMirror
+* [jQuery](https://jquery.com/): Version included in WordPress
+* [Bootstrap](https://getbootstrap.com/): v4.6.0
+* [select2](https://select2.org/): v4.0.13
+* [CodeMirror](https://codemirror.net/): Version included in WordPress
 
 ## How to use
 Example of how to render a field
