@@ -3,7 +3,7 @@
  * Functions to ensure that values are safe to tamper with.
  */
 
-use POM\Form\POM_Form_Helper;
+namespace POM\Form;
 
 function sanitize_pom_form_button($value) {
     return $value;

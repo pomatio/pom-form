@@ -14,6 +14,7 @@ class Form {
          */
         require_once 'class-helpers.php';
         require_once 'class-sanitize.php';
+        require_once 'class-disk.php';
         require_once 'class-ajax.php';
     }
 
