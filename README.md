@@ -44,35 +44,35 @@ They can be standard parameters such as name, id, class, data- * or customized t
 ## Allowed field types
 | Field                           | Description                                                                                                                                                                                                                                                                      |
 |---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [button](#button)               |                                                                                                                                                                                                                                                                                  |
-| [checkbox](#checkbox)           | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.<br>The checkbox has the value 'yes' if it is selected and 'no' otherwise. |
-| [code_css](#code-css)           | Render a CodeMirror editor with CSS autocomplete and CSS inspection.                                                                                                                                                                                                             |
-| [code_html](#code-html)         | Render a CodeMirror editor with HTML autocomplete and HTML inspection.                                                                                                                                                                                                           |
-| [code_js](#code-js)             | Render a CodeMirror editor with JS autocomplete and JS inspection.                                                                                                                                                                                                               |                |                                                                                                                                                                                                                                                                                  |
-| [color](#color)                 | Renders the native WordPress color picker.                                                                                                                                                                                                                                       |
-| [color_palette](#color-palette) | Shows a color picker set using the 'pom_form_color_palette' filter.                                                                                                                                                                                                              |
-| [date](#date)                   |                                                                                                                                                                                                                                                                                  |
-| [datetime](#datetime)           |                                                                                                                                                                                                                                                                                  |
-| [email](#email)                 |                                                                                                                                                                                                                                                                                  |
-| [file](#file)                   |                                                                                                                                                                                                                                                                                  |
-| [gallery](#gallery)             |                                                                                                                                                                                                                                                                                  |
-| [hidden](#hidden)               |                                                                                                                                                                                                                                                                                  |
-| [icon_picker](#icon-picker)     | Select icons in a simple way among all icon libraries.<br/> It has the filters 'pom_form_icon_libraries' and 'pom_form_icon_libraries_path' to set the libraries.                                                                                                                |
-| [image_picker](#image-picker)   | Select an image from the media gallery.                                                                                                                                                                                                                                          |
-| [number](#number)               |                                                                                                                                                                                                                                                                                  |
-| [password](#password)           |                                                                                                                                                                                                                                                                                  |
-| [quantity](#quantity)           |                                                                                                                                                                                                                                                                                  |
-| [radio](#radio)                 |                                                                                                                                                                                                                                                                                  |
-| [range](#range)                 |                                                                                                                                                                                                                                                                                  |
-| [repeater](#repeater)           |                                                                                                                                                                                                                                                                                  |
-| [select](#select)               | Allows optgroup, compatible with select2 (In the class parameter you have to add the class select2)                                                                                                                                                                              |
-| [tel](#telephone)               |                                                                                                                                                                                                                                                                                  |
-| [text](#text)                   |                                                                                                                                                                                                                                                                                  |
-| [textarea](#textarea)           |                                                                                                                                                                                                                                                                                  |
-| [time](#time)                   |                                                                                                                                                                                                                                                                                  |
-| [tinymce](#tinymce)             | This field supports the following specific parameters: textarea_rows (number), teeny (boolean), quicktags (boolean), wpautop (boolean), media_buttons (boolean)                                                                                                                  |
-| [toggle](#toggle)               |                                                                                                                                                                                                                                                                                  |
-| [url](#url)                     |                                                                                                                                                                                                                                                                                  |
+| [Button](#button)               |                                                                                                                                                                                                                                                                                  |
+| [Checkbox](#checkbox)           | Allows to render multiple checkboxes at the same time passing them as options parameter. If this option is chosen, the value parameter can be an array to establish as checked more than one checkbox.<br>The checkbox has the value 'yes' if it is selected and 'no' otherwise. |
+| [Code CSS](#code-css)           | Render a CodeMirror editor with CSS autocomplete and CSS inspection.                                                                                                                                                                                                             |
+| [Code HTML](#code-html)         | Render a CodeMirror editor with HTML autocomplete and HTML inspection.                                                                                                                                                                                                           |
+| [Code JS](#code-js)             | Render a CodeMirror editor with JS autocomplete and JS inspection.                                                                                                                                                                                                               |                |                                                                                                                                                                                                                                                                                  |
+| [Color](#color)                 | Renders the native WordPress color picker.                                                                                                                                                                                                                                       |
+| [Color palette](#color-palette) | Shows a color picker set using the 'pom_form_color_palette' filter.                                                                                                                                                                                                              |
+| [Date](#date)                   |                                                                                                                                                                                                                                                                                  |
+| [Datetime](#datetime)           |                                                                                                                                                                                                                                                                                  |
+| [E-mail](#email)                |                                                                                                                                                                                                                                                                                  |
+| [File](#file)                   |                                                                                                                                                                                                                                                                                  |
+| [Gallery](#gallery)             |                                                                                                                                                                                                                                                                                  |
+| [Hidden](#hidden)               |                                                                                                                                                                                                                                                                                  |
+| [Icon picker](#icon-picker)     | Select icons in a simple way among all icon libraries.<br/> It has the filters 'pom_form_icon_libraries' and 'pom_form_icon_libraries_path' to set the libraries.                                                                                                                |
+| [Image picker](#image-picker)   | Select an image from the media gallery.                                                                                                                                                                                                                                          |
+| [Number](#number)               |                                                                                                                                                                                                                                                                                  |
+| [Password](#password)           |                                                                                                                                                                                                                                                                                  |
+| [Quantity](#quantity)           |                                                                                                                                                                                                                                                                                  |
+| [Radio](#radio)                 |                                                                                                                                                                                                                                                                                  |
+| [Range](#range)                 |                                                                                                                                                                                                                                                                                  |
+| [Repeater](#repeater)           |                                                                                                                                                                                                                                                                                  |
+| [Select](#select)               | Allows optgroup, compatible with select2 (In the class parameter you have to add the class select2)                                                                                                                                                                              |
+| [Telephone](#telephone)         |                                                                                                                                                                                                                                                                                  |
+| [Text](#text)                   |                                                                                                                                                                                                                                                                                  |
+| [Textarea](#textarea)           |                                                                                                                                                                                                                                                                                  |
+| [Time](#time)                   |                                                                                                                                                                                                                                                                                  |
+| [Tinymce](#tinymce)             | This field supports the following specific parameters: textarea_rows (number), teeny (boolean), quicktags (boolean), wpautop (boolean), media_buttons (boolean)                                                                                                                  |
+| [Toggle](#toggle)               |                                                                                                                                                                                                                                                                                  |
+| [URL](#url)                     |                                                                                                                                                                                                                                                                                  |
 
 # Button
 # Checkbox
@@ -103,3 +103,125 @@ They can be standard parameters such as name, id, class, data- * or customized t
 # Tinymce      
 # Toggle       
 # URL          
+
+## Functions to sanitize
+The framework has built-in functions to sanitize each of the fields.
+You can call these functions before saving values to ensure that the value you receive is safe to tamper with.
+
+All functions return the sanitized value. If the value is not valid, it returns false.
+
+```PHP
+sanitize_pom_form_button($value);
+```
+
+```PHP
+sanitize_pom_form_checkbox($value);
+```
+
+```PHP
+sanitize_pom_form_code_css($value);
+```
+
+```PHP
+sanitize_pom_form_code_html($value);
+```
+
+```PHP
+sanitize_pom_form_code_js($value);
+```
+
+```PHP
+sanitize_pom_form_color($value);
+```
+
+```PHP
+sanitize_pom_form_color_palette($value);
+```
+
+```PHP
+sanitize_pom_form_date($value);
+```
+
+```PHP
+sanitize_pom_form_datetime($value);
+```
+
+```PHP
+sanitize_pom_form_email($value);
+```
+
+```PHP
+sanitize_pom_form_file($value);
+```
+
+```PHP
+sanitize_pom_form_gallery($value);
+```
+
+```PHP
+sanitize_pom_form_hidden($value);
+```
+
+```PHP
+sanitize_pom_form_icon_picker($value);
+```
+
+```PHP
+sanitize_pom_form_image_picker($value);
+```
+
+```PHP
+sanitize_pom_form_number($value);
+```
+
+```PHP
+sanitize_pom_form_password($value);
+```
+
+```PHP
+sanitize_pom_form_quantity($value);
+```
+
+```PHP
+sanitize_pom_form_radio($value);
+```
+
+```PHP
+sanitize_pom_form_range($value);
+```
+
+```PHP
+sanitize_pom_form_repeater($value);
+```
+
+```PHP
+sanitize_pom_form_select($value);
+```
+
+```PHP
+sanitize_pom_form_tel($value);
+```
+
+```PHP
+sanitize_pom_form_text($value);
+```
+
+```PHP
+sanitize_pom_form_textarea($value);
+```
+
+```PHP
+sanitize_pom_form_time($value);
+```
+
+```PHP
+sanitize_pom_form_tinymce($value);
+```
+
+```PHP
+sanitize_pom_form_toggle($value);
+```
+
+```PHP
+sanitize_pom_form_url($value);
+```
