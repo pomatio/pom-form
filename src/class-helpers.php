@@ -106,4 +106,220 @@ class POM_Form_Helper {
         }
     }
 
+    public static function get_allowed_html(): array {
+        $allowed_html = [
+            'h1' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'h2' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'h3' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'h4' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'h5' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'h6' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'hr' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'form' => [
+                'id' => true,
+                'class' => true,
+                'style' => true,
+                'action' => true,
+                'method' => true
+            ],
+            'iframe' => [
+                'id' => true,
+                'class' => true,
+                'style' => true,
+                'src' => true,
+                'width' => true,
+                'height' => true,
+                'frameborder' => true,
+                'allowfullscreen' => true,
+                'aria-hidden' => true,
+                'tabindex' => true
+            ],
+            'button' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'blockquote' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'article' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'section' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'div' => [
+                'id' => true,
+                'class' => true,
+                'style' => true,
+            ],
+            'span' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'a' => [
+                'href' => true,
+                'title' => true,
+                'target' => true,
+                'rel' => true,
+                'class' => true
+            ],
+            'i' => true,
+            'u' => true,
+            'ol' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'ul' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'li' => [
+                'id' => true,
+                'class' => true,
+                'style' => true,
+            ],
+            'img' => [
+                'id' => true,
+                'class' => true,
+                'title' => true,
+                'src' => true,
+                'alt' => true,
+                'width' => true,
+                'height' => true
+            ],
+            'b' => true,
+            'br' => true,
+            'em' => true,
+            's' => true,
+            'strong' => [
+                'class' => true
+            ],
+            'select' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'option' => [
+                'class' => true
+            ],
+            'small' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'p' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'label' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'input' => [
+                'id' => true,
+                'class' => true,
+                'style' => true,
+                'type' => true,
+                'name' => true,
+                'value' => true,
+                'placeholder' => true
+            ],
+            'ins' => [
+                'class' => true,
+                'data-*' => true
+            ],
+            'table' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'thead' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'tbody' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'tfoot' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'th' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'tr' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'td' => [
+                'id' => true,
+                'class' => true,
+                'style' => true
+            ],
+            'style' => true,
+            'del' => true,
+            'map' => [
+                'id' => true,
+                'class' => true,
+                'style' => true,
+                'name' => true
+            ],
+            'area' => [
+                'coords' => true,
+                'shape' => true,
+                'href' => true
+            ],
+            'pre' => true
+        ];
+
+        return apply_filters('pom_form_allowed_html', $allowed_html);
+    }
+
 }

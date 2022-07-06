@@ -13,6 +13,7 @@ class Form {
          * Functions available throughout the framework.
          */
         require_once 'class-helpers.php';
+        require_once 'class-sanitize.php';
         require_once 'class-ajax.php';
     }
 
