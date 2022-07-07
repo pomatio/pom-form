@@ -16,6 +16,21 @@ class POM_Form_Disk {
         $this->site_data = get_blog_details();
     }
 
+    private function create_htaccess_file(): void {
+        $htaccess = WP_CONTENT_DIR . "/settings/.htaccess";
+
+        if (!is_file($htaccess)) {
+            $htaccess_content = '<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>';
+            file_put_contents($htaccess, $htaccess_content);
+        }
+    }
+
     /**
      * Establish the path in which the actions related to files are executed.
      *
@@ -42,10 +57,12 @@ class POM_Form_Disk {
         $settings_path = (new self)->get_settings_path($settings_dir);
         if (!is_dir($settings_path)) {
             $created = wp_mkdir_p($settings_path);
+
             if (!$created) {
                 POM_Form_Helper::write_log('Error creating tweaks settings dir.');
             }
 			else {
+                (new self)->create_htaccess_file();
                 POM_Form_Helper::write_log('Created tweaks settings dir.');
 			}
         }
