@@ -88,6 +88,30 @@ They can be standard parameters such as name, id, class, data- * or customized t
 # Gallery      
 # Hidden       
 # Icon picker  
+The icon selector has the ```pom_form_icon_libraries``` filter to be able to add as many libraries as desired.
+
+In an example to add libraries it would be the following:
+```PHP
+add_filter('pom_form_icon_libraries', 'add_icon_libraries');
+function add_icon_libraries($libraries) {
+    $libraries['test1'] = [
+        'name' => 'Test 1',
+        'path' => '/path/to/icons/dir'
+    ];
+    
+    $libraries['test2'] = [
+        'name' => 'Test 2',
+        'path' => '/path/to/icons/dir'
+    ];
+    
+    return $libraries;
+}
+```
+
+The indexes of the array must be the literal name of the folder that contains the SVGs.
+
+The path must be the path to the parent folder.
+
 # Image picker
 # Number
 # Password     
@@ -107,8 +131,6 @@ They can be standard parameters such as name, id, class, data- * or customized t
 ## Functions to sanitize
 The framework has built-in functions to sanitize each of the fields.
 You can call these functions before saving values to ensure that the value you receive is safe to tamper with.
-
-All functions return the sanitized value. If the value is not valid, it returns false.
 
 ```PHP
 sanitize_pom_form_button($value);

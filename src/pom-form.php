@@ -9,6 +9,8 @@ define('POM_FORM_SRC_URI', str_replace($_SERVER['DOCUMENT_ROOT'], '', POM_FORM_S
 class Form {
 
     public function __construct() {
+        require 'vendor/autoload.php';
+
         /**
          * Functions available throughout the framework.
          */

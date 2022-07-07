@@ -24,8 +24,14 @@ function sanitize_pom_form_checkbox($value) {
     return $value === 'yes' ? 'yes' : 'no';
 }
 
-function sanitize_pom_form_code_css($value) {
-    return $value;
+function sanitize_pom_form_code_css($value, $compression_level = 'highest'): string {
+    $csstidy = new csstidy();
+
+    $csstidy->set_cfg('optimise_shorthands', 2);
+    $csstidy->set_cfg('template', $compression_level); // compression level
+
+    $csstidy->parse($value);
+    return $csstidy->print->plain();
 }
 
 /**
@@ -52,12 +58,14 @@ function sanitize_pom_form_color_palette($value) {
     return sanitize_hex_color(sanitize_text_field($value));
 }
 
-function sanitize_pom_form_date($value) {
-    return $value;
+function sanitize_pom_form_date($value, $format = 'Y-m-d') {
+    $timestamp = strtotime(sanitize_text_field($value));
+    return date($format, $timestamp);
 }
 
-function sanitize_pom_form_datetime($value) {
-    return $value;
+function sanitize_pom_form_datetime($value, $format = 'Y-m-d H:i') {
+    $timestamp = strtotime(sanitize_text_field($value));
+    return date($format, $timestamp);
 }
 
 function sanitize_pom_form_email($value): string {
@@ -65,6 +73,20 @@ function sanitize_pom_form_email($value): string {
 }
 
 function sanitize_pom_form_file($value) {
+    $max_file_size = apply_filters('pom_form_max_file_size', 1073741824); // In bytes. Default max 1GB
+
+    $allowed_mime_types = [
+        'text/plain',
+        'application/msword', // .doc
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'application/pdf',
+        'image/jpeg',
+        'image/png',
+        'image/gif'
+    ];
+    $allowed_mime_types = apply_filters('pom_form_allowed_mime_types', $allowed_mime_types);
+
+    // TODO: Finish sanitizing.
     return $value;
 }
 
@@ -108,7 +130,7 @@ function sanitize_pom_form_number($value) {
 }
 
 function sanitize_pom_form_password($value) {
-    return $value;
+    return sanitize_text_field($value);
 }
 
 function sanitize_pom_form_quantity($value) {
@@ -150,7 +172,6 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
                         if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js')) {
                             $file_name = "{$array_settings['name']}_{$repeater_identifier}_{$arr_key}";
                             $sanitized_array[$type][$index][$arr_key]['value'] = POM_Form_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
-
                         }
                         else {
                             $sanitized_array[$type][$index][$arr_key]['value'] = $sanitize_function_name($arr_value['value']);

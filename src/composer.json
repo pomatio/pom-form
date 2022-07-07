@@ -1,0 +1,23 @@
+{
+    "name": "pom/form",
+    "type": "library",
+    "authors": [
+        {
+            "name": "POM",
+            "email": "info@pom.es"
+        }
+    ],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "twbs/bootstrap": "v4.6.0",
+        "select2/select2": "4.0.13",
+        "ext-json": "*",
+        "cerdic/css-tidy": "v2.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "POM\\Form\\": "src/"
+        }
+    }
+}
