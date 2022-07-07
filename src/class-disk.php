@@ -12,41 +12,42 @@ class POM_Form_Disk {
      */
     private $site_data;
 
-    /**
-     * Current site settings files path.
-     *
-     * @var string
-     */
-    public string $settings_path;
-
     public function __construct() {
         $this->site_data = get_blog_details();
+    }
 
+    /**
+     * Establish the path in which the actions related to files are executed.
+     *
+     * @param string $settings_dir
+     * @return string
+     */
+    private function get_settings_path(string $settings_dir = 'pom-form'): string {
         $multisite_path = '';
         if (is_multisite()) {
             $multisite_path = "sites/{$this->site_data->blog_id}/";
         }
 
-        /**
-         * Filter to set the name under which the settings are saved.
-         */
-        $settings_dir = apply_filters('pom_form_settings_dir', 'pom-form');
-
-        $this->settings_path = WP_CONTENT_DIR . "/settings/$settings_dir/$multisite_path";
+        return WP_CONTENT_DIR . "/settings/$settings_dir/$multisite_path";
     }
 
     /**
      * Creates the directory in which the configuration files are saved.
      * If a multisite, it is subdivided into /sites/blog_id/.
      *
+     * @param string $settings_dir
      * @return void
      */
-    private function create_settings_dir(): void {
-        if (!is_dir($this->settings_path)) {
-            $created = wp_mkdir_p($this->settings_path);
+    public static function create_settings_dir(string $settings_dir = 'pom-form'): void {
+        $settings_path = (new self)->get_settings_path($settings_dir);
+        if (!is_dir($settings_path)) {
+            $created = wp_mkdir_p($settings_path);
             if (!$created) {
                 POM_Form_Helper::write_log('Error creating tweaks settings dir.');
             }
+			else {
+                POM_Form_Helper::write_log('Created tweaks settings dir.');
+			}
         }
     }
 
@@ -88,15 +89,15 @@ class POM_Form_Disk {
      * @param $file_name
      * @param $content
      * @param string $file_extension
-     *
+     * @param string $settings_dir
      * @return string Written file path.
      */
-    public static function save_to_file($file_name, $content, string $file_extension = 'txt'): string {
+    public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pom-form'): string {
         if (empty($file_name) || empty($content)) {
             return '';
         }
 
-        $settings_path = (new self)->settings_path;
+        $settings_path = (new self)->get_settings_path($settings_dir);
 
         file_put_contents($settings_path . $file_name . '.' . $file_extension, $content, LOCK_EX);
 
@@ -106,8 +107,9 @@ class POM_Form_Disk {
     /**
      * Read the content of a file.
      */
-    public static function read_file($filename) {
-        $path = (new self)->settings_path . $filename;
+    public static function read_file($filename, $settings_dir = 'pom-form') {
+        $settings_path = (new self)->get_settings_path($settings_dir);
+        $path = $settings_path . $filename;
 
         if (file_exists($path)) {
             return file_get_contents($path);
@@ -116,14 +118,18 @@ class POM_Form_Disk {
         return '';
     }
 
-    public static function delete_file($filename): string {
-        $filename = (new self)->settings_path . $filename;
+    /**
+     * Deletes selected file.
+     *
+     * @param $filename
+     * @param string $settings_dir
+     * @return bool
+     */
+    public static function delete_file($filename, string $settings_dir = 'pom-form'): bool {
+        $settings_path = (new self)->get_settings_path($settings_dir);
+        $filename = $settings_path . $filename;
 
-        if (file_exists($filename)) {
-            return unlink((new self)->settings_path . $filename);
-        }
-
-        return false;
+        return file_exists($filename) && unlink($filename);
     }
 
 }
