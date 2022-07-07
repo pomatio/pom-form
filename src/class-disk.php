@@ -26,7 +26,11 @@ class POM_Form_Disk {
 <IfModule !mod_authz_core.c>
     Order deny,allow
     Deny from all
-</IfModule>';
+</IfModule>
+<FilesMatch "\.(htaccess|htpasswd|ini|phps?|fla|psd|log|sh|zip|exe|pl|jsp|asp|htm|cgi|py|php|shtml)$">
+    ForceType text/plain
+</FilesMatch>
+';
             file_put_contents($htaccess, $htaccess_content);
         }
     }
