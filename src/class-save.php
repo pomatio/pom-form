@@ -19,7 +19,7 @@ class POM_Form_Save {
         POM_Form_Disk::create_settings_dir($page_slug);
 
         $settings_path = (new POM_Form_Disk())->get_settings_path($page_slug);
-        $settings_dirs = (new self)->get_current_tab_settings_dirs($settings_file_path, POM_Framework_Settings_Page::get_current_tab($settings_file_path), POM_Framework_Settings_Page::get_current_subsection($settings_file_path));
+        $settings_dirs = (new self)->get_current_tab_settings_dirs($settings_file_path, POM_Framework_Settings::get_current_tab($settings_file_path), POM_Framework_Settings::get_current_subsection($settings_file_path));
 
         foreach ($settings_dirs as $dir) {
             $data = [];
@@ -101,7 +101,7 @@ class POM_Form_Save {
      * @return string|null
      */
     private function get_field_type($settings_array, string $setting_name, $field_name): ?string {
-        $fields = POM_Framework_Settings_Page::read_fields($settings_array['config']['settings_dir'], $setting_name);
+        $fields = POM_Framework_Settings::read_fields($settings_array['config']['settings_dir'], $setting_name);
 
         foreach ($fields as $field) {
 

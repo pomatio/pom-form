@@ -5,7 +5,7 @@
 
 namespace POM\Form;
 
-class POM_Framework_Settings_Page {
+class POM_Framework_Settings {
 
     public static function get_current_tab($settings_array) {
         /**
@@ -42,9 +42,16 @@ class POM_Framework_Settings_Page {
         return [];
     }
 
-    private function get_setting_value($page_slug, $setting_name, $field_name) {
+    public static function get_setting_value($page_slug, $setting_name, $field_name, $type = '') {
         $values = POM_Form_Disk::read_file("$setting_name.php", $page_slug, 'array');
-        return is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
+        $value = is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
+
+        if (!empty($type)) {
+            $sanitize_function_name = "sanitize_pom_form_{$type}";
+            $value = $sanitize_function_name($value);
+        }
+
+        return $value;
     }
 
     public static function render($page_slug, $settings_file_path): void {
@@ -203,7 +210,7 @@ class POM_Framework_Settings_Page {
                                     $description = $field['description'] ?? '';
                                     unset($field['label'], $field['description']);
 
-                                    $value = (new self)->get_setting_value($page_slug, $setting_key, $field['name']);
+                                    $value = self::get_setting_value($page_slug, $setting_key, $field['name']);
 
                                     $field['name'] = $setting_key . '_' . $field['name'];
 
