@@ -210,6 +210,11 @@ class POM_Framework_Settings_Page {
                                     if ($field['type'] === 'checkbox' && $field['value'] === true) {
                                         $field['value'] = 'yes';
                                     }
+                                    elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
+                                        $value = POM_Form_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
+                                        $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
+                                        $field['value'] = $sanitize_function_name($value);
+                                    }
                                     else {
                                         $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
                                         $field['value'] = $sanitize_function_name($value);

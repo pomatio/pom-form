@@ -38,6 +38,9 @@ class POM_Form_Save {
                     if ($type === 'repeater') {
                         $data[$name] = $sanitize_function_name($value, ['name' => $name], $page_slug);
                     }
+                    elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js') {
+                        $data[$name] = POM_Form_Disk::save_to_file($name, $value, str_replace('code_', '', $type), $page_slug);
+                    }
                     else {
                         $data[$name] = $sanitize_function_name($value);
                     }

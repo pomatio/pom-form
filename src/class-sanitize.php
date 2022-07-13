@@ -145,7 +145,7 @@ function sanitize_pom_form_range($value) {
     return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT);
 }
 
-function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pom-form'): array {
+function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pom-form') {
     if (is_string($value)) {
         $value = json_decode(stripslashes($value), true);
     }
