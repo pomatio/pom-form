@@ -203,9 +203,9 @@ class POM_Framework_Settings_Page {
                                     $description = $field['description'] ?? '';
                                     unset($field['label'], $field['description']);
 
-                                    $field['name'] = $setting_key . '_' . $field['name'];
-
                                     $value = (new self)->get_setting_value($page_slug, $setting_key, $field['name']);
+
+                                    $field['name'] = $setting_key . '_' . $field['name'];
 
                                     if ($field['type'] === 'checkbox' && $field['value'] === true) {
                                         $field['value'] = 'yes';
