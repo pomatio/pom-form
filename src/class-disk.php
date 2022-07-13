@@ -16,11 +16,16 @@ class POM_Form_Disk {
         $this->site_data = get_blog_details();
     }
 
+    /**
+     * Generate .htaccess file on dir creation for security purposes.
+     *
+     * @return void
+     */
     private function create_htaccess_file(): void {
         $htaccess = WP_CONTENT_DIR . "/settings/.htaccess";
 
         if (!is_file($htaccess)) {
-            $htaccess_content = '<IfModule mod_authz_core.c>
+$htaccess_content = '<IfModule mod_authz_core.c>
     Require all denied
 </IfModule>
 <IfModule !mod_authz_core.c>
@@ -31,7 +36,7 @@ class POM_Form_Disk {
     ForceType text/plain
 </FilesMatch>
 ';
-            file_put_contents($htaccess, $htaccess_content);
+            file_put_contents($htaccess, trim($htaccess_content));
         }
     }
 
@@ -41,11 +46,8 @@ class POM_Form_Disk {
      * @param string $settings_dir
      * @return string
      */
-    private function get_settings_path(string $settings_dir = 'pom-form'): string {
-        $multisite_path = '';
-        if (is_multisite()) {
-            $multisite_path = "sites/{$this->site_data->blog_id}/";
-        }
+    public function get_settings_path(string $settings_dir = 'pom-form'): string {
+        $multisite_path = is_multisite() ? "sites/{$this->site_data->blog_id}/" : '';
 
         return WP_CONTENT_DIR . "/settings/$settings_dir/$multisite_path";
     }
@@ -66,10 +68,15 @@ class POM_Form_Disk {
                 POM_Form_Helper::write_log('Error creating tweaks settings dir.');
             }
 			else {
+                (new self)->create_enabled_settings_file();
                 (new self)->create_htaccess_file();
                 POM_Form_Helper::write_log('Created tweaks settings dir.');
 			}
         }
+    }
+
+    private function create_enabled_settings_file(): void {
+        $this->generate_file_content([], 'File responsible for saving active settings info.');
     }
 
     /**
@@ -80,18 +87,14 @@ class POM_Form_Disk {
      *
      * @return string
      */
-    private function generate_file_content($data, string $description = ''): string {
+    public function generate_file_content($data, string $description = ''): string {
         if (empty($data)) {
             return '';
         }
 
         $file_content  = '<?php' . PHP_EOL;
         $file_content .= '/**' . PHP_EOL;
-
-        if (!empty($description)) {
-            $file_content .= ' * ' . $description . PHP_EOL;
-        }
-
+        $file_content .= !empty($description) ? ' * ' . $description . PHP_EOL : '';
         $file_content .= ' *' . PHP_EOL;
         $file_content .= ' * This file is automatically created.' . PHP_EOL;
         $file_content .= ' *' . PHP_EOL;
@@ -128,12 +131,12 @@ class POM_Form_Disk {
     /**
      * Read the content of a file.
      */
-    public static function read_file($filename, $settings_dir = 'pom-form') {
+    public static function read_file($filename, $settings_dir = 'pom-form', $return = 'default') {
         $settings_path = (new self)->get_settings_path($settings_dir);
         $path = $settings_path . $filename;
 
         if (file_exists($path)) {
-            return file_get_contents($path);
+            return $return === 'array' ? include $path : file_get_contents($path);
         }
 
         return '';

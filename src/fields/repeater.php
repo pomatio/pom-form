@@ -33,7 +33,8 @@ class Repeater {
         }
         $repeater_config = base64_encode(json_encode($repeater_config));
 
-        $json = json_decode(htmlspecialchars_decode($args['value']), true);
+        //$json = json_decode(htmlspecialchars_decode($args['value']), true);
+        $json = $args['value'];
 
         $sortable = isset($args['sortable']) && $args['sortable'] === true ? ' sortable' : '';
 
@@ -208,7 +209,7 @@ class Repeater {
             ?>
 
             <input type="hidden" name="config" value="<?= $repeater_config ?>">
-            <input type="hidden" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="repeater-value">
+            <input type="hidden" name="<?= $args['name'] ?>" value="<?= htmlspecialchars(json_encode($args['value']), ENT_QUOTES, 'UTF-8') ?>" class="repeater-value">
         </div>
 
         <?php
