@@ -24,7 +24,7 @@ function sanitize_pom_form_checkbox($value) {
     return $value === 'yes' ? 'yes' : 'no';
 }
 
-function sanitize_pom_form_code_css($value, $compression_level = 'highest'): string {
+function sanitize_pom_form_code_css($value, $compression_level = 'default'): string {
     $csstidy = new csstidy();
 
     $csstidy->set_cfg('optimise_shorthands', 2);
@@ -45,7 +45,7 @@ function sanitize_pom_form_code_html($value): string {
     return wp_kses($value, $allowed_tags, []);
 }
 
-function sanitize_pom_form_code_js($value) {
+function sanitize_pom_form_code_js($value): string {
     $filtered_js = esc_js($value);
     return stripslashes($filtered_js);
 }
@@ -146,6 +146,10 @@ function sanitize_pom_form_range($value) {
 }
 
 function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pom-form'): array {
+    if (is_string($value)) {
+        $value = json_decode(stripslashes($value), true);
+    }
+
     if (!empty($value)) {
         $sanitized_array = [];
 
