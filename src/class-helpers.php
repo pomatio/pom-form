@@ -96,6 +96,12 @@ class POM_Form_Helper {
         return $randomString;
     }
 
+    /**
+     * Write to the WordPress debug.log file.
+     *
+     * @param $log
+     * @return void
+     */
     public static function write_log($log): void {
         if (true === WP_DEBUG) {
             if (is_array($log) || is_object($log)) {
@@ -104,6 +110,18 @@ class POM_Form_Helper {
                 error_log($log);
             }
         }
+    }
+
+    /**
+     * Get the array of settings config from a tab/subsection.
+     *
+     * @param $settings_array
+     * @param $tab
+     * @param $subsection
+     * @return mixed
+     */
+    public static function get_settings($settings_array, $tab, $subsection) {
+       return $settings_array[$tab]['tab'][$subsection]['settings'];
     }
 
     public static function get_allowed_html(): array {
