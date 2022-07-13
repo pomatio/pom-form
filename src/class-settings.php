@@ -214,7 +214,7 @@ class POM_Framework_Settings {
 
                                     $field['name'] = $setting_key . '_' . $field['name'];
 
-                                    if ($field['type'] === 'checkbox' && $field['value'] === true) {
+                                    if ($field['type'] === 'checkbox' && isset($field['value']) && $field['value'] === true) {
                                         $field['value'] = 'yes';
                                     }
                                     elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
