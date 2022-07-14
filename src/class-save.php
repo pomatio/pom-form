@@ -5,7 +5,7 @@
 
 namespace POM\Form;
 
-class POM_Form_Save {
+class POMATIO_Framework_Save {
 
     public static function save_settings($page_slug, $settings_file_path): void {
         if (!isset($_POST['save_pom_framework_fields']) ) {

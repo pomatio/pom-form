@@ -55,7 +55,7 @@ class POM_Framework_Settings {
     }
 
     public static function render($page_slug, $settings_file_path): void {
-        POM_Form_Save::save_settings($page_slug, $settings_file_path);
+        POMATIO_Framework_Save::save_settings($page_slug, $settings_file_path);
 
         ?>
 
