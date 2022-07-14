@@ -5,6 +5,6 @@ Pomatio Framework in any WordPress project.
 
 |               |                          |
 |---------------|--------------------------|
-| Fields        | [Linkink](fields.md)     |
-| Helpers       | [Linkink](helpers.md)    |
+| Fields        | [Link](fields.md)        |
+| Helpers       | [Link](helpers.md)       |
 | Settings page | [Link](settings-page.md) |
