@@ -34,7 +34,7 @@ class POM_Form_Save {
 
                     $setting_name = str_replace("{$dir}_", '', $name);
 
-                    $type = (new self)->get_field_type($settings_file_path, $dir, $name);
+                    $type = (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $sanitize_function_name = "sanitize_pom_form_{$type}";
 
                     if ($type === 'repeater') {
