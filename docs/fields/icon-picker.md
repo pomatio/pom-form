@@ -22,4 +22,13 @@ function add_icon_libraries($libraries) {
 }
 ```
 
-How to render an Icon picker 
+How to render an Icon picker:
+
+```PHP
+echo (new \POM\Form\Form())::add_field([
+    'type' => 'icon_picker',
+    'label' => 'Lorem Ipsum',
+    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
+    'name' => 'icon',
+]);
+```
