@@ -94,6 +94,11 @@ class Form {
                         ]
                     );
                 }
+
+                if (isset($repeater_field['type']) && $repeater_field['type'] === 'color') {
+                    wp_enqueue_style('wp-color-picker');
+                    wp_enqueue_script('pom-form-color',  POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+                }
             }
         }
 

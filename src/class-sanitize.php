@@ -171,6 +171,10 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
                         $sanitized_array[$type][$index][$arr_key] = json_decode(stripslashes($arr_value), true);
                     }
                     else {
+                        if (empty($arr_value['type'])) {
+                            continue;
+                        }
+
                         $sanitize_function_name = "sanitize_pom_form_{$arr_value['type']}";
 
                         if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js')) {
