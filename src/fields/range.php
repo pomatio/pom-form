@@ -15,11 +15,19 @@ class Range {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        $value = '';
+        if (isset($args['value']) && !empty($args['value'])) {
+            $value = $args['value'];
+        }
+        elseif (isset($args['default']) && !empty($args['default'])) {
+            $value = $args['default'];
+        }
+
         ?>
 
         <div class="range">
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" data-type="range"<?= $disabled ?>>
-            <span class="value"><?= $args['value'] ?></span>
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="range"<?= $disabled ?>>
+            <span class="value"><?= $value ?></span>
             <?php
 
             if (isset($args['suffix']) && !empty($args['suffix'])) {
