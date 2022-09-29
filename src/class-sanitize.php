@@ -3,8 +3,8 @@
  * Functions to ensure that values are safe to tamper with.
  */
 
-use POM\Form\POM_Form_Disk;
-use POM\Form\POM_Form_Helper;
+use PomatioFramework\POM_Form_Disk;
+use PomatioFramework\POM_Form_Helper;
 
 function sanitize_pom_form_button($value) {
     return $value;

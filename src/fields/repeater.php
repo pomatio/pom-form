@@ -5,7 +5,7 @@
  * update it in class-ajax.php as well --> get_repeater_item_html().
  */
 
-namespace POM\Form;
+namespace PomatioFramework\fields;
 
 class Repeater {
 

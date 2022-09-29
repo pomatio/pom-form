@@ -1,6 +1,6 @@
 <?php
 
-namespace POM\Form;
+namespace PomatioFramework\fields;
 
 class Code_CSS {
 

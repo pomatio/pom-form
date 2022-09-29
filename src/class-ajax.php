@@ -1,6 +1,6 @@
 <?php
 
-namespace POM\Form;
+namespace PomatioFramework;
 
 class POM_Form_Ajax {
 

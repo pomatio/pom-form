@@ -7,7 +7,7 @@ dynamically generates the tabs and fields of each section.
 Example of how to generate a settings page within a plugin:
 
 ```PHP
-use POM\Form\POM_Framework_Settings;
+use PomatioFramework\POM_Framework_Settings;
 
 add_action('admin_menu', function() {
     add_submenu_page(

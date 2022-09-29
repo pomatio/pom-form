@@ -3,7 +3,7 @@
  *
  */
 
-namespace POM\Form;
+namespace PomatioFramework;
 
 class POM_Framework_Settings {
 

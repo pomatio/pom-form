@@ -1,6 +1,6 @@
 <?php
 
-namespace POM\Form;
+namespace PomatioFramework;
 
 const POM_FORM_VERSION = '0.1.0';
 define('POM_FORM_SRC_PATH', __DIR__);
@@ -65,7 +65,7 @@ class Form {
 
         include_once $filename;
 
-        $class = 'POM\Form\\' . ucfirst($args['type']);
+        $class = 'PomatioFramework\\' . ucfirst($args['type']);
         $field_class = new $class();
 
         $field_args = self::parse_args($args);

@@ -21,7 +21,7 @@ This package uses the following third party libraries:
 Example of how to render a field
 
 ```PHP
-echo (new \POM\Form\Form())::add_field([
+echo (new \PomatioFramework\Form())::add_field([
     'type' => 'text',
     'label' => 'Lorem Ipsum',
     'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',

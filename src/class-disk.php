@@ -3,7 +3,7 @@
  * Class used for handling disk-related operations.
  */
 
-namespace POM\Form;
+namespace PomatioFramework;
 
 class POM_Form_Disk {
 

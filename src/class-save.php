@@ -3,7 +3,7 @@
  * Handle form submissions and sanitization.
  */
 
-namespace POM\Form;
+namespace PomatioFramework;
 
 class POMATIO_Framework_Save {
 
