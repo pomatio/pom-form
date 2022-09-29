@@ -18,7 +18,10 @@
   },
   "autoload": {
     "psr-4": {
-      "POM\\Form\\": "src/"
+      "POM\\Form\\": "src/",
+      "files": [
+        "pom-form.php"
+      ]
     }
   },
   "minimum-stability": "dev",
