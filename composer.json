@@ -18,7 +18,7 @@
   },
   "autoload": {
     "psr-4": {
-      "POM\\Form": "src/"
+      "POM\\Form\\": "src/"
     }
   },
   "minimum-stability": "dev",
