@@ -1,5 +1,6 @@
 {
   "name": "pom/form",
+  "description": "An easy way to render form fields in WordPress.",
   "type": "library",
   "authors": [
     {
@@ -19,5 +20,7 @@
     "psr-4": {
       "POM\\Form\\": "src/"
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable" : true
 }
