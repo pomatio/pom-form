@@ -63,7 +63,7 @@ class Pomatio_Framework {
 
         include_once $filename;
 
-        $class = "PomatioFramework\\$type";
+        $class = "PomatioFramework\\Fields\\$type";
         $field_class = new $class();
 
         $field_args = self::parse_args($args);
