@@ -57,7 +57,7 @@ class Pomatio_Framework {
      * @return string
      */
     public static function add_field(array $args): string {
-        $type = strtolower($args['type']);
+        $type = ucfirst($args['type']);
 
         if (!file_exists($filename = POM_Form_Helper::get_path() . "Fields/$type.php")) {
             return '';
@@ -65,7 +65,7 @@ class Pomatio_Framework {
 
         include_once $filename;
 
-        $class = 'PomatioFramework\\' . ucfirst($args['type']);
+        $class = "PomatioFramework\\$type";
         $field_class = new $class();
 
         $field_args = self::parse_args($args);
