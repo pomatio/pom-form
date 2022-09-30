@@ -57,7 +57,7 @@ class Pomatio_Framework {
     public static function add_field(array $args): string {
         $type = ucfirst($args['type']);
 
-        if (!file_exists($filename = POM_Form_Helper::get_path() . "Fields/$type.php")) {
+        if (!file_exists($filename = POM_Form_Helper::get_path() . "/Fields/$type.php")) {
             return '';
         }
 
