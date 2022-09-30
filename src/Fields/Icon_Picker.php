@@ -2,6 +2,8 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\POM_Form_Helper;
+
 class Icon_Picker {
 
     public static function render_field(array $args): void {

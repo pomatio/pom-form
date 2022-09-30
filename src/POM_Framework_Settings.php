@@ -227,7 +227,7 @@ class POM_Framework_Settings {
                                         $field['value'] = $sanitize_function_name($value);
                                     }
 
-                                    echo (new Form())::add_field($field);
+                                    echo (new Pomatio_Framework())::add_field($field);
 
                                     ?>
                                     <p class="description" id="<?= $field['name'] ?>"><?= $description ?></p>

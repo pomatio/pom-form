@@ -166,7 +166,7 @@ class POM_Form_Ajax {
                 <?php
 
                 foreach ($config['fields'] as $field) {
-                    echo (new Form())::add_field($field);
+                    echo (new Pomatio_Framework())::add_field($field);
                 }
 
                 ?>
@@ -227,7 +227,7 @@ class POM_Form_Ajax {
                     foreach ($fields as $field) {
                         $field['value'] = $default[$field['name']]['value'];
                         $field['disabled'] = $default[$field['name']]['disabled'];
-                        echo (new Form())::add_field($field);
+                        echo (new Pomatio_Framework())::add_field($field);
                     }
 
                     ?>

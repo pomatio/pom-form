@@ -2,6 +2,8 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\POM_Form_Helper;
+
 class Color_Palette {
 
     public static function render_field(array $args): void {

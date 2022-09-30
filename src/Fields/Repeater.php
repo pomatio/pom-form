@@ -7,6 +7,9 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework;
+
 class Repeater {
 
     public static function render_field(array $args): void {
@@ -70,7 +73,7 @@ class Repeater {
                             foreach ($args['fields'] as $field) {
                                 $field['value'] = $default[$field['name']]['value'];
                                 $field['disabled'] = $default[$field['name']]['disabled'];
-                                echo (new Form())::add_field($field);
+                                echo (new Pomatio_Framework())::add_field($field);
                             }
 
                             ?>
@@ -143,7 +146,7 @@ class Repeater {
                                             $field['disabled'] = true;
                                         }
 
-                                        echo (new Form())::add_field($field);
+                                        echo (new Pomatio_Framework())::add_field($field);
                                     }
 
                                     echo '<div class="repeater-action-row">';
