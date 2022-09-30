@@ -18,12 +18,18 @@ This package uses the following third party libraries:
 * [CodeMirror](https://codemirror.net/): Version included in WordPress
 
 ## How to use
-Example of how to render a field
+To output any field first you need to import the required class:
 
 ```PHP
-echo (new \PomatioFramework\Form())::add_field([
+use PomatioFramework\Pomatio_Framework;
+```
+
+Example of how to render a field:
+
+```PHP
+echo (new Pomatio_Framework())::add_field([
     'type' => 'text',
-    'label' => 'Lorem Ipsum',
+    'label' => 'Test Framework',
     'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
     'placeholder' => 'Lorem Ipsum',
     'name' => 'name',
