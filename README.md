@@ -3,7 +3,7 @@ An easy way to render form fields in WordPress.
 
 ## Install
 ```
-composer install --save pom-form
+composer require pom/form
 ```
 
 ## Requirements
