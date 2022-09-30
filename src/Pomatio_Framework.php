@@ -6,7 +6,7 @@ const POM_FORM_VERSION = '0.1.0';
 define('POM_FORM_SRC_PATH', __DIR__);
 define('POM_FORM_SRC_URI', str_replace($_SERVER['DOCUMENT_ROOT'], '', POM_FORM_SRC_PATH));
 
-class Form {
+class Pomatio_Framework {
 
     public function __construct() {
         require 'vendor/autoload.php';
@@ -14,12 +14,12 @@ class Form {
         /**
          * Functions available throughout the framework.
          */
-        require_once 'class-helpers.php';
+        require_once 'POM_Form_Helper.php';
         require_once 'class-sanitize.php';
-        require_once 'class-disk.php';
-        require_once 'class-settings.php';
-        require_once 'class-ajax.php';
-        require_once 'class-save.php';
+        require_once 'POM_Form_Disk.php';
+        require_once 'POM_Framework_Settings.php';
+        require_once 'POM_Form_Ajax.php';
+        require_once 'POMATIO_Framework_Save.php';
     }
 
     /**
@@ -59,7 +59,7 @@ class Form {
     public static function add_field(array $args): string {
         $type = strtolower($args['type']);
 
-        if (!file_exists($filename = POM_Form_Helper::get_path() . "fields/$type.php")) {
+        if (!file_exists($filename = POM_Form_Helper::get_path() . "Fields/$type.php")) {
             return '';
         }
 
@@ -106,4 +106,4 @@ class Form {
     }
 
 }
-new Form();
+new Pomatio_Framework();

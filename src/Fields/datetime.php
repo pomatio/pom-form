@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\fields;
+namespace PomatioFramework\Fields;
 
-class Date {
+class Datetime {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
@@ -19,7 +19,7 @@ class Date {
 
         ?>
 
-        <input aria-label="<?= $args['label'] ?? '' ?>" type="date" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="date"<?= $disabled ?>>
+        <input aria-label="<?= $args['label'] ?? '' ?>" type="datetime-local" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="datetime"<?= $disabled ?>>
 
         <?php
 

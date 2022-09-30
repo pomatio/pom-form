@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\fields;
+namespace PomatioFramework\Fields;
 
 class Image_Picker {
 

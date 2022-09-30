@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\fields;
+namespace PomatioFramework\Fields;
 
-class Code_HTML {
+class Code_JS {
 
     public static function render_field(array $args): void {
 
@@ -22,7 +22,7 @@ class Code_HTML {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= POM_Form_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-js <?= $args['class'] ?>" data-type="code_js"><?= $args['value'] ?></textarea>
 
         <?php
 

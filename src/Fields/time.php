@@ -1,10 +1,11 @@
 <?php
 
-namespace PomatioFramework\fields;
+namespace PomatioFramework\Fields;
 
-class Tinymce {
+class Time {
 
     public static function render_field(array $args): void {
+        $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         echo '<div class="form-group">';
 
@@ -16,23 +17,17 @@ class Tinymce {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        $custom_attrs = POM_Form_Helper::convert_html_attributes_to_array($args['custom_attrs']);
+        ?>
 
-        $tinymce_args = [
-            'textarea_rows' => $custom_attrs['textarea_rows'] ?? 10,
-            'teeny' => $custom_attrs['teeny'] ?? false,
-            'quicktags' => $custom_attrs['quicktags'] ?? false,
-            'wpautop' => $custom_attrs['wpautop'] ?? true,
-            'media_buttons' => $custom_attrs['media_buttons'] ?? false
-        ];
-        wp_editor($args['value'], $args['id'], $tinymce_args);
+        <input aria-label="<?= $args['label'] ?? '' ?>" type="time" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="time"<?= $disabled ?>>
+
+        <?php
 
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
         echo '</div>';
-
     }
 
 }

@@ -2,10 +2,10 @@
 /**
  * New repeater elements are added via ajax.
  * If changes are made to the HTML of a repeater element,
- * update it in class-ajax.php as well --> get_repeater_item_html().
+ * update it in POM_Form_Ajax.php as well --> get_repeater_item_html().
  */
 
-namespace PomatioFramework\fields;
+namespace PomatioFramework\Fields;
 
 class Repeater {
 

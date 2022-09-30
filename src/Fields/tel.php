@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\fields;
+namespace PomatioFramework\Fields;
 
-class Email {
+class Tel {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
@@ -19,7 +19,7 @@ class Email {
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="email" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="email"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="tel" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="tel"<?= $disabled ?>>
 
             <?php
 
@@ -27,7 +27,7 @@ class Email {
                 echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
             }
 
-        echo '</div>';
+        echo '<div>';
     }
 
 }
