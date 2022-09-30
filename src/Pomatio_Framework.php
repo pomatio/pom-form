@@ -9,8 +9,6 @@ define('POM_FORM_SRC_URI', str_replace($_SERVER['DOCUMENT_ROOT'], '', POM_FORM_S
 class Pomatio_Framework {
 
     public function __construct() {
-        require 'vendor/autoload.php';
-
         /**
          * Functions available throughout the framework.
          */
