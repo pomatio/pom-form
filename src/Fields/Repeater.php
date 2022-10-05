@@ -227,8 +227,9 @@ class Repeater {
         wp_enqueue_script('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.min.js', ['jquery'], null, true);
         wp_localize_script(
             'pomatio-framework-repeater',
-            'pom_form_repeater',
+            'pomatio_framework_repeater',
             [
+                'ajax_url' => admin_url('admin-ajax.php'),
                 'limit' => __('Element limit reached', 'pomatio-framework'),
                 'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pomatio-framework'),
                 'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pomatio-framework'),

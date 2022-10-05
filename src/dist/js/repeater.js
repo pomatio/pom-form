@@ -1,5 +1,5 @@
 /**
- * @var pom_form_repeater Object containing the translation strings.
+ * @var pomatio_framework_repeater Object containing the translation strings.
  */
 
 jQuery(function($) {
@@ -97,7 +97,7 @@ jQuery(function($) {
 
         if ($item_count >= $limit) {
             if (!$('.repeater-limit-warning').length) {
-                $this.after('<span class="repeater-limit-warning">' + pom_form_repeater.limit + '</span>');
+                $this.after('<span class="repeater-limit-warning">' + pomatio_framework_repeater.limit + '</span>');
             }
 
             setTimeout(function() {
@@ -114,7 +114,7 @@ jQuery(function($) {
         let $config = $this.siblings('[name="config"]').val();
 
         $.ajax({
-            url: ajaxurl,
+            url: pomatio_framework_repeater.ajax_url,
             type: 'POST',
             data: {
                 action: 'pomatio_framework_get_repeater_item_html',
@@ -136,7 +136,7 @@ jQuery(function($) {
     $(document).on('click', '.repeater-wrapper .delete', function(e) {
         e.preventDefault();
 
-        let $execute = confirm(pom_form_repeater.delete_repeater);
+        let $execute = confirm(pomatio_framework_repeater.delete_repeater);
         if (!$execute) {
             return;
         }
@@ -251,7 +251,7 @@ jQuery(function($) {
     $(document).on('click', '.restore-repeater-defaults', function(e) {
         e.preventDefault();
 
-        let $execute = confirm(pom_form_repeater.restore_msg);
+        let $execute = confirm(pomatio_framework_repeater.restore_msg);
         if (!$execute) {
             return;
         }
@@ -268,7 +268,7 @@ jQuery(function($) {
             url: ajaxurl,
             type: 'POST',
             data: {
-                action: 'pom_form_restore_repeater_defaults',
+                action: 'pomatio_framework_restore_repeater_defaults',
                 defaults: $this.attr('data-defaults'),
                 fields: $this.attr('data-fields'),
                 title: $this.attr('data-title'),
