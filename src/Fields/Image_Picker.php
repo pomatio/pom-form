@@ -30,7 +30,7 @@ class Image_Picker {
                 ?>
             </div>
             <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>">
-            <button class="button open-image-picker"><?php _e('Select image', 'pom-form') ?></button>
+            <button class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></button>
         </div>
 
         <?php
@@ -47,8 +47,8 @@ class Image_Picker {
             'pom-form-image_picker',
             'pom_form_image_picker',
             [
-                'title' => __('Choose Image', 'pom-form'),
-                'button' => __('Choose Image', 'pom-form'),
+                'title' => __('Choose Image', 'pomatio-framework'),
+                'button' => __('Choose Image', 'pomatio-framework'),
             ]
         );
 

@@ -51,7 +51,7 @@ class Pomatio_Framework_Helper {
          * Then the array contains the name and the path.
          */
         $libraries['all'] = [
-            'name' => __('All', 'pom-form'),
+            'name' => __('All', 'pomatio-framework'),
             'path' => ''
         ];
 

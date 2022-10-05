@@ -79,14 +79,14 @@ class Repeater {
                             ?>
 
                             <div class="repeater-action-row">
-                                <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+                                <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
 
                                 <?php
 
                                 if (isset($args['cloneable']) && $args['cloneable'] === true) {
                                     ?>
 
-                                    <span class="clone-repeater"><?php _e('Clone', 'pom-form') ?></span>
+                                    <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
 
                                     <?php
                                 }
@@ -94,7 +94,7 @@ class Repeater {
                                 if (isset($default['can_be_removed']) && $default['can_be_removed']) {
                                     ?>
 
-                                    <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                                    <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
 
                                     <?php
                                 }
@@ -154,7 +154,7 @@ class Repeater {
                                         if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
                                             ?>
 
-                                            <span class="restore-default"><?php _e('Restore default', 'pom-form') ?></span>
+                                            <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
 
                                             <?php
                                         }
@@ -162,7 +162,7 @@ class Repeater {
                                         if (isset($args['cloneable']) && $args['cloneable'] === true) {
                                             ?>
 
-                                            <span class="clone-repeater"><?php _e('Clone', 'pom-form') ?></span>
+                                            <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
 
                                             <?php
                                         }
@@ -170,14 +170,14 @@ class Repeater {
                                         if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
                                             ?>
 
-                                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                                            <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
 
                                             <?php
                                         }
                                         elseif ($repeater_type === 'new') {
                                             ?>
 
-                                            <span class="delete"><?php _e('Delete', 'pom-form') ?></span>
+                                            <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
 
                                             <?php
                                         }
@@ -196,7 +196,7 @@ class Repeater {
 
             ?>
 
-            <button class="button add-new-repeater-item"><?php _e('Add new', 'pom-form') ?></button>
+            <button class="button add-new-repeater-item"><?php _e('Add new', 'pomatio-framework') ?></button>
             <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
 
             <?php
@@ -204,7 +204,7 @@ class Repeater {
             if (isset($args['defaults']) && !empty($args['defaults'])) {
                 ?>
 
-                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pom-form') ?></button>
+                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pomatio-framework') ?></button>
 
                 <?php
             }
@@ -229,9 +229,9 @@ class Repeater {
             'pom-form-repeater',
             'pom_form_repeater',
             [
-                'limit' => __('Element limit reached', 'pom-form'),
-                'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pom-form'),
-                'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pom-form'),
+                'limit' => __('Element limit reached', 'pomatio-framework'),
+                'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pomatio-framework'),
+                'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pomatio-framework'),
             ]
         );
     }

@@ -31,7 +31,7 @@ class Icon_Picker {
 
                 ?>
             </div>
-            <button class="button open-icon-picker-modal"><?php _e('Select icon', 'pom-form') ?></button>
+            <button class="button open-icon-picker-modal"><?php _e('Select icon', 'pomatio-framework') ?></button>
             <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
         </div>
 
@@ -51,7 +51,7 @@ class Icon_Picker {
             'pom-form-icon_picker',
             'pom_form_icon_picker',
             [
-                'loading' => __('Loading...', 'pom-form')
+                'loading' => __('Loading...', 'pomatio-framework')
             ]
         );
     }
@@ -62,13 +62,13 @@ class Icon_Picker {
         <div id="pom-form-icons-modal" class="media-modal wp-core-ui" style="display: none;">
             <button type="button" class="media-modal-close close-icon-picker-modal">
                 <span class="media-modal-icon">
-                    <span class="screen-reader-text"><?php _e('Close modal', 'pom-form') ?></span>
+                    <span class="screen-reader-text"><?php _e('Close modal', 'pomatio-framework') ?></span>
                 </span>
             </button>
             <div class="media-modal-content" role="document">
                 <div  class="media-frame mode-select wp-core-ui">
                     <div class="media-frame-title" id="media-frame-title"></div>
-                    <h2 class="media-frame-menu-heading"><?php _e('Icon libraries', 'pom-form') ?></h2>
+                    <h2 class="media-frame-menu-heading"><?php _e('Icon libraries', 'pomatio-framework') ?></h2>
                     <div class="media-frame-menu">
                         <div role="tablist" aria-orientation="vertical" class="media-menu">
                             <?php
@@ -88,17 +88,17 @@ class Icon_Picker {
                     <div class="media-frame-tab-panel">
                         <div class="media-frame-router">
                             <div role="tablist" aria-orientation="horizontal" class="media-router">
-                                <input placeholder="<?php _e('Search icon', 'pom-form') ?>" aria-label="<?php _e('Search icon', 'pom-form') ?>" id="icon-search" type="search">
+                                <input placeholder="<?php _e('Search icon', 'pomatio-framework') ?>" aria-label="<?php _e('Search icon', 'pomatio-framework') ?>" id="icon-search" type="search">
                             </div>
                         </div>
                         <div class="media-frame-content">
-                            <span class="centered-text"><?php _e('Loading...', 'pom-form') ?></span>
+                            <span class="centered-text"><?php _e('Loading...', 'pomatio-framework') ?></span>
                         </div>
                     </div>
                     <div class="media-frame-toolbar">
                         <div class="media-toolbar">
                             <div class="media-toolbar-primary">
-                                <button class="button media-button button-primary button-large media-button-select pom-form-icon-select-button disabled" disabled><?php _e('Select icon', 'pom-form') ?></button>
+                                <button class="button media-button button-primary button-large media-button-select pom-form-icon-select-button disabled" disabled><?php _e('Select icon', 'pomatio-framework') ?></button>
                             </div>
                         </div>
                     </div>

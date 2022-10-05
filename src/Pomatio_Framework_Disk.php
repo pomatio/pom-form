@@ -47,7 +47,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @return string
      */
-    public function get_settings_path(string $settings_dir = 'pom-form'): string {
+    public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
         $multisite_path = is_multisite() ? "sites/{$this->site_data->blog_id}/" : '';
 
         return WP_CONTENT_DIR . "/settings/$settings_dir/$multisite_path";
@@ -61,7 +61,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @return void
      */
-    public static function create_settings_dir(string $settings_dir = 'pom-form'): void {
+    public static function create_settings_dir(string $settings_dir = 'pomatio-framework'): void {
         $settings_path = (new self)->get_settings_path($settings_dir);
         if (!is_dir($settings_path)) {
             $created = wp_mkdir_p($settings_path);
@@ -119,7 +119,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @return string Written file path.
      */
-    public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pom-form'): string {
+    public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pomatio-framework'): string {
         if (empty($file_name) || empty($content)) {
             return '';
         }
@@ -134,7 +134,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
     /**
      * Read the content of a file.
      */
-    public static function read_file($filename, $settings_dir = 'pom-form', $return = 'default') {
+    public static function read_file($filename, $settings_dir = 'pomatio-framework', $return = 'default') {
         $settings_path = (new self)->get_settings_path($settings_dir);
         $path = $settings_path . $filename;
 
@@ -153,7 +153,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @return bool
      */
-    public static function delete_file($filename, string $settings_dir = 'pom-form'): bool {
+    public static function delete_file($filename, string $settings_dir = 'pomatio-framework'): bool {
         $settings_path = (new self)->get_settings_path($settings_dir);
         $filename = $settings_path . $filename;
 

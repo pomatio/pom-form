@@ -176,13 +176,13 @@ class Pomatio_Framework_Settings {
                         <tr>
                             <th scope="row">
                                 <label for="<?= "$setting_key-enabled" ?>">
-                                    <?php _e('Enable tweak', 'pom-form') ?>
+                                    <?php _e('Enable tweak', 'pomatio-framework') ?>
                                 </label>
                             </th>
                             <td>
                                 <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
                                 <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
-                                <label for="<?= "$setting_key-enabled" ?>"><?php _e('Check to enable this tweak.', 'pom-form') ?></label>
+                                <label for="<?= "$setting_key-enabled" ?>"><?php _e('Check to enable this tweak.', 'pomatio-framework') ?></label>
                                 <p class="description"><?= $setting['description'] ?></p>
                             </td>
                         </tr>
@@ -252,7 +252,7 @@ class Pomatio_Framework_Settings {
 
             <input type="hidden" name="save_pom_framework_fields" value="1">
 
-            <?php submit_button(__('Save', 'pom-form')) ?>
+            <?php submit_button(__('Save', 'pomatio-framework')) ?>
         </form>
 
         <?php
