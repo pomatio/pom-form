@@ -2,12 +2,12 @@
 /**
  * New repeater elements are added via ajax.
  * If changes are made to the HTML of a repeater element,
- * update it in POM_Form_Ajax.php as well --> get_repeater_item_html().
+ * update it in Pomatio_Framework_Ajax.php as well --> get_repeater_item_html().
  */
 
 namespace PomatioFramework\Fields;
 
-use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework_Helper;
 use PomatioFramework\Pomatio_Framework;
 
 class Repeater {
@@ -41,7 +41,7 @@ class Repeater {
 
         $sortable = isset($args['sortable']) && $args['sortable'] === true ? ' sortable' : '';
 
-        $repeater_identifier = POM_Form_Helper::generate_random_string(10, false);
+        $repeater_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
 
         $limit = isset($args['limit']) ? ' data-limit="' . (int)$args['limit'] . '"' : '';
 
@@ -53,7 +53,7 @@ class Repeater {
 
             // Render defaults if set
             if (empty($json['default']) && isset($args['defaults']) && !empty($args['defaults'])) {
-                $defaults_identifier = POM_Form_Helper::generate_random_string(10, false);
+                $defaults_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
 
                 foreach ($args['defaults'] as $default) {
                     $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');

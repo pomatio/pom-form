@@ -2,7 +2,7 @@
 
 namespace PomatioFramework\Fields;
 
-use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework_Helper;
 
 class Color_Palette {
 
@@ -18,7 +18,7 @@ class Color_Palette {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        $colors = POM_Form_Helper::get_color_palette();
+        $colors = Pomatio_Framework_Helper::get_color_palette();
 
         echo '<div class="color-palette-wrapper">';
 

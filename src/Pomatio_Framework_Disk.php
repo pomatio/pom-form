@@ -5,7 +5,7 @@
 
 namespace PomatioFramework;
 
-class POM_Form_Disk {
+class Pomatio_Framework_Disk {
 
     /**
      * Current site data.
@@ -44,6 +44,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      * Establish the path in which the actions related to files are executed.
      *
      * @param string $settings_dir
+     *
      * @return string
      */
     public function get_settings_path(string $settings_dir = 'pom-form'): string {
@@ -57,6 +58,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      * If a multisite, it is subdivided into /sites/blog_id/.
      *
      * @param string $settings_dir
+     *
      * @return void
      */
     public static function create_settings_dir(string $settings_dir = 'pom-form'): void {
@@ -65,13 +67,13 @@ $htaccess_content = '<IfModule mod_authz_core.c>
             $created = wp_mkdir_p($settings_path);
 
             if (!$created) {
-                POM_Form_Helper::write_log('Error creating tweaks settings dir.');
+                Pomatio_Framework_Helper::write_log('Error creating tweaks settings dir.');
             }
-			else {
+            else {
                 (new self)->create_enabled_settings_file();
                 (new self)->create_htaccess_file();
-                POM_Form_Helper::write_log('Created tweaks settings dir.');
-			}
+                Pomatio_Framework_Helper::write_log('Created tweaks settings dir.');
+            }
         }
     }
 
@@ -92,7 +94,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
             return '';
         }
 
-        $file_content  = '<?php' . PHP_EOL;
+        $file_content = '<?php' . PHP_EOL;
         $file_content .= '/**' . PHP_EOL;
         $file_content .= !empty($description) ? ' * ' . $description . PHP_EOL : '';
         $file_content .= ' *' . PHP_EOL;
@@ -114,6 +116,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      * @param $content
      * @param string $file_extension
      * @param string $settings_dir
+     *
      * @return string Written file path.
      */
     public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pom-form'): string {
@@ -147,6 +150,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @param $filename
      * @param string $settings_dir
+     *
      * @return bool
      */
     public static function delete_file($filename, string $settings_dir = 'pom-form'): bool {

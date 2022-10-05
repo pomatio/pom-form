@@ -12,12 +12,12 @@ class Pomatio_Framework {
         /**
          * Functions available throughout the framework.
          */
-        require_once 'POM_Form_Helper.php';
+        require_once 'Pomatio_Framework_Helper.php';
         require_once 'class-sanitize.php';
-        require_once 'POM_Form_Disk.php';
-        require_once 'POM_Framework_Settings.php';
-        require_once 'POM_Form_Ajax.php';
-        require_once 'POMATIO_Framework_Save.php';
+        require_once 'Pomatio_Framework_Disk.php';
+        require_once 'Pomatio_Framework_Settings.php';
+        require_once 'Pomatio_Framework_Ajax.php';
+        require_once 'Pomatio_Framework_Save.php';
     }
 
     /**
@@ -27,6 +27,7 @@ class Pomatio_Framework {
      * Allow custom attributes. These are not analyzed.
      *
      * @param array $args
+     *
      * @return array
      */
     private static function parse_args(array $args): array {
@@ -39,7 +40,7 @@ class Pomatio_Framework {
         $field_args['name'] = sanitize_title($field_args['name']);
         $field_args['id'] = $field_args['id'] ?? sanitize_title($field_args['name']);
         $field_args['value'] = $field_args['value'] ?? '';
-        $field_args['class'] = isset($field_args['class']) ? sanitize_html_class($field_args['class']) :  '';
+        $field_args['class'] = isset($field_args['class']) ? sanitize_html_class($field_args['class']) : '';
         $field_args['description_position'] = $field_args['description_position'] ?? 'under_field';
         $field_args['options'] = $field_args['options'] ?? [];
         $field_args['prefix'] = $field_args['prefix'] ?? '';
@@ -52,12 +53,13 @@ class Pomatio_Framework {
      * Returns the HTML of the field.
      *
      * @param array $args
+     *
      * @return string
      */
     public static function add_field(array $args): string {
         $type = ucfirst($args['type']);
 
-        if (!file_exists($filename = POM_Form_Helper::get_path() . "/Fields/$type.php")) {
+        if (!file_exists($filename = Pomatio_Framework_Helper::get_path() . "/Fields/$type.php")) {
             return '';
         }
 
@@ -95,7 +97,7 @@ class Pomatio_Framework {
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'color') {
                     wp_enqueue_style('wp-color-picker');
-                    wp_enqueue_script('pom-form-color',  POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+                    wp_enqueue_script('pom-form-color', POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
                 }
             }
         }
@@ -104,4 +106,5 @@ class Pomatio_Framework {
     }
 
 }
+
 new Pomatio_Framework();

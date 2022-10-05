@@ -20,13 +20,13 @@ This package uses the following third party libraries:
 ## How to use
 To output any field first you need to import the required class:
 
-```PHP
+```php
 use PomatioFramework\Pomatio_Framework;
 ```
 
 Example of how to render a field:
 
-```PHP
+```php
 echo (new Pomatio_Framework())::add_field([
     'type' => 'text',
     'label' => 'Test Framework',

@@ -3,8 +3,8 @@
  * Functions to ensure that values are safe to tamper with.
  */
 
-use PomatioFramework\POM_Form_Disk;
-use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework_Disk;
+use PomatioFramework\Pomatio_Framework_Helper;
 
 function sanitize_pom_form_button($value) {
     return $value;
@@ -41,7 +41,7 @@ function sanitize_pom_form_code_css($value, $compression_level = 'default'): str
  * @return string
  */
 function sanitize_pom_form_code_html($value): string {
-    $allowed_tags = POM_Form_Helper::get_allowed_html();
+    $allowed_tags = Pomatio_Framework_Helper::get_allowed_html();
     return wp_kses($value, $allowed_tags, []);
 }
 
@@ -179,7 +179,7 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
 
                         if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js')) {
                             $file_name = "{$array_settings['name']}_{$repeater_identifier}_{$arr_key}";
-                            $sanitized_array[$type][$index][$arr_key]['value'] = POM_Form_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
+                            $sanitized_array[$type][$index][$arr_key]['value'] = Pomatio_Framework_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
                         }
                         else {
                             $sanitized_array[$type][$index][$arr_key]['value'] = $sanitize_function_name($arr_value['value']);
@@ -234,7 +234,7 @@ function sanitize_pom_form_time($value) {
 }
 
 function sanitize_pom_form_tinymce($value): string {
-    $allowed_tags = POM_Form_Helper::get_allowed_html();
+    $allowed_tags = Pomatio_Framework_Helper::get_allowed_html();
     return wp_kses($value, $allowed_tags, []);
 }
 

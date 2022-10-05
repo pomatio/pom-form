@@ -2,7 +2,7 @@
 
 namespace PomatioFramework\Fields;
 
-use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework_Helper;
 
 class Tinymce {
 
@@ -18,7 +18,7 @@ class Tinymce {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        $custom_attrs = POM_Form_Helper::convert_html_attributes_to_array($args['custom_attrs']);
+        $custom_attrs = Pomatio_Framework_Helper::convert_html_attributes_to_array($args['custom_attrs']);
 
         $tinymce_args = [
             'textarea_rows' => $custom_attrs['textarea_rows'] ?? 10,

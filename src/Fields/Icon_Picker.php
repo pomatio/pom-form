@@ -2,7 +2,7 @@
 
 namespace PomatioFramework\Fields;
 
-use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework_Helper;
 
 class Icon_Picker {
 
@@ -73,7 +73,7 @@ class Icon_Picker {
                         <div role="tablist" aria-orientation="vertical" class="media-menu">
                             <?php
 
-                            $icon_libraries = POM_Form_Helper::get_icon_libraries();
+                            $icon_libraries = Pomatio_Framework_Helper::get_icon_libraries();
                             foreach ($icon_libraries as $library => $data) {
                                 ?>
 

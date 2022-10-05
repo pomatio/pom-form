@@ -5,7 +5,7 @@
 
 namespace PomatioFramework;
 
-class POM_Framework_Settings {
+class Pomatio_Framework_Settings {
 
     public static function get_current_tab($settings_array) {
         /**
@@ -43,11 +43,11 @@ class POM_Framework_Settings {
     }
 
     public static function get_setting_value($page_slug, $setting_name, $field_name, $type = '') {
-        $values = POM_Form_Disk::read_file("$setting_name.php", $page_slug, 'array');
+        $values = Pomatio_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
         $value = is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
 
         if (!empty($type)) {
-            $sanitize_function_name = "sanitize_pom_form_{$type}";
+            $sanitize_function_name = "sanitize_pom_form_$type";
             $value = $sanitize_function_name($value);
         }
 
@@ -55,7 +55,7 @@ class POM_Framework_Settings {
     }
 
     public static function render($page_slug, $settings_file_path): void {
-        POMATIO_Framework_Save::save_settings($page_slug, $settings_file_path);
+        Pomatio_Framework_Save::save_settings($page_slug, $settings_file_path);
 
         ?>
 
@@ -113,7 +113,7 @@ class POM_Framework_Settings {
                 <?php
 
                 foreach ($tabs as $subsection_key => $subsection_data) {
-                    $tab_url = get_admin_url() . 'options-general.php?page=' . $page_slug . '&section=' . $current_tab . '&tab=' . $subsection_key;
+                    $tab_url = get_admin_url() . "options-general.php?page=$page_slug&section=$current_tab&tab=$subsection_key";
                     $current_class = $current_subsection === $subsection_key ? ' class="current"' : '';
                     $next = next($tabs) ? ' | ' : '';
 
@@ -145,7 +145,7 @@ class POM_Framework_Settings {
         $current_tab = self::get_current_tab($settings_array);
         $current_subsection = self::get_current_subsection($settings_array);
 
-        $action_url  = admin_url( 'options-general.php?page=' . $page_slug . '&section=' . $current_tab . '&tab=' . $current_subsection);
+        $action_url = admin_url("options-general.php?page=$page_slug&section=$current_tab&tab=$current_subsection");
 
         ?>
 
@@ -158,8 +158,8 @@ class POM_Framework_Settings {
 
             wp_nonce_field('pom_framework_save_settings', 'pom_framework_security_check');
 
-            $settings = POM_Form_Helper::get_settings($settings_array, $current_tab, $current_subsection);
-            $enabled_settings = POM_Form_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+            $settings = Pomatio_Framework_Helper::get_settings($settings_array, $current_tab, $current_subsection);
+            $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
 
             foreach ($settings as $setting_key => $setting) {
                 ?>
@@ -200,7 +200,7 @@ class POM_Framework_Settings {
 
                             <tr>
                                 <th scope="row">
-                                    <label for="<?= $field['name'] ?? ''?>">
+                                    <label for="<?= $field['name'] ?? '' ?>">
                                         <?= $field['label'] ?? '' ?>
                                     </label>
                                 </th>
@@ -218,7 +218,7 @@ class POM_Framework_Settings {
                                         $field['value'] = 'yes';
                                     }
                                     elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
-                                        $value = POM_Form_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
+                                        $value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
                                         $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
                                         $field['value'] = $sanitize_function_name($value);
                                     }

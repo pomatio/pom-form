@@ -2,7 +2,7 @@
 
 namespace PomatioFramework;
 
-class POM_Form_Helper {
+class Pomatio_Framework_Helper {
 
     public static function get_path(): string {
         return __DIR__;
@@ -12,7 +12,7 @@ class POM_Form_Helper {
      * Convert an associative array into valid HTML attributes
      */
     public static function convert_array_to_html_attributes($field_args): string {
-        return implode(' ', array_map(static function($key) use ($field_args) {
+        return implode(' ', array_map(static function ($key) use ($field_args) {
             if (is_bool($field_args[$key])) {
                 return $field_args[$key] ? $key : '';
             }
@@ -21,7 +21,7 @@ class POM_Form_Helper {
         }, array_keys($field_args)));
     }
 
-    public static function convert_html_attributes_to_array($string) : array {
+    public static function convert_html_attributes_to_array($string): array {
         $array = [];
 
         $asArr = explode(' ', $string);
@@ -66,6 +66,7 @@ class POM_Form_Helper {
      * https://stackoverflow.com/questions/4356289/php-random-string-generator
      * @param int $length
      * @param bool $numbers
+     *
      * @return string
      */
     public static function generate_random_string(int $length = 10, bool $numbers = true): string {
@@ -83,13 +84,15 @@ class POM_Form_Helper {
      * Write to the WordPress debug.log file.
      *
      * @param $log
+     *
      * @return void
      */
     public static function write_log($log): void {
         if (true === WP_DEBUG) {
             if (is_array($log) || is_object($log)) {
                 error_log(print_r($log, true));
-            } else {
+            }
+            else {
                 error_log($log);
             }
         }
@@ -101,10 +104,11 @@ class POM_Form_Helper {
      * @param $settings_array
      * @param $tab
      * @param $subsection
+     *
      * @return mixed
      */
     public static function get_settings($settings_array, $tab, $subsection) {
-       return $settings_array[$tab]['tab'][$subsection]['settings'];
+        return $settings_array[$tab]['tab'][$subsection]['settings'];
     }
 
     public static function get_allowed_html(): array {

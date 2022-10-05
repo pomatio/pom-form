@@ -2,7 +2,7 @@
 
 namespace PomatioFramework\Fields;
 
-use PomatioFramework\POM_Form_Helper;
+use PomatioFramework\Pomatio_Framework_Helper;
 
 class Code_HTML {
 
@@ -24,7 +24,7 @@ class Code_HTML {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= POM_Form_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
 
         <?php
 

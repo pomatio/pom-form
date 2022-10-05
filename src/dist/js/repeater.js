@@ -328,7 +328,7 @@ jQuery(function($) {
      * Generate a random string.
      *
      * The same helper exists but in PHP.
-     * @see POM_Form_Helper::generate_random_string()
+     * @see Pomatio_Framework_Helper::generate_random_string()
      *
      * @param $length
      * @param $numbers

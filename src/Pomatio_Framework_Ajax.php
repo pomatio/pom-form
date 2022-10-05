@@ -2,7 +2,7 @@
 
 namespace PomatioFramework;
 
-class POM_Form_Ajax {
+class Pomatio_Framework_Ajax {
 
     public function __construct() {
         add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
@@ -21,7 +21,7 @@ class POM_Form_Ajax {
         }
 
 
-        $icons = POM_Form_Helper::get_icon_libraries();
+        $icons = Pomatio_Framework_Helper::get_icon_libraries();
         $glob = [];
 
         ob_start();
@@ -85,7 +85,7 @@ class POM_Form_Ajax {
             $this->get_library_icons();
         }
 
-        $icons = POM_Form_Helper::get_icon_libraries();
+        $icons = Pomatio_Framework_Helper::get_icon_libraries();
         $found_files = 0;
 
         ob_start();
@@ -127,7 +127,7 @@ class POM_Form_Ajax {
             <div class="attachment-preview landscape">
                 <div class="thumbnail">
                     <div class="centered">
-                        <img alt="" src="<?= POM_Form_Helper::path_to_url($file) ?>">
+                        <img alt="" src="<?= Pomatio_Framework_Helper::path_to_url($file) ?>">
                         <span class="icon-name"><?= pathinfo($file, PATHINFO_FILENAME) ?></span>
                     </div>
                 </div>
@@ -161,7 +161,7 @@ class POM_Form_Ajax {
         <div class="repeater new">
             <div class="title"><strong><?= $config['title'] ?></strong><span></span></div>
             <div class="repeater-fields">
-                <input type="hidden" name="repeater_identifier" value="<?= POM_Form_Helper::generate_random_string(10, false) ?>">
+                <input type="hidden" name="repeater_identifier" value="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>">
 
                 <?php
 
@@ -210,7 +210,7 @@ class POM_Form_Ajax {
         $fields = json_decode(base64_decode($fields), true);
         foreach ($defaults as $default) {
             $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');
-            $defaults_identifier = POM_Form_Helper::generate_random_string(10, false);
+            $defaults_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
 
             ?>
 
@@ -258,4 +258,4 @@ class POM_Form_Ajax {
     }
 
 }
-new POM_Form_Ajax();
+new Pomatio_Framework_Ajax();
