@@ -25,8 +25,8 @@ class Repeater {
         }
 
         $repeater_config = [
-            'title' => $args['title'],
-            'fields' => $args['fields']
+            'title' => $args['title'] ?? '',
+            'fields' => $args['fields'] ?? []
         ];
         if (isset($args['limit'])) {
             $repeater_config['limit'] = $args['limit'];

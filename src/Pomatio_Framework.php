@@ -79,7 +79,7 @@ class Pomatio_Framework {
          * it is necessary to do the enqueue from the beginning.
          * Otherwise, the field is not rendered.
          */
-        if ($field_args['type'] === 'repeater') {
+        if ($field_args['type'] === 'repeater' && !empty($field_args['fields'])) {
             foreach ($field_args['fields'] as $repeater_field) {
                 if (isset($repeater_field['type']) && ($repeater_field['type'] === 'code_html' || $repeater_field['type'] === 'code_css' || $repeater_field['type'] === 'code_js')) {
                     $codemirror_settings = wp_enqueue_code_editor([]);
