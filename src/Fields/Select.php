@@ -47,7 +47,7 @@ class Select {
 
         echo '</div>';
 
-        wp_enqueue_script('pom-form-select', POM_FORM_SRC_URI . '/dist/js/select.min.js', ['jquery'], null, true);
+        wp_enqueue_script('pomatio-framework-select', POM_FORM_SRC_URI . '/dist/js/select.min.js', ['jquery'], null, true);
     }
 
 }

@@ -45,10 +45,10 @@ class Icon_Picker {
 
         echo '</div>';
 
-        wp_enqueue_style('pom-form-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker.min.css');
-        wp_enqueue_script('pom-form-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker.min.js', ['jquery'], null, true);
+        wp_enqueue_style('pomatio-framework-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker.min.css');
+        wp_enqueue_script('pomatio-framework-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker.min.js', ['jquery'], null, true);
         wp_localize_script(
-            'pom-form-icon_picker',
+            'pomatio-framework-icon_picker',
             'pom_form_icon_picker',
             [
                 'loading' => __('Loading...', 'pomatio-framework')
@@ -59,7 +59,7 @@ class Icon_Picker {
     private function dialog_html(): void {
         ?>
 
-        <div id="pom-form-icons-modal" class="media-modal wp-core-ui" style="display: none;">
+        <div id="pomatio-framework-icons-modal" class="media-modal wp-core-ui" style="display: none;">
             <button type="button" class="media-modal-close close-icon-picker-modal">
                 <span class="media-modal-icon">
                     <span class="screen-reader-text"><?php _e('Close modal', 'pomatio-framework') ?></span>
@@ -98,7 +98,7 @@ class Icon_Picker {
                     <div class="media-frame-toolbar">
                         <div class="media-toolbar">
                             <div class="media-toolbar-primary">
-                                <button class="button media-button button-primary button-large media-button-select pom-form-icon-select-button disabled" disabled><?php _e('Select icon', 'pomatio-framework') ?></button>
+                                <button class="button media-button button-primary button-large media-button-select pomatio-framework-icon-select-button disabled" disabled><?php _e('Select icon', 'pomatio-framework') ?></button>
                             </div>
                         </div>
                     </div>

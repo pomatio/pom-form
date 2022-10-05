@@ -5,7 +5,7 @@
 jQuery(function($) {
 
     let $render_code_editor = function() {
-        $('textarea.form-control.pom-form-code-editor-css').each(function() {
+        $('textarea.form-control.pomatio-framework-code-editor-css').each(function() {
             let $this = $(this);
 
             if ($this.hasClass('codemirror-rendered')) {
@@ -24,7 +24,7 @@ jQuery(function($) {
             $this.addClass('codemirror-rendered');
         });
 
-        $('textarea.form-control.pom-form-code-editor-js').each(function() {
+        $('textarea.form-control.pomatio-framework-code-editor-js').each(function() {
             let $this = $(this);
 
             if ($this.hasClass('codemirror-rendered')) {
@@ -43,7 +43,7 @@ jQuery(function($) {
             $this.addClass('codemirror-rendered');
         });
 
-        $('textarea.form-control.pom-form-code-editor-html').each(function() {
+        $('textarea.form-control.pomatio-framework-code-editor-html').each(function() {
             let $this = $(this);
 
             if ($this.hasClass('codemirror-rendered')) {

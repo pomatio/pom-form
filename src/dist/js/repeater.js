@@ -301,7 +301,7 @@ jQuery(function($) {
         /**
          * If the repeater has code fields replace their id's in order to render Codemirror with unique IDs.
          */
-        let $code_editor = $clone.find('.pom-form-code-editor-html, .pom-form-code-editor-js, .pom-form-code-editor-css');
+        let $code_editor = $clone.find('.pomatio-framework-code-editor-html, .pomatio-framework-code-editor-js, .pomatio-framework-code-editor-css');
         for (let $i = 0; $i < $code_editor.length; $i++) {
             $code_editor[$i].id = $generate_random_string(10, false);
 

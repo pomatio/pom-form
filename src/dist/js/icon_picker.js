@@ -16,9 +16,9 @@ jQuery(function($) {
     // Store the icon picker button that has been clicked
     let $clicked_button;
 
-    let $icon_picker_modal = $('#pom-form-icons-modal').dialog({
+    let $icon_picker_modal = $('#pomatio-framework-icons-modal').dialog({
         title: '',
-        dialogClass: 'wp-dialog pom-form-icons-modal',
+        dialogClass: 'wp-dialog pomatio-framework-icons-modal',
         autoOpen: false,
         draggable: false,
         minHeight: '95%',
@@ -33,25 +33,25 @@ jQuery(function($) {
         },
         open: function() {
             $('.ui-widget-overlay').on('click', function() {
-                $('#pom-form-icons-modal').dialog('close');
+                $('#pomatio-framework-icons-modal').dialog('close');
             });
         },
         close: function() {
             // Set defaults to all libraries on modal close.
-            $('#pom-form-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
-            $('#pom-form-icons-modal .media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
+            $('#pomatio-framework-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
+            $('#pomatio-framework-icons-modal .media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
 
-            $('.pom-form-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
-            let $title = $('.pom-form-icons-modal [data-slug="all"]').attr('data-label');
-            $('#pom-form-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
+            $('.pomatio-framework-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
+            let $title = $('.pomatio-framework-icons-modal [data-slug="all"]').attr('data-label');
+            $('#pomatio-framework-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
         },
         create: function() {
-            $('.pom-form-icons-modal .ui-dialog-titlebar').css('display', 'none');
+            $('.pomatio-framework-icons-modal .ui-dialog-titlebar').css('display', 'none');
 
             // Set defaults to all libraries on modal creation.
-            $('.pom-form-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
-            let $title = $('.pom-form-icons-modal [data-slug="all"]').attr('data-label');
-            $('#pom-form-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
+            $('.pomatio-framework-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
+            let $title = $('.pomatio-framework-icons-modal [data-slug="all"]').attr('data-label');
+            $('#pomatio-framework-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
         }
     });
 
@@ -69,7 +69,7 @@ jQuery(function($) {
                 library: 'all'
             },
             success: function ($response) {
-                $icon_picker_modal.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);
+                $icon_picker_modal.closest('#pomatio-framework-icons-modal').find('.media-frame-content').empty().append($response);
             }
         });
     });
@@ -82,19 +82,19 @@ jQuery(function($) {
     /**
      * Get the icons of selected library.
      */
-    $(document).on('click', '#pom-form-icons-modal .media-menu-item', function() {
+    $(document).on('click', '#pomatio-framework-icons-modal .media-menu-item', function() {
         let $this = $(this);
 
-        $('#pom-form-icons-modal input[type="search"]').val('');
+        $('#pomatio-framework-icons-modal input[type="search"]').val('');
 
-        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
+        $this.closest('#pomatio-framework-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
 
-        $('#pom-form-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
+        $('#pomatio-framework-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
         $this.addClass('active').attr('aria-selected', 'true');
 
         let $library = $this.attr('data-slug');
         let $label = $this.attr('data-label');
-        $this.closest('#pom-form-icons-modal').find('.media-frame-title').empty().append('<h1>' + $label + '</h1>');
+        $this.closest('#pomatio-framework-icons-modal').find('.media-frame-title').empty().append('<h1>' + $label + '</h1>');
 
         $.ajax({
             url: ajaxurl,
@@ -104,7 +104,7 @@ jQuery(function($) {
                 library: $library,
             },
             success: function ($response) {
-                $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);
+                $this.closest('#pomatio-framework-icons-modal').find('.media-frame-content').empty().append($response);
             }
         });
     });
@@ -112,23 +112,23 @@ jQuery(function($) {
     /**
      * When clicking on the icon.
      */
-    $(document).on('click', '#pom-form-icons-modal li.attachment', function(e) {
-        $('#pom-form-icons-modal li.attachment').removeClass('selected');
+    $(document).on('click', '#pomatio-framework-icons-modal li.attachment', function(e) {
+        $('#pomatio-framework-icons-modal li.attachment').removeClass('selected');
         $(this).addClass('selected');
-        $('#pom-form-icons-modal .pom-form-icon-select-button').removeClass('disabled').prop('disabled', false);
+        $('#pomatio-framework-icons-modal .pomatio-framework-icon-select-button').removeClass('disabled').prop('disabled', false);
     });
 
     /**
      * Pagination. Load more icons.
      */
-    $(document).on('click', '#pom-form-icons-modal .load-more-icons button', function() {
+    $(document).on('click', '#pomatio-framework-icons-modal .load-more-icons button', function() {
        let $this = $(this);
 
        $this.hide();
        $this.next('.icon-picker-spinner').show();
 
        let $offset = parseInt($this.attr('data-offset'));
-       let $library = $('#pom-form-icons-modal .media-menu-item.active').attr('data-slug');
+       let $library = $('#pomatio-framework-icons-modal .media-menu-item.active').attr('data-slug');
 
         $.ajax({
             url: ajaxurl,
@@ -139,7 +139,7 @@ jQuery(function($) {
                 offset: $offset + 88
             },
             success: function ($response) {
-                let $content = $this.closest('#pom-form-icons-modal').find('.media-frame-content');
+                let $content = $this.closest('#pomatio-framework-icons-modal').find('.media-frame-content');
                 $content.find('.load-more-icons').remove();
                 $content.append($response);
             }
@@ -149,10 +149,10 @@ jQuery(function($) {
     /**
      * On Select icon button click.
      */
-    $(document).on('click', '#pom-form-icons-modal .pom-form-icon-select-button', function(e) {
+    $(document).on('click', '#pomatio-framework-icons-modal .pomatio-framework-icon-select-button', function(e) {
         e.preventDefault();
 
-        let $icon_url = $('#pom-form-icons-modal .attachment.selected img').attr('src');
+        let $icon_url = $('#pomatio-framework-icons-modal .attachment.selected img').attr('src');
         $clicked_button.closest('.icon-picker-wrapper').find('input[type="hidden"]').val($icon_url);
         $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
         $clicked_button.closest('.icon-picker-wrapper').find('.remove-selected-icon').css('display', 'inherit');
@@ -178,11 +178,11 @@ jQuery(function($) {
         }
     }
 
-    $(document).on('keyup', '#pom-form-icons-modal input[type="search"]', delay_search(function() {
+    $(document).on('keyup', '#pomatio-framework-icons-modal input[type="search"]', delay_search(function() {
         let $this = $(this);
         let $search = $this.val();
-        let $library = $this.closest('#pom-form-icons-modal').find('.media-menu button.active').attr('data-slug');
-        $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
+        let $library = $this.closest('#pomatio-framework-icons-modal').find('.media-menu button.active').attr('data-slug');
+        $this.closest('#pomatio-framework-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_form_icon_picker.loading + '</span>');
 
         $.ajax({
             url: ajaxurl,
@@ -193,7 +193,7 @@ jQuery(function($) {
                 library: $library
             },
             success: function ($response) {
-                $this.closest('#pom-form-icons-modal').find('.media-frame-content').empty().append($response);
+                $this.closest('#pomatio-framework-icons-modal').find('.media-frame-content').empty().append($response);
             }
         });
     }, 500));

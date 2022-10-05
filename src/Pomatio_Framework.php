@@ -85,9 +85,9 @@ class Pomatio_Framework {
                     $codemirror_settings = wp_enqueue_code_editor([]);
                     wp_enqueue_script('wp-theme-plugin-editor');
                     wp_enqueue_style('wp-codemirror');
-                    wp_enqueue_script('pom-form-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], NULL, true);
+                    wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], NULL, true);
                     wp_localize_script(
-                        'pom-form-code',
+                        'pomatio-framework-code',
                         'settings',
                         [
                             'codeMirrorSettings' => $codemirror_settings
@@ -97,7 +97,7 @@ class Pomatio_Framework {
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'color') {
                     wp_enqueue_style('wp-color-picker');
-                    wp_enqueue_script('pom-form-color', POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+                    wp_enqueue_script('pomatio-framework-color', POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
                 }
             }
         }

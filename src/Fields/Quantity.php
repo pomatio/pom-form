@@ -33,7 +33,7 @@ class Quantity {
 
         echo '</div>';
 
-        wp_enqueue_script('pom-form-quantity', POM_FORM_SRC_URI . '/dist/js/quantity.min.js', ['jquery'], null, true);
+        wp_enqueue_script('pomatio-framework-quantity', POM_FORM_SRC_URI . '/dist/js/quantity.min.js', ['jquery'], null, true);
     }
 
 }

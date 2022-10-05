@@ -223,10 +223,10 @@ class Repeater {
 
         echo '</div>';
 
-        wp_enqueue_style('pom-form-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
-        wp_enqueue_script('pom-form-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.min.js', ['jquery'], null, true);
+        wp_enqueue_style('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
+        wp_enqueue_script('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/js/repeater.min.js', ['jquery'], null, true);
         wp_localize_script(
-            'pom-form-repeater',
+            'pomatio-framework-repeater',
             'pom_form_repeater',
             [
                 'limit' => __('Element limit reached', 'pomatio-framework'),

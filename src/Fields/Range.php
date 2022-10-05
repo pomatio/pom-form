@@ -45,7 +45,7 @@ class Range {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        wp_enqueue_script('pom-form-range',  POM_FORM_SRC_URI . '/dist/js/range.min.js', ['jquery'], null, true);
+        wp_enqueue_script('pomatio-framework-range',  POM_FORM_SRC_URI . '/dist/js/range.min.js', ['jquery'], null, true);
     }
 
 }

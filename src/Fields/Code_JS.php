@@ -22,7 +22,7 @@ class Code_JS {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-js <?= $args['class'] ?>" data-type="code_js"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-js <?= $args['class'] ?>" data-type="code_js"><?= $args['value'] ?></textarea>
 
         <?php
 
@@ -35,9 +35,9 @@ class Code_JS {
         $codemirror_settings = wp_enqueue_code_editor([]);
         wp_enqueue_script('wp-theme-plugin-editor');
         wp_enqueue_style('wp-codemirror');
-        wp_enqueue_script('pom-form-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
         wp_localize_script(
-            'pom-form-code',
+            'pomatio-framework-code',
             'settings',
             [
                 'codeMirrorSettings' => $codemirror_settings

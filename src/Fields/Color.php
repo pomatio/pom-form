@@ -18,7 +18,7 @@ class Color {
 
 		?>
 
-		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control pom-form-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
+		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control pomatio-framework-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
 
 		<?php
 
@@ -29,7 +29,7 @@ class Color {
 		echo '</div>';
 
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_script('pom-form-color',  POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+        wp_enqueue_script('pomatio-framework-color',  POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
 
 	}
 

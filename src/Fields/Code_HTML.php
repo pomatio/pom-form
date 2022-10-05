@@ -24,7 +24,7 @@ class Code_HTML {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pom-form-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
 
         <?php
 
@@ -37,9 +37,9 @@ class Code_HTML {
         $codemirror_settings = wp_enqueue_code_editor([]);
         wp_enqueue_script('wp-theme-plugin-editor');
         wp_enqueue_style('wp-codemirror');
-        wp_enqueue_script('pom-form-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
+        wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], POM_FORM_VERSION, true);
         wp_localize_script(
-            'pom-form-code',
+            'pomatio-framework-code',
             'settings',
             [
                 'codeMirrorSettings' => $codemirror_settings

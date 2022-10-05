@@ -1,11 +1,11 @@
 jQuery(function($) {
 
     // Display remove button only if image is selected.
-    $('.pom-form-image-wrapper .image-wrapper').each(function() {
+    $('.pomatio-framework-image-wrapper .image-wrapper').each(function() {
         let $this = $(this);
 
         if ($this.find('img').length) {
-            $(this).closest('.pom-form-image-wrapper').find('.remove-selected-image').css('display', 'inherit');
+            $(this).closest('.pomatio-framework-image-wrapper').find('.remove-selected-image').css('display', 'inherit');
         }
     });
 
@@ -35,20 +35,20 @@ jQuery(function($) {
         // When a file is selected, grab the URL and set it as the field's value
         $media_modal.on('select', function() {
             let $attachment = $media_modal.state().get('selection').first().toJSON();
-            $clicked_button.closest('.pom-form-image-wrapper').find('input[type="url"]').val($attachment.url);
-            $clicked_button.closest('.pom-form-image-wrapper').find('.image-wrapper').empty().append('<img width="280px" alt="" src="' + $attachment.url + '">');
-            $clicked_button.closest('.pom-form-image-wrapper').find('.remove-selected-image').css('display', 'inherit');
+            $clicked_button.closest('.pomatio-framework-image-wrapper').find('input[type="url"]').val($attachment.url);
+            $clicked_button.closest('.pomatio-framework-image-wrapper').find('.image-wrapper').empty().append('<img width="280px" alt="" src="' + $attachment.url + '">');
+            $clicked_button.closest('.pomatio-framework-image-wrapper').find('.remove-selected-image').css('display', 'inherit');
         });
 
         // Open the uploader dialog
         $media_modal.open();
     });
 
-    $(document).on('click', '.pom-form-image-wrapper .remove-selected-image', function(e) {
+    $(document).on('click', '.pomatio-framework-image-wrapper .remove-selected-image', function(e) {
         e.preventDefault();
 
         let $this = $(this);
-        let $wrapper = $this.closest('.pom-form-image-wrapper');
+        let $wrapper = $this.closest('.pomatio-framework-image-wrapper');
 
         $wrapper.find('.image-wrapper').empty();
         $wrapper.find('input[type="url"]').val('');
