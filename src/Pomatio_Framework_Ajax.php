@@ -7,7 +7,7 @@ class Pomatio_Framework_Ajax {
     public function __construct() {
         add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
         add_action('wp_ajax_pom_form_get_icon_by_name', [$this, 'get_icon_by_name']);
-        add_action('wp_ajax_pom_form_get_repeater_item_html', [$this, 'get_repeater_item_html']);
+        add_action('wp_ajax_pomatio_framework_get_repeater_item_html', [$this, 'get_repeater_item_html']);
         add_action('wp_ajax_pom_form_restore_repeater_defaults', [$this, 'restore_repeater_defaults']);
     }
 

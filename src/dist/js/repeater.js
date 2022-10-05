@@ -117,7 +117,7 @@ jQuery(function($) {
             url: ajaxurl,
             type: 'POST',
             data: {
-                action: 'pom_form_get_repeater_item_html',
+                action: 'pomatio_framework_get_repeater_item_html',
                 config: $config,
                 items: $item_count
             },
