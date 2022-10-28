@@ -132,6 +132,7 @@ jQuery(function($) {
      * Delete repeater element.
      * If it is a parent repeater, we directly remove it from the value using its index.
      * If it's a child repeater, we update the value of the child repeater and then call the function to update the parent repeater.
+     * TODO: Delete file from server on delete when repeater has code fields.
      */
     $(document).on('click', '.repeater-wrapper .delete', function(e) {
         e.preventDefault();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b37b5b04c4a8a1219c3b98ce4934839c",
+    "content-hash": "c2b7dab75971ad3df1f0884fcdf264c5",
     "packages": [
         {
             "name": "cerdic/css-tidy",
@@ -163,10 +163,12 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "ext-json": "*"
+        "php": ">=7.4",
+        "ext-json": "*",
+        "ext-zend-opcache": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

@@ -9,12 +9,12 @@ class ComposerStaticInit069df07d080afa9eb5a1557f64508fe7
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
-            'POM\\Form\\' => 9,
+            'PomatioFramework\\' => 17,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'POM\\Form\\' => 
+        'PomatioFramework\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
@@ -22,6 +22,41 @@ class ComposerStaticInit069df07d080afa9eb5a1557f64508fe7
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PomatioFramework\\Fields\\Button' => __DIR__ . '/../..' . '/src/Fields/Button.php',
+        'PomatioFramework\\Fields\\Checkbox' => __DIR__ . '/../..' . '/src/Fields/Checkbox.php',
+        'PomatioFramework\\Fields\\Code_CSS' => __DIR__ . '/../..' . '/src/Fields/Code_CSS.php',
+        'PomatioFramework\\Fields\\Code_HTML' => __DIR__ . '/../..' . '/src/Fields/Code_HTML.php',
+        'PomatioFramework\\Fields\\Code_JS' => __DIR__ . '/../..' . '/src/Fields/Code_JS.php',
+        'PomatioFramework\\Fields\\Color' => __DIR__ . '/../..' . '/src/Fields/Color.php',
+        'PomatioFramework\\Fields\\Color_Palette' => __DIR__ . '/../..' . '/src/Fields/Color_Palette.php',
+        'PomatioFramework\\Fields\\Date' => __DIR__ . '/../..' . '/src/Fields/Date.php',
+        'PomatioFramework\\Fields\\Datetime' => __DIR__ . '/../..' . '/src/Fields/Datetime.php',
+        'PomatioFramework\\Fields\\Email' => __DIR__ . '/../..' . '/src/Fields/Email.php',
+        'PomatioFramework\\Fields\\File' => __DIR__ . '/../..' . '/src/Fields/File.php',
+        'PomatioFramework\\Fields\\Gallery' => __DIR__ . '/../..' . '/src/Fields/Gallery.php',
+        'PomatioFramework\\Fields\\Hidden' => __DIR__ . '/../..' . '/src/Fields/Hidden.php',
+        'PomatioFramework\\Fields\\Icon_Picker' => __DIR__ . '/../..' . '/src/Fields/Icon_Picker.php',
+        'PomatioFramework\\Fields\\Image_Picker' => __DIR__ . '/../..' . '/src/Fields/Image_Picker.php',
+        'PomatioFramework\\Fields\\Number' => __DIR__ . '/../..' . '/src/Fields/Number.php',
+        'PomatioFramework\\Fields\\Password' => __DIR__ . '/../..' . '/src/Fields/Password.php',
+        'PomatioFramework\\Fields\\Quantity' => __DIR__ . '/../..' . '/src/Fields/Quantity.php',
+        'PomatioFramework\\Fields\\Radio' => __DIR__ . '/../..' . '/src/Fields/Radio.php',
+        'PomatioFramework\\Fields\\Range' => __DIR__ . '/../..' . '/src/Fields/Range.php',
+        'PomatioFramework\\Fields\\Repeater' => __DIR__ . '/../..' . '/src/Fields/Repeater.php',
+        'PomatioFramework\\Fields\\Select' => __DIR__ . '/../..' . '/src/Fields/Select.php',
+        'PomatioFramework\\Fields\\Tel' => __DIR__ . '/../..' . '/src/Fields/Tel.php',
+        'PomatioFramework\\Fields\\Text' => __DIR__ . '/../..' . '/src/Fields/Text.php',
+        'PomatioFramework\\Fields\\Textarea' => __DIR__ . '/../..' . '/src/Fields/Textarea.php',
+        'PomatioFramework\\Fields\\Time' => __DIR__ . '/../..' . '/src/Fields/Time.php',
+        'PomatioFramework\\Fields\\Tinymce' => __DIR__ . '/../..' . '/src/Fields/Tinymce.php',
+        'PomatioFramework\\Fields\\Toggle' => __DIR__ . '/../..' . '/src/Fields/Toggle.php',
+        'PomatioFramework\\Fields\\Url' => __DIR__ . '/../..' . '/src/Fields/Url.php',
+        'PomatioFramework\\POMATIO_Framework_Save' => __DIR__ . '/../..' . '/src/POMATIO_Framework_Save.php',
+        'PomatioFramework\\POM_Form_Ajax' => __DIR__ . '/../..' . '/src/POM_Form_Ajax.php',
+        'PomatioFramework\\POM_Form_Disk' => __DIR__ . '/../..' . '/src/POM_Form_Disk.php',
+        'PomatioFramework\\POM_Form_Helper' => __DIR__ . '/../..' . '/src/POM_Form_Helper.php',
+        'PomatioFramework\\POM_Framework_Settings' => __DIR__ . '/../..' . '/src/POM_Framework_Settings.php',
+        'PomatioFramework\\Pomatio_Framework' => __DIR__ . '/../..' . '/src/Pomatio_Framework.php',
         'csstidy' => __DIR__ . '/..' . '/cerdic/css-tidy/class.csstidy.php',
         'csstidy_optimise' => __DIR__ . '/..' . '/cerdic/css-tidy/class.csstidy_optimise.php',
         'csstidy_print' => __DIR__ . '/..' . '/cerdic/css-tidy/class.csstidy_print.php',

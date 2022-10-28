@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'e0d042e553d387e86097e1727b81ee0f12000097',
+        'reference' => '1d3f5123b7fdd8a90e67a62e5efb8b1b33ab48e7',
         'name' => 'pom/form',
         'dev' => true,
     ),
@@ -25,7 +25,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'e0d042e553d387e86097e1727b81ee0f12000097',
+            'reference' => '1d3f5123b7fdd8a90e67a62e5efb8b1b33ab48e7',
             'dev_requirement' => false,
         ),
         'select2/select2' => array(

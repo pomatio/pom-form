@@ -4,6 +4,7 @@
  * If changes are made to the HTML of a repeater element,
  * update it in Pomatio_Framework_Ajax.php as well --> get_repeater_item_html().
  */
+// TODO: Warning! Sometimes code field content is replaced by file path.
 
 namespace PomatioFramework\Fields;
 

@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'POM\\Form\\' => array($baseDir . '/src'),
+    'PomatioFramework\\' => array($baseDir . '/src'),
 );
