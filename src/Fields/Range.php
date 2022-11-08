@@ -23,10 +23,14 @@ class Range {
             $value = $args['default'];
         }
 
+        $step = isset($args['step']) && !empty($args['step']) ? ' step="' . $args['step'] . '"' : '';
+        $min = isset($args['min']) && !empty($args['min']) ? ' min="' . $args['min'] . '"' : '';
+        $max = isset($args['max']) && !empty($args['max']) ? ' max="' . $args['max'] . '"' : '';
+
         ?>
 
         <div class="range">
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="range"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>"<?= $step ?><?= $min ?><?= $max ?> type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="range"<?= $disabled ?>>
             <span class="value"><?= $value ?></span>
             <?php
 

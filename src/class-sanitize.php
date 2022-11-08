@@ -142,7 +142,7 @@ function sanitize_pom_form_radio($value): string {
 }
 
 function sanitize_pom_form_range($value) {
-    return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT);
+    return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
 
 function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pomatio-framework') {
