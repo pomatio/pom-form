@@ -1,5 +1,7 @@
 /**
  * @var settings // Code editor settings object.
+ *
+ * TODO: Prevent line wrapping in code editors.
  */
 
 jQuery(function($) {

@@ -41,7 +41,7 @@ class Pomatio_Framework_Save {
                         $data[$setting_name] = $sanitize_function_name($value, ['name' => $name], $page_slug);
                     }
                     elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js') {
-                        $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, $value, str_replace('code_', '', $type), $page_slug);
+                        $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), str_replace('code_', '', $type), $page_slug);
                     }
                     else {
                         $data[$setting_name] = $sanitize_function_name($value);
