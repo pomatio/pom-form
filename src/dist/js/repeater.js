@@ -46,8 +46,14 @@ jQuery(function($) {
                     $obj[$field_name] = $field.value.trim();
                 }
                 else {
+                    let $field_value = $field.value.trim();
+                    if ($field.getAttribute('data-type') === 'checkbox') {
+                        $field_value = $($field).is(':checked') ? 'yes' : 'no';
+                        console.log($field_value);
+                    }
+
                     $obj[$field_name] = {
-                        'value': $field.value.trim(),
+                        'value': $field_value,
                         'type': $field.getAttribute('data-type') || ''
                     };
                 }
@@ -172,7 +178,7 @@ jQuery(function($) {
     /**
      * Update repeater value.
      */
-    $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
+    $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select, .repeater-wrapper checkbox', function() {
         const $this = $(this);
         $update_repeater($this.closest('.repeater-wrapper'));
     });
