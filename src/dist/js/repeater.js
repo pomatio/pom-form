@@ -49,7 +49,6 @@ jQuery(function($) {
                     let $field_value = $field.value.trim();
                     if ($field.getAttribute('data-type') === 'checkbox') {
                         $field_value = $($field).is(':checked') ? 'yes' : 'no';
-                        console.log($field_value);
                     }
 
                     $obj[$field_name] = {
