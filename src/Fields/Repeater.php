@@ -152,36 +152,36 @@ class Repeater {
 
                                     echo '<div class="repeater-action-row">';
 
-                                        if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
-                                            ?>
+                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
+                                        ?>
 
-                                            <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                                        <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
 
-                                            <?php
-                                        }
+                                        <?php
+                                    }
 
-                                        if (isset($args['cloneable']) && $args['cloneable'] === true) {
-                                            ?>
+                                    if (isset($args['cloneable']) && $args['cloneable'] === true) {
+                                        ?>
 
-                                            <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
+                                        <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
 
-                                            <?php
-                                        }
+                                        <?php
+                                    }
 
-                                        if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
-                                            ?>
+                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
+                                        ?>
 
-                                            <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                                        <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
 
-                                            <?php
-                                        }
-                                        elseif ($repeater_type === 'new') {
-                                            ?>
+                                        <?php
+                                    }
+                                    elseif ($repeater_type === 'new') {
+                                        ?>
 
-                                            <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                                        <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
 
-                                            <?php
-                                        }
+                                        <?php
+                                    }
 
                                     echo '</div>';
 
@@ -213,6 +213,41 @@ class Repeater {
             ?>
 
             <input type="hidden" name="config" value="<?= $repeater_config ?>">
+
+
+            <?php
+
+
+            /**
+             * Update hidden input value path to value.
+             *
+             * By default, when using a Codemirror in a repeater,
+             * the value of the input is the path to the file that is generated.
+             *
+             * With this loop we replace the path with the real value (content of the field).
+             */
+            if (!empty($args['value'])) {
+                foreach ($args['value'] as $repeater) {
+                    foreach ($repeater as $repeater_key => $repeater_value) {
+                        foreach ($repeater_value as $repeater_item_key => $repeater_item_value) {
+                            if (is_array($repeater_item_value)) {
+                                foreach ($repeater_item_value as $repeater_item_arr_key => $repeater_item_arr_value) {
+                                    if ($repeater_item_arr_key === 'type') {
+                                        if ($repeater_item_arr_value === 'code_html' || $repeater_item_arr_value === 'code_css' || $repeater_item_arr_value === 'code_js') {
+                                            if (file_exists($repeater_item_value['value'])) {
+                                                $args['value']['new'][$repeater_key][$repeater_item_key]['value'] = file_get_contents($repeater_item_value['value']);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ?>
+
             <input type="hidden" name="<?= $args['name'] ?>" value="<?= htmlspecialchars(json_encode($args['value']), ENT_QUOTES, 'UTF-8') ?>" class="repeater-value">
         </div>
 
