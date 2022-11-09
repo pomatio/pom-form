@@ -327,4 +327,18 @@ class Pomatio_Framework_Helper {
         return apply_filters('pom_form_allowed_html', $allowed_html);
     }
 
+    /**
+     * Get allowed font types.
+     *
+     * @return string[]
+     */
+    public static function get_allowed_font_types(): array {
+        return [
+            'eot' => 'EOT',
+            'woff' => 'Woff',
+            'woff2' => 'Woff2',
+            'ttf' => 'TTF',
+        ];
+    }
+
 }

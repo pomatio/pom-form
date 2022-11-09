@@ -96,9 +96,22 @@ class Pomatio_Framework {
                     );
                 }
 
-                if (isset($repeater_field['type']) && $repeater_field['type'] === 'color') {
+                if (isset($repeater_field['type']) && $repeater_field['type'] === 'Color') {
                     wp_enqueue_style('wp-color-picker');
                     wp_enqueue_script('pomatio-framework-color', POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+                }
+
+                if (isset($repeater_field['type']) && $repeater_field['type'] === 'Font_Picker') {
+                    wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker.min.css');
+                    wp_enqueue_script('pomatio-framework-font_picker',  POM_FORM_SRC_URI . '/dist/js/font_picker.min.js', ['jquery'], null, true);
+                    wp_localize_script(
+                        'pomatio-framework-font_picker',
+                        'pom_form_font_picker',
+                        [
+                            'title' => __('Choose Font', 'pomatio-framework'),
+                            'button' => __('Choose Font', 'pomatio-framework'),
+                        ]
+                    );
                 }
             }
         }

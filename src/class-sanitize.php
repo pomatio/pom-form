@@ -145,6 +145,24 @@ function sanitize_pom_form_range($value) {
     return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
 
+function sanitize_pom_form_font_picker($value): array {
+    if (!is_array($value)) {
+        return [];
+    }
+
+    $font_extensions = array_keys(Pomatio_Framework_Helper::get_allowed_font_types());
+    $sanitized = [];
+    foreach ($value as $font_extension => $font_url) {
+        if (!in_array($font_extension, $font_extensions, true)) {
+            continue;
+        }
+
+        $sanitized[$font_extension] = sanitize_url($font_url);
+    }
+
+    return $sanitized;
+}
+
 function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pomatio-framework') {
     if (is_string($value)) {
         $value = json_decode(stripslashes($value), true);

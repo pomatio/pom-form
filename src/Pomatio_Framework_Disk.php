@@ -14,6 +14,30 @@ class Pomatio_Framework_Disk {
 
     public function __construct() {
         $this->site_data = get_blog_details();
+
+        /**
+         * Save the fonts in a custom directory.
+         */
+        add_filter('upload_dir', [$this, 'set_fonts_upload_dir']);
+    }
+
+    public function set_fonts_upload_dir($path) {
+        $extension = substr(strrchr($_POST['name'], '.'), 1);
+
+        $font_extensions = array_keys(Pomatio_Framework_Helper::get_allowed_font_types());
+
+        if (!empty($path['error']) || !in_array($extension, $font_extensions, true)) {
+            return $path;
+        }
+
+        $custom_dir      = '/fonts';
+        $path['path']   = str_replace($path['subdir'], '', $path['path']); //remove default subdir (year/month)
+        $path['url']    = str_replace($path['subdir'], '', $path['url']);
+        $path['subdir'] = $custom_dir;
+        $path['path']  .= $custom_dir;
+        $path['url']   .= $custom_dir;
+
+        return $path;
     }
 
     /**
