@@ -220,11 +220,11 @@ class Pomatio_Framework_Settings {
                                     elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
                                         $value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
                                         $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
-                                        $field['value'] = $sanitize_function_name($value);
+                                        $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
                                     }
                                     else {
                                         $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
-                                        $field['value'] = $sanitize_function_name($value);
+                                        $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
                                     }
 
                                     echo (new Pomatio_Framework())::add_field($field);
