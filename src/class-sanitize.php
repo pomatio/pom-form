@@ -145,6 +145,10 @@ function sanitize_pom_form_range($value) {
     return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
 
+function sanitize_pom_form_font($value) {
+    return sanitize_pom_form_repeater($value);
+}
+
 function sanitize_pom_form_font_picker($value): array {
     if (!is_array($value)) {
         return [];
@@ -171,7 +175,7 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
     if (!empty($value)) {
         $sanitized_array = [];
 
-        $limit = isset($array_settings['limit']) ? (int)$array_settings['limit'] : '';
+        $limit = isset($array_settings['limit']) && !empty($array_settings['limit']) ? (int)$array_settings['limit'] : '';
 
         $i = 0;
         foreach ($value as $type => $items) {
