@@ -45,6 +45,7 @@ class Pomatio_Framework {
         $field_args['options'] = $field_args['options'] ?? [];
         $field_args['prefix'] = $field_args['prefix'] ?? '';
         $field_args['suffix'] = $field_args['suffix'] ?? '';
+        $field_args['default'] = $field_args['default'] ?? '';
 
         return $field_args;
     }

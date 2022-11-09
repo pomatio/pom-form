@@ -16,9 +16,17 @@ class Color {
 			echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
 		}
 
+        $value = '';
+        if (isset($args['value']) && !empty($args['value'])) {
+            $value = $args['value'];
+        }
+        elseif (isset($args['default']) && !empty($args['default'])) {
+            $value = $args['default'];
+        }
+
 		?>
 
-		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control pomatio-framework-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
+		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control pomatio-framework-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
 
 		<?php
 
