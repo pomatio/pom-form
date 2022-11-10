@@ -112,6 +112,15 @@ class Repeater {
 
             // Render the saved values
             if (!empty($json)) {
+
+                /**
+                 * If it is an inner repater the value arrives as JSON
+                 */
+                if (is_string($json)) {
+                    $json = str_replace('&quot;', '"', $json);
+                    $json = json_decode($json, true);
+                }
+
                 foreach ($json as $repeater_type => $repeater_elements) {
                     if (!empty($repeater_elements) && count($repeater_elements) > 0) {
                         foreach ($repeater_elements as $repeater_item) {
@@ -129,7 +138,6 @@ class Repeater {
 
                                         <input type="hidden" name="default_values" value="<?= htmlspecialchars(json_encode($repeater_item['default_values']), ENT_QUOTES, 'UTF-8') ?? '' ?>">
 
-
                                         <?php
                                     }
 
@@ -139,7 +147,12 @@ class Repeater {
                                                 $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
                                             }
                                             else {
-                                                $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']]['value'], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
+                                                if (is_array($repeater_item[$field['name']]['value'])) {
+                                                    $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
+                                                }
+                                                else {
+                                                    $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']]['value'], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
+                                                }
                                             }
                                         }
 
@@ -227,6 +240,15 @@ class Repeater {
              * With this loop we replace the path with the real value (content of the field).
              */
             if (!empty($args['value'])) {
+
+                /**
+                 * If it is an inner repater the value arrives as JSON
+                 */
+                if (is_string($args['value'])) {
+                    $args['value'] = str_replace('&quot;', '"', $args['value']);
+                    $args['value'] = json_decode($args['value'], true);
+                }
+
                 foreach ($args['value'] as $repeater) {
                     foreach ($repeater as $repeater_key => $repeater_value) {
                         foreach ($repeater_value as $repeater_item_key => $repeater_item_value) {
@@ -248,7 +270,7 @@ class Repeater {
 
             ?>
 
-            <input type="hidden" name="<?= $args['name'] ?>" value="<?= htmlspecialchars(json_encode($args['value']), ENT_QUOTES, 'UTF-8') ?>" class="repeater-value">
+            <input type="hidden" name="<?= $args['name'] ?>" value="<?= htmlspecialchars(json_encode($args['value']), ENT_QUOTES, 'UTF-8') ?>" class="repeater-value" data-type="repeater">
         </div>
 
         <?php

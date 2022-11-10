@@ -29,6 +29,7 @@ jQuery(function($) {
         $media_modal.on('select', function() {
             let $attachment = $media_modal.state().get('selection').first().toJSON();
             $clicked_button.closest('.font-variant').find('input[type="url"]').val($attachment.url);
+            $clicked_button.closest('.font-variant').find('input[type="url"]').trigger('change');
         });
 
         // Open the uploader dialog

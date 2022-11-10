@@ -16,12 +16,17 @@ class Pomatio_Framework_Disk {
         $this->site_data = get_blog_details();
 
         /**
-         * Save the fonts in a custom directory.
+         * Set allowed font mime types and save the fonts in a custom directory.
          */
         add_filter('upload_dir', [$this, 'set_fonts_upload_dir']);
+        add_filter('upload_mimes', [$this, 'add_allowed_font_mimes_to_upload_types']);
     }
 
     public function set_fonts_upload_dir($path) {
+        if (!isset($_POST['name'])) {
+            return $path;
+        }
+
         $extension = substr(strrchr($_POST['name'], '.'), 1);
 
         $font_extensions = array_keys(Pomatio_Framework_Helper::get_allowed_font_types());
@@ -30,7 +35,7 @@ class Pomatio_Framework_Disk {
             return $path;
         }
 
-        $custom_dir      = '/fonts';
+        $custom_dir     = '/fonts';
         $path['path']   = str_replace($path['subdir'], '', $path['path']); //remove default subdir (year/month)
         $path['url']    = str_replace($path['subdir'], '', $path['url']);
         $path['subdir'] = $custom_dir;
@@ -38,6 +43,16 @@ class Pomatio_Framework_Disk {
         $path['url']   .= $custom_dir;
 
         return $path;
+    }
+
+    public function add_allowed_font_mimes_to_upload_types($mimes) {
+        $allowed_fonts = Pomatio_Framework_Helper::get_allowed_font_types();
+
+        foreach ($allowed_fonts as $font => $mime) {
+            $mimes[$font] = $mime;
+        }
+
+        return $mimes;
     }
 
     /**

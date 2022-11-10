@@ -334,10 +334,10 @@ class Pomatio_Framework_Helper {
      */
     public static function get_allowed_font_types(): array {
         return [
-            'eot' => 'EOT',
-            'woff' => 'Woff',
-            'woff2' => 'Woff2',
-            'ttf' => 'TTF',
+            'eot' => 'font/otf',
+            'woff' => 'font/woff',
+            'woff2' => 'font/woff2',
+            'ttf' => 'font/ttf',
         ];
     }
 

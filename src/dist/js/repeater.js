@@ -28,6 +28,8 @@ jQuery(function($) {
             let $repeater_fields = $repeater_elements[$i].querySelectorAll("input, select, checkbox, textarea");
             let $obj = {};
 
+            let $font_input_val = {};
+
             // For each field inside the repeater element
             for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
                 let $field = $repeater_fields[$i2];
@@ -49,6 +51,17 @@ jQuery(function($) {
                     let $field_value = $field.value.trim();
                     if ($field.getAttribute('data-type') === 'checkbox') {
                         $field_value = $($field).is(':checked') ? 'yes' : 'no';
+                    }
+
+                    if ($field.getAttribute('data-type') === 'font_picker') {
+                        let $font_type = $field_name.match(/\[(.*)\]/)[1];
+                        $field_name = $field_name.split('[')[0];
+
+                        if (!$font_input_val.hasOwnProperty($font_type)) {
+                            $font_input_val[$font_type] = $field_value;
+                        }
+
+                        $field_value = $font_input_val;
                     }
 
                     $obj[$field_name] = {
@@ -78,10 +91,27 @@ jQuery(function($) {
                 const $parent_index = $wrapper.closest('.repeater').index();
                 const $child_repeater_name = $wrapper.find('.repeater-value').attr('name');
                 const $parent_repeater = $wrapper.parents('.repeater-wrapper').last();
+                const $parent_repeater_type = $parent_repeater.find('.repeater').hasClass('new') ? 'new' : 'default';
                 let $parent_value = $parent_repeater.find('.repeater-value').last().val();
 
                 $parent_value = JSON.parse($parent_value);
-                $parent_value[$parent_index][$child_repeater_name] = $value;
+
+                if (!$parent_value.hasOwnProperty($parent_repeater_type)) {
+                    $parent_value[$parent_repeater_type] = [];
+                }
+
+                if (!$parent_value[$parent_repeater_type].hasOwnProperty($parent_index)) {
+                    $parent_value[$parent_repeater_type][$parent_index] = [];
+                }
+
+                if (!$parent_value[$parent_repeater_type][$parent_index].hasOwnProperty($child_repeater_name)) {
+                    $parent_value[$parent_repeater_type][$parent_index][$child_repeater_name] = [];
+                }
+
+                $parent_value[$parent_repeater_type][$parent_index][$child_repeater_name] = {
+                    'value': $value,
+                    'type': 'repeater'
+                };
 
                 $parent_repeater.find('.repeater-value').last().val(JSON.stringify($parent_value));
             }

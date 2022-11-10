@@ -150,6 +150,11 @@ function sanitize_pom_form_font($value) {
 }
 
 function sanitize_pom_form_font_picker($value): array {
+    if (is_string($value)) {
+        $value = str_replace('&quot;', '"', $value);
+        $value = json_decode($value, true);
+    }
+
     if (!is_array($value)) {
         return [];
     }

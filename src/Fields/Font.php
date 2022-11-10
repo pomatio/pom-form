@@ -57,6 +57,15 @@ class Font {
                     'limit' => 18,
                     'fields' => [
                         [
+                            'type' => 'Text',
+                            'used_for_title' => true,
+                            'label' => __('Variant name', 'pomatio-framework'),
+                            'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                            'name' => 'variant_name',
+                            'class' => 'regular-text',
+                            'value' => '',
+                        ],
+                        [
                             'type' => 'Select',
                             'label' => __('Font weight', 'pomatio-framework'),
                             'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',

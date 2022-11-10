@@ -9,6 +9,11 @@ class Font_Picker {
     public static function render_field(array $args): void {
         $font_extensions = Pomatio_Framework_Helper::get_allowed_font_types();
 
+        if (is_string($args['value'])) {
+            $args['value'] = str_replace('&quot;', '"', $args['value']);
+            $args['value'] = json_decode($args['value'], true);
+        }
+
         ?>
 
         <div class="font-variants-wrapper">
@@ -22,7 +27,7 @@ class Font_Picker {
 
                 <div class="font-variant <?= $extension ?>" style="margin-bottom: 10px;">
                     <label for="<?= $id . '-' . $extension ?>" style="display: block;"><?= $extension_label ?></label>
-                    <input id="<?= $id . '-' . $extension ?>" type="url" name="<?= "{$args['name']}[$extension]" ?>" value="<?= $value ?>">
+                    <input id="<?= $id . '-' . $extension ?>" type="url" name="<?= "{$args['name']}[$extension]" ?>" value="<?= $value ?>" data-type="font_picker">
                     <button class="button open-font-picker"><?php _e('Select font file', 'pomatio-framework') ?></button>
                 </div>
 
