@@ -45,7 +45,7 @@ class Icon_Picker {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker' . POMATIO_MIN . '.css');
+        wp_enqueue_style('pomatio-framework-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker.min.css');
         wp_enqueue_script('pomatio-framework-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
             'pomatio-framework-icon_picker',

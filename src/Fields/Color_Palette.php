@@ -44,7 +44,7 @@ class Color_Palette {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-color-palette', POM_FORM_SRC_URI . '/dist/css/color-palette' . POMATIO_MIN . '.css');
+        wp_enqueue_style('pomatio-framework-color-palette', POM_FORM_SRC_URI . '/dist/css/color-palette.min.css');
 
     }
 

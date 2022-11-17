@@ -41,7 +41,7 @@ class Image_Picker {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-image_picker', POM_FORM_SRC_URI . '/dist/css/image-picker' . POMATIO_MIN . '.css');
+        wp_enqueue_style('pomatio-framework-image_picker', POM_FORM_SRC_URI . '/dist/css/image-picker.min.css');
         wp_enqueue_script('pomatio-framework-image_picker',  POM_FORM_SRC_URI . '/dist/js/image_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
             'pomatio-framework-image_picker',

@@ -281,7 +281,7 @@ class Repeater {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/css/repeater' . POMATIO_MIN . '.css');
+        wp_enqueue_style('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
         wp_enqueue_script('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/js/repeater' . POMATIO_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
             'pomatio-framework-repeater',

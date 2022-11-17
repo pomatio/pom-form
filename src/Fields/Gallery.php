@@ -53,7 +53,7 @@ class Gallery {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-gallery', POM_FORM_SRC_URI . '/dist/css/gallery' . POMATIO_MIN . '.css');
+        wp_enqueue_style('pomatio-framework-gallery', POM_FORM_SRC_URI . '/dist/css/gallery.min.css');
         wp_enqueue_script('pomatio-framework-gallery',  POM_FORM_SRC_URI . '/dist/js/gallery' . POMATIO_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
             'pomatio-framework-gallery',

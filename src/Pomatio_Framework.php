@@ -104,7 +104,7 @@ class Pomatio_Framework {
                 }
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Font_Picker') {
-                    wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker' . POMATIO_MIN . '.css');
+                    wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker.min.css');
                     wp_enqueue_script('pomatio-framework-font_picker',  POM_FORM_SRC_URI . '/dist/js/font_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
                     wp_localize_script(
                         'pomatio-framework-font_picker',
