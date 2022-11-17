@@ -37,7 +37,7 @@ class Code_HTML {
         $codemirror_settings = wp_enqueue_code_editor([]);
         wp_enqueue_script('wp-theme-plugin-editor');
         wp_enqueue_style('wp-codemirror');
-        wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
+        wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
         wp_localize_script(
             'pomatio-framework-code',
             'settings',

@@ -37,7 +37,7 @@ class Color {
 		echo '</div>';
 
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_script('pomatio-framework-color',  POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+        wp_enqueue_script('pomatio-framework-color',  POM_FORM_SRC_URI . '/dist/js/color' . POMATIO_MIN . '.js', ['wp-color-picker'], null, true);
 
 	}
 

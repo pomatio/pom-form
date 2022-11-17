@@ -3,6 +3,8 @@
 namespace PomatioFramework;
 
 const POM_FORM_VERSION = '0.1.0';
+
+define('POMATIO_MIN', defined('WP_DEBUG') && true === WP_DEBUG ? '.min' : '');
 define('POM_FORM_SRC_PATH', __DIR__);
 define('POM_FORM_SRC_URI', str_replace($_SERVER['DOCUMENT_ROOT'], '', POM_FORM_SRC_PATH));
 
@@ -86,7 +88,7 @@ class Pomatio_Framework {
                     $codemirror_settings = wp_enqueue_code_editor([]);
                     wp_enqueue_script('wp-theme-plugin-editor');
                     wp_enqueue_style('wp-codemirror');
-                    wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code.min.js', ['jquery', 'wp-theme-plugin-editor'], NULL, true);
+                    wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], NULL, true);
                     wp_localize_script(
                         'pomatio-framework-code',
                         'settings',
@@ -98,12 +100,12 @@ class Pomatio_Framework {
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Color') {
                     wp_enqueue_style('wp-color-picker');
-                    wp_enqueue_script('pomatio-framework-color', POM_FORM_SRC_URI . '/dist/js/color.min.js', ['wp-color-picker'], null, true);
+                    wp_enqueue_script('pomatio-framework-color', POM_FORM_SRC_URI . '/dist/js/color' . POMATIO_MIN . '.js', ['wp-color-picker'], null, true);
                 }
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Font_Picker') {
-                    wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker.min.css');
-                    wp_enqueue_script('pomatio-framework-font_picker',  POM_FORM_SRC_URI . '/dist/js/font_picker.min.js', ['jquery'], null, true);
+                    wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker' . POMATIO_MIN . '.css');
+                    wp_enqueue_script('pomatio-framework-font_picker',  POM_FORM_SRC_URI . '/dist/js/font_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
                     wp_localize_script(
                         'pomatio-framework-font_picker',
                         'pom_form_font_picker',
