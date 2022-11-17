@@ -4,7 +4,7 @@ namespace PomatioFramework;
 
 const POM_FORM_VERSION = '0.1.0';
 
-define('POMATIO_MIN', defined('WP_DEBUG') && true === WP_DEBUG ? '.min' : '');
+define('POMATIO_MIN', defined('WP_DEBUG') && WP_DEBUG !== true ? '.min' : '');
 define('POM_FORM_SRC_PATH', __DIR__);
 define('POM_FORM_SRC_URI', str_replace($_SERVER['DOCUMENT_ROOT'], '', POM_FORM_SRC_PATH));
 
