@@ -116,7 +116,7 @@ jQuery(function($) {
                 $parent_repeater.find('.repeater-value').last().val(JSON.stringify($parent_value));
             }
         }
-    }
+    };
 
     /**
      * Add new repeater element.
@@ -249,7 +249,7 @@ jQuery(function($) {
                 $title_holder.html(' - ' + $input_value);
             }
         });
-    }
+    };
     $append_to_title();
     $(document).ajaxComplete(function() {
         $append_to_title();
@@ -267,7 +267,7 @@ jQuery(function($) {
         if ($repeater_defaults) {
             let $decoded = JSON.parse($repeater_defaults);
             Object.keys($decoded).map(function ($key) {
-                let $value = $decoded[$key]['value'];
+                let $value = $decoded[$key].value;
 
                 $this.closest('.repeater').find('input, select, checkbox, textarea').each(function () {
                     let $field_name = this.getAttribute("name");
@@ -287,8 +287,7 @@ jQuery(function($) {
     $(document).on('click', '.restore-repeater-defaults', function(e) {
         e.preventDefault();
 
-        let $execute = confirm(pomatio_framework_repeater.restore_msg);
-        if (!$execute) {
+        if (!confirm(pomatio_framework_repeater.restore_msg)) {
             return;
         }
 
@@ -298,7 +297,7 @@ jQuery(function($) {
         let $spinner = $this.closest('.repeater-wrapper').find('.repeater-spinner');
         $spinner.show();
 
-        $('.repeater.default').remove();
+        $wrapper.find('.repeater.default').remove();
 
         $.ajax({
             url: ajaxurl,
@@ -380,6 +379,6 @@ jQuery(function($) {
         }
 
         return $randomString;
-    }
+    };
 
 });

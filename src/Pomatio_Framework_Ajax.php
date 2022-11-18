@@ -225,8 +225,8 @@ class Pomatio_Framework_Ajax {
                     <?php
 
                     foreach ($fields as $field) {
-                        $field['value'] = $default[$field['name']]['value'];
-                        $field['disabled'] = $default[$field['name']]['disabled'];
+                        $field['value'] = $default[$field['name']]['value'] ?? '';
+                        $field['disabled'] = $default[$field['name']]['disabled'] ?? false;
                         echo (new Pomatio_Framework())::add_field($field);
                     }
 

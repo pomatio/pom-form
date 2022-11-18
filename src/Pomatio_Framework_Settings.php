@@ -183,7 +183,19 @@ class Pomatio_Framework_Settings {
                                 <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
                                 <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
                                 <label for="<?= "$setting_key-enabled" ?>"><?php _e('Check to enable this setting.', 'pomatio-framework') ?></label>
-                                <p class="description"><?= $setting['description'] ?></p>
+
+                                <?php
+
+                                if (isset($setting['description']) && !empty($setting['description'])) {
+                                    ?>
+
+                                    <p class="description"><?= $setting['description'] ?></p>
+
+                                    <?php
+                                }
+
+                                ?>
+
                             </td>
                         </tr>
 

@@ -72,8 +72,8 @@ class Repeater {
                             <?php
 
                             foreach ($args['fields'] as $field) {
-                                $field['value'] = $default[$field['name']]['value'];
-                                $field['disabled'] = $default[$field['name']]['disabled'];
+                                $field['value'] = $default[$field['name']]['value'] ?? '';
+                                $field['disabled'] = $default[$field['name']]['disabled'] ?? false;
                                 echo (new Pomatio_Framework())::add_field($field);
                             }
 
@@ -112,9 +112,8 @@ class Repeater {
 
             // Render the saved values
             if (!empty($json)) {
-
                 /**
-                 * If it is an inner repater the value arrives as JSON
+                 * If it is an inner repeater the value arrives as JSON
                  */
                 if (is_string($json)) {
                     $json = str_replace('&quot;', '"', $json);
@@ -156,7 +155,7 @@ class Repeater {
                                             }
                                         }
 
-                                        if ($repeater_type === 'default' && $repeater_item['default_values'][$field['name']]['disabled']) {
+                                        if ($repeater_type === 'default' && (isset($repeater_item['default_values'][$field['name']]['disabled']) && $repeater_item['default_values'][$field['name']]['disabled'])) {
                                             $field['disabled'] = true;
                                         }
 
@@ -208,12 +207,14 @@ class Repeater {
                 }
             }
 
-            ?>
+            if (!isset($args['disable_new']) || (isset($args['disable_new']) && $args['disable_new'] !== true)) {
+                ?>
 
-            <button class="button add-new-repeater-item"><?php _e('Add new', 'pomatio-framework') ?></button>
-            <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
+                <button class="button add-new-repeater-item"><?php _e('Add new', 'pomatio-framework') ?></button>
+                <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
 
-            <?php
+                <?php
+            }
 
             if (isset($args['defaults']) && !empty($args['defaults'])) {
                 ?>
@@ -227,9 +228,7 @@ class Repeater {
 
             <input type="hidden" name="config" value="<?= $repeater_config ?>">
 
-
             <?php
-
 
             /**
              * Update hidden input value path to value.
@@ -240,9 +239,8 @@ class Repeater {
              * With this loop we replace the path with the real value (content of the field).
              */
             if (!empty($args['value'])) {
-
                 /**
-                 * If it is an inner repater the value arrives as JSON
+                 * If it is an inner repeater the value arrives as JSON.
                  */
                 if (is_string($args['value'])) {
                     $args['value'] = str_replace('&quot;', '"', $args['value']);
