@@ -16,10 +16,10 @@ class Range {
         }
 
         $value = '';
-        if (isset($args['value']) && !empty($args['value'])) {
+        if (isset($args['value']) && is_numeric($args['value'])) {
             $value = $args['value'];
         }
-        elseif (isset($args['default']) && !empty($args['default'])) {
+        elseif (isset($args['default']) && is_numeric($args['default'])) {
             $value = $args['default'];
         }
 
@@ -32,11 +32,14 @@ class Range {
         <div class="range">
             <input aria-label="<?= $args['label'] ?? '' ?>"<?= $step ?><?= $min ?><?= $max ?> type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="range"<?= $disabled ?>>
             <span class="value"><?= $value ?></span>
+
             <?php
 
             if (isset($args['suffix']) && !empty($args['suffix'])) {
                 ?>
+
                 <span class="suffix"><?= $args['suffix'] ?></span>
+
                 <?php
             }
 
