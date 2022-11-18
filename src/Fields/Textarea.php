@@ -17,9 +17,17 @@ class Textarea {
                 echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
             }
 
+            $value = '';
+            if (isset($args['value']) && !empty($args['value'])) {
+                $value = $args['value'];
+            }
+            elseif (isset($args['default']) && !empty($args['default'])) {
+                $value = $args['default'];
+            }
+
             ?>
 
-            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" data-type="textarea"<?= $disabled ?>><?= $args['value'] ?></textarea>
+            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" data-type="textarea"<?= $disabled ?>><?= $value ?></textarea>
 
             <?php
 

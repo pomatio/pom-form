@@ -17,9 +17,17 @@ class Number {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        $value = '';
+        if (isset($args['value']) && is_numeric($args['value'])) {
+            $value = $args['value'];
+        }
+        elseif (isset($args['default']) && is_numeric($args['default'])) {
+            $value = $args['default'];
+        }
+
         ?>
 
-        <input aria-label="<?= $args['label'] ?? '' ?>" type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="number"<?= $disabled ?>>
+        <input aria-label="<?= $args['label'] ?? '' ?>" type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="number"<?= $disabled ?>>
 
         <?php
 

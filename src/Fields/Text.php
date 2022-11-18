@@ -20,9 +20,17 @@ class Text {
             // Repeater integration
             $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
 
+            $value = '';
+            if (isset($args['value']) && !empty($args['value'])) {
+                $value = $args['value'];
+            }
+            elseif (isset($args['default']) && !empty($args['default'])) {
+                $value = $args['default'];
+            }
+
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="text"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="text"<?= $disabled ?>>
 
             <?php
 
