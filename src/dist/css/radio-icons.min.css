@@ -1,0 +1,30 @@
+.pomatio-framework-radio-icons-wrapper {
+  display: table;
+  width: 100%;
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 3px; }
+  .pomatio-framework-radio-icons-wrapper .form-check {
+    padding: 2px 0;
+    margin: 0;
+    display: block;
+    box-sizing: border-box;
+    width: 100%; }
+    .pomatio-framework-radio-icons-wrapper .form-check input {
+      /* HIDE RADIO */
+      visibility: hidden;
+      /* Makes input not-clickable */
+      position: absolute;
+      /* Remove input from document flow */ }
+    .pomatio-framework-radio-icons-wrapper .form-check .icon {
+      cursor: pointer;
+      width: 100px;
+      vertical-align: middle;
+      display: table-cell;
+      padding: 5px;
+      box-sizing: border-box;
+      border-radius: 3px;
+      opacity: .5;
+      transition: .8s opacity; }
+
+/*# sourceMappingURL=radio-icons.min.css.map */

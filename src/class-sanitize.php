@@ -141,6 +141,10 @@ function sanitize_pom_form_radio($value): string {
     return sanitize_text_field($value);
 }
 
+function sanitize_pom_form_radio_icons($value): string {
+    return sanitize_text_field($value);
+}
+
 function sanitize_pom_form_range($value) {
     return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 }
