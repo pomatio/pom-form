@@ -20,8 +20,8 @@ class Radio_Icons {
 
             <?php
 
-            foreach ($args['options'] as $radio_value => $radio_label) {
-                if (!wp_http_validate_url($radio_label)) {
+            foreach ($args['options'] as $radio_value => $radio_data) {
+                if (!wp_http_validate_url($radio_data['icon'])) {
                     continue;
                 }
 
@@ -31,7 +31,8 @@ class Radio_Icons {
 
                 <label class="icon-wrapper">
                     <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio">
-                    <span class="icon"><img src="<?= $radio_label ?>" alt="<?= $radio_label ?>"></span>
+                    <span class="icon"><img src="<?= $radio_data['icon'] ?>" alt="<?= $radio_data['label'] ?>"></span>
+                    <span class="label"><?= $radio_data['label'] ?></span>
                 </label>
 
                 <?php

@@ -16,13 +16,17 @@ class Code_CSS {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        $value = '';
         if (file_exists($args['value'])) {
-            $args['value'] = file_get_contents($args['value']);
+            $value = file_get_contents($args['value']);
+        }
+        elseif (isset($args['default']) && !empty($args['default'])) {
+            $value = $args['default'];
         }
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-css <?= $args['class'] ?>" data-type="code_css"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-css <?= $args['class'] ?>" data-type="code_css"><?= $value ?></textarea>
 
         <?php
 

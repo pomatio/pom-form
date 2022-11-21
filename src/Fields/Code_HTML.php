@@ -18,13 +18,17 @@ class Code_HTML {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        $value = '';
         if (file_exists($args['value'])) {
-            $args['value'] = file_get_contents($args['value']);
+            $value = file_get_contents($args['value']);
+        }
+        elseif (isset($args['default']) && !empty($args['default'])) {
+            $value = $args['default'];
         }
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $args['value'] ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-html <?= $args['class'] ?>" data-type="code_html"><?= $value ?></textarea>
 
         <?php
 
