@@ -1,33 +1,46 @@
 .pomatio-framework-radio-icons-wrapper {
-  display: table;
+  padding: 2px 0;
+  margin: 0;
+  display: block;
+  box-sizing: border-box;
   width: 100%;
-  position: relative;
-  border: 1px solid #ddd;
-  border-radius: 3px;
 
-  .form-check {
-    padding: 2px 0;
-    margin: 0;
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
+  .icon-wrapper {
+    display: table;
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-bottom: 5px;
+
+    &:hover {
+      background: #ddd;
+      border-color: #eee;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+    }
 
     input {
       /* HIDE RADIO */
       visibility: hidden; /* Makes input not-clickable */
       position: absolute; /* Remove input from document flow */
-    }
 
-    .icon {
-      cursor: pointer;
-      width: 100px;
-      vertical-align: middle;
-      display: table-cell;
-      padding: 5px;
-      box-sizing: border-box;
-      border-radius: 3px;
-      opacity: .5;
-      transition: .8s opacity;
+      &:checked + .icon {
+        background: #0085BA;
+        border-color: #ccc;
+        opacity: 1;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      + .icon {
+        cursor: pointer;
+        width: 100px;
+        vertical-align: middle;
+        display: table-cell;
+        padding: 5px;
+        box-sizing: border-box;
+        border-radius: 3px;
+        opacity: .5;
+        transition: .8s opacity;
+      }
     }
   }
 }
