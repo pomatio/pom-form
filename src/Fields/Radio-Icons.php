@@ -14,15 +14,28 @@ class Radio {
             echo '<label>' . $args['label'] . '</label>';
         }
 
+        ?>
+
+        <ul class="pomatio-framework-radio-icons-wrapper">
+
+        </ul>
+
+        <?php
+
         foreach ($args['options'] as $radio_value => $radio_label) {
+            if (wp_http_validate_url($radio_label)) {
+                continue;
+            }
+
             $checked = $args['value'] === $radio_value ? 'checked' : '';
 
             ?>
 
-            <div class="form-check">
+            <label class="form-check">
                 <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio">
-                <label class="form-check-label" for="<?= $args['name'] . '-' . $radio_value ?>"><?= $radio_label ?></label>
-            </div>
+                <span class="icon"><img src="<?= $radio_label ?>" alt="<?= $radio_label ?>"></span>
+                <span class="form-check-label"><?= $radio_label ?></span>
+            </label>
 
             <?php
         }
