@@ -213,6 +213,31 @@ jQuery(function($) {
     });
 
     /**
+     * Make WordPress Color Picker repeater compatible.
+     */
+    if (typeof $.fn.wpColorPicker !== 'undefined') {
+        $('.pomatio-framework-color-picker').wpColorPicker({
+            change: function (event, ui) {
+                let $color = ui.color.toString();
+                let $this = $(event.target);
+                $this.val($color);
+                $update_repeater($this.closest('.repeater-wrapper'));
+            }
+        });
+
+        $(document).ajaxComplete(function() {
+            $('.pomatio-framework-color-picker').wpColorPicker({
+                change: function (event, ui) {
+                    let $color = ui.color.toString();
+                    let $this = $(event.target);
+                    $this.val($color);
+                    $update_repeater($this.closest('.repeater-wrapper'));
+                }
+            });
+        });
+    }
+
+    /**
      * Make repeater elements sortable.
      */
     if (typeof $.fn.sortable !== 'undefined') {

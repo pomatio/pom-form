@@ -24,9 +24,12 @@ class Color {
             $value = $args['default'];
         }
 
+        // Repeater integration
+        $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
+
 		?>
 
-		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control pomatio-framework-color-picker <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
+		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control pomatio-framework-color-picker<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
 
 		<?php
 
