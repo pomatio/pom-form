@@ -29,9 +29,9 @@ class Range {
 
         ?>
 
-        <div class="range">
+        <div class="pomatio-framework-range">
             <input aria-label="<?= $args['label'] ?? '' ?>"<?= $step ?><?= $min ?><?= $max ?> type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="range"<?= $disabled ?>>
-            <span class="value"><?= $value ?></span>
+            <input aria-label="<?= $args['label'] ?? '' ?>" class="value" type="number" <?= $step ?><?= $min ?><?= $max ?> name="<?= $args['name'] ?>" value="<?= $value ?>">
 
             <?php
 

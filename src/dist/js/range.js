@@ -1,18 +1,19 @@
 jQuery(function($) {
-    let $slider = $('.range');
-    let $range = $('.range .slider');
-    let $value = $('.range .value');
+    /**
+     * Update input on range change.
+     */
+    $(document).on('input', '.pomatio-framework-range .slider', function() {
+        let $this = $(this);
+        let $value = $this.val();
+        $this.closest('.pomatio-framework-range').find('.value').val($value).trigger('change');
+    });
 
-    $slider.each(function() {
-        $value.each(function () {
-            let value = $(this).prev().attr('value');
-            let suffix = ($(this).prev().attr('suffix')) ? $(this).prev().attr('suffix') : '';
-            $(this).html(value + suffix);
-        });
-
-        $range.on('input', function() {
-            let $suffix = ($(this).attr('suffix')) ? $(this).attr('suffix') : '';
-            $(this).next($value).html(this.value + $suffix);
-        });
+    /**
+     * Update range on input change.
+     */
+    $(document).on('input', '.pomatio-framework-range .value', function() {
+        let $this = $(this);
+        let $value = $this.val();
+        $this.closest('.pomatio-framework-range').find('.slider').val($value).trigger('change');
     });
 });
