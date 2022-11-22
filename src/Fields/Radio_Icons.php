@@ -23,10 +23,6 @@ class Radio_Icons {
             foreach ($args['options'] as $radio_value => $radio_data) {
                 $icon = '';
                 if (file_exists($radio_data['icon'])) {
-                    if (mime_content_type($radio_data['icon']) !== 'image/svg+xml') {
-                        continue;
-                    }
-
                     $icon = file_get_contents($radio_data['icon']);
                 }
 
