@@ -24,7 +24,7 @@ class Color_Palette {
 
         $i = 0;
         foreach ($colors as $color) {
-            $checked = $color === $args['value'] ? 'checked' : '';
+            $checked = checked((string)$args['value'], (string)$color, false);
 
             ?>
 

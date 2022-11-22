@@ -26,7 +26,7 @@ class Radio_Icons {
                     $icon = file_get_contents($radio_data['icon']);
                 }
 
-                $checked = $args['value'] === $radio_value ? 'checked' : '';
+                $checked = checked((string)$args['value'], (string)$radio_value, false);
 
                 ?>
 
