@@ -1,29 +1,29 @@
 .gallery-wrapper {
-    .items-wrapper {
-        columns: 4;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+  .items-wrapper {
+    columns: 4;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 
-        .item-wrapper {
-            position: relative;
+    .item-wrapper {
+      position: relative;
 
-            .remove-selected-item {
-                color: #dc3333;
-                cursor: pointer;
-                display: none;
-                position: absolute;
-                right: 5px;
-                top: 5px;
+      .remove-selected-item {
+        color: #dc3333;
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        right: 5px;
+        top: 5px;
 
-                &:hover {
-                    color: #ff0000;
-                }
-            }
-
-            img {
-                cursor: move;
-            }
+        &:hover {
+          color: #ff0000;
         }
+      }
+
+      img {
+        cursor: move;
+      }
     }
+  }
 }

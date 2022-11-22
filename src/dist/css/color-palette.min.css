@@ -1,1 +1,2 @@
 .color-palette-wrapper{display:flex;flex-wrap:wrap}.color-palette-wrapper label{border:2px solid #eee;border-radius:50%;box-shadow:0 0 0 3px #ddd inset;box-sizing:border-box;display:block;flex:0 0 8%;max-width:8%;min-height:20px;padding-top:8%;position:relative;width:8%}.color-palette-wrapper input[type="radio"]:checked+label{box-shadow:0 0 0 3px #0085ba inset}.color-palette-wrapper input[type="radio"]{position:absolute;visibility:hidden}
+/*# sourceMappingURL=color-palette.min.css.map */

@@ -1,19 +1,19 @@
 .pomatio-framework-image-wrapper {
-    display: inline-block;
-    max-width: 282px;
-    position: relative;
-    width: 100%;
+  display: inline-block;
+  max-width: 282px;
+  position: relative;
+  width: 100%;
 
-    .remove-selected-image {
-        color: #dc3333;
-        cursor: pointer;
-        display: none;
-        position: absolute;
-        right: 5px;
-        top: 5px;
+  .remove-selected-image {
+    color: #dc3333;
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 5px;
 
-        &:hover {
-            color: #ff0000;
-        }
+    &:hover {
+      color: #ff0000;
     }
+  }
 }
