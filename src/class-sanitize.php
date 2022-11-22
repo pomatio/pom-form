@@ -176,7 +176,7 @@ function sanitize_pom_form_font_picker($value): array {
     return $sanitized;
 }
 
-function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pomatio-framework') {
+function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir = 'pomatio-framework'): array {
     if (is_string($value)) {
         $value = json_decode(stripslashes($value), true);
     }
@@ -225,7 +225,7 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
         return $sanitized_array;
     }
 
-    return $value;
+    return [];
 }
 
 function sanitize_pom_form_select($value): string {
