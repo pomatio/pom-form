@@ -6,40 +6,52 @@
   width: 100%;
 
   .icon-wrapper {
-    display: table;
     position: relative;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 3px;
     margin-bottom: 5px;
+    text-align: center;
+    display: inline-block;
+    width: 120px;
 
     &:hover {
       background: #ddd;
-      border-color: #eee;
+      border-color: #aaa;
       box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
     }
 
-    input {
-      /* HIDE RADIO */
-      visibility: hidden; /* Makes input not-clickable */
-      position: absolute; /* Remove input from document flow */
+    .label {
+      display: block;
+      margin: 0;
 
-      &:checked + .icon {
-        background: #0085BA;
-        border-color: #ccc;
-        opacity: 1;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+      > * {
+        display: block;
+        font-size: 11px !important;
+        line-height: 1.2;
       }
+    }
 
-      + .icon {
+    input {
+      visibility: hidden;
+      position: absolute;
+
+      & + label {
         cursor: pointer;
-        width: 100px;
+        display: block;
         vertical-align: middle;
-        display: table-cell;
         padding: 5px;
         box-sizing: border-box;
         border-radius: 3px;
-        opacity: .5;
+        opacity: .7;
         transition: .8s opacity;
+      }
+
+      &:checked + .label {
+        background: #2271B1;
+        color: #fff;
+        fill: #fff;
+        opacity: 1;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
       }
     }
   }
