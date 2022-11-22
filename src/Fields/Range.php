@@ -23,9 +23,9 @@ class Range {
             $value = $args['default'];
         }
 
-        $step = isset($args['step']) && !empty($args['step']) ? ' step="' . $args['step'] . '"' : '';
-        $min = isset($args['min']) && !empty($args['min']) ? ' min="' . $args['min'] . '"' : '';
-        $max = isset($args['max']) && !empty($args['max']) ? ' max="' . $args['max'] . '"' : '';
+        $step = isset($args['step']) && is_numeric($args['step']) ? ' step="' . $args['step'] . '"' : '';
+        $min = isset($args['min']) && is_numeric($args['min']) ? ' min="' . $args['min'] . '"' : '';
+        $max = isset($args['max']) && is_numeric($args['max']) ? ' max="' . $args['max'] . '"' : '';
 
         ?>
 
