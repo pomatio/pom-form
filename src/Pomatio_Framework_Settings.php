@@ -208,6 +208,25 @@ class Pomatio_Framework_Settings {
                     ) {
                         $fields = self::read_fields($settings_array['config']['settings_dir'], $setting_key);
                         foreach ($fields as $field) {
+                            if ($field['type'] === 'Separator') {
+                                ?>
+
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                        <?php
+
+                                        echo (new Pomatio_Framework())::add_field($field);
+
+                                        ?>
+                                    </td>
+                                </tr>
+
+                                <?php
+
+                                continue;
+                            }
+
                             ?>
 
                             <tr>
