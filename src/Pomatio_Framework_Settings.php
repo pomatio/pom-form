@@ -211,16 +211,17 @@ class Pomatio_Framework_Settings {
                             if ($field['type'] === 'Separator') {
                                 ?>
 
-                                <tr>
-                                    <th>
-                                        <?php
+                                    </tbody>
+                                </table>
 
-                                        echo (new Pomatio_Framework())::add_field($field);
+                                <?php
 
-                                        ?>
-                                    </th>
-                                </tr>
+                                echo (new Pomatio_Framework())::add_field($field);
 
+                                ?>
+
+                                <table class="form-table">
+                                    <tbody>
                                 <?php
 
                                 continue;

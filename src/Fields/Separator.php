@@ -10,7 +10,7 @@ class Separator {
         }
 
         if (isset($args['description']) && !empty($args['description'])) {
-            echo '<p class="description">' . $args['description'] . '</p>';
+            echo "<p>{$args['description']}</p>";
         }
     }
 
