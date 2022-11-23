@@ -98,6 +98,10 @@ class Pomatio_Framework {
                     );
                 }
 
+                if (isset($repeater_field['type']) && $repeater_field['type'] === 'Select') {
+                    wp_enqueue_script('pomatio-framework-select', POM_FORM_SRC_URI . '/dist/js/select' . POMATIO_MIN . '.js', ['jquery'], null, true);
+                }
+
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Color') {
                     wp_enqueue_style('wp-color-picker');
                     wp_enqueue_script('pomatio-framework-color', POM_FORM_SRC_URI . '/dist/js/color' . POMATIO_MIN . '.js', ['wp-color-picker'], null, true);

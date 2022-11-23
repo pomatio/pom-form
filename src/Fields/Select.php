@@ -13,37 +13,39 @@ class Select {
 
         echo '<div class="form-group">';
 
-            if (!empty($args['label'])) {
-                echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
-            }
+        if (!empty($args['label'])) {
+            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+        }
+        $multiple = isset($args['multiple']) && $args['multiple'] === true ? ' multiple' : '';
+        $name = isset($args['multiple']) && $args['multiple'] === true ? "{$args['name']}[]" : $args['name'];
 
-            echo '<select id="' . $args['id'] . '" name="' . $args['name'] . '" class="form-control ' . $args['class'] . '" data-type="select"' . $disabled . '>';
+        echo '<select id="' . $args['id'] . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '" data-type="select"' . $disabled . $multiple . '>';
 
-                foreach ($args['options'] as $select_value => $select_label) {
+        foreach ($args['options'] as $select_value => $select_label) {
 
-                    // optgroup options
-                    if (is_array($select_label)) {
-                        $label = isset($select_label['group_name']) ? ' label="' . $select_label['group_name'] . '"' : '';
-                        echo '<optgroup' . $label . '>';
-                        foreach ($select_label['group_options'] as $optgroup_key => $optgroup_label) {
-                            $selected = (string)$args['value'] === (string)$optgroup_key ? 'selected' : '';
-                            echo '<option value="' . $optgroup_key . '" ' . $selected . '>' . $optgroup_label . '</option>';
-                        }
-                        echo '</optgroup>';
-
-                        continue;
-                    }
-
-                    // default option
-                    $selected = (string)$args['value'] === (string)$select_value ? 'selected' : '';
-                    echo '<option value="' . $select_value . '" ' . $selected . '>' . $select_label . '</option>';
+            // optgroup options
+            if (is_array($select_label)) {
+                $label = isset($select_label['group_name']) ? ' label="' . $select_label['group_name'] . '"' : '';
+                echo '<optgroup' . $label . '>';
+                foreach ($select_label['group_options'] as $optgroup_key => $optgroup_label) {
+                    $selected = (string)$args['value'] === (string)$optgroup_key ? 'selected' : '';
+                    echo '<option value="' . $optgroup_key . '" ' . $selected . '>' . $optgroup_label . '</option>';
                 }
+                echo '</optgroup>';
 
-            echo '</select>';
-
-            if (!empty($args['description'])) {
-                echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+                continue;
             }
+
+            // default option
+            $selected = selected($select_value, $args['value'], false);
+            echo '<option value="' . $select_value . '" ' . $selected . '>' . $select_label . '</option>';
+        }
+
+        echo '</select>';
+
+        if (!empty($args['description'])) {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+        }
 
         echo '</div>';
 

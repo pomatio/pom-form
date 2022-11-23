@@ -28,10 +28,14 @@ class Radio_Icons {
 
                 $checked = checked((string)$args['value'], (string)$radio_value, false);
 
+                if (!$checked && isset($args['default']) && is_numeric($args['default'])) {
+                    $checked = checked((string)$args['default'], (string)$radio_value, false);
+                }
+
                 ?>
 
                 <label class="icon-wrapper">
-                    <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio">
+                    <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio_icons">
                     <span class="label">
                         <span class="icon"><?= $icon ?></span>
                         <span class="description"><?= $radio_data['label'] ?></span>
