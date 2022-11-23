@@ -212,14 +212,13 @@ class Pomatio_Framework_Settings {
                                 ?>
 
                                 <tr>
-                                    <th></th>
-                                    <td>
+                                    <th>
                                         <?php
 
                                         echo (new Pomatio_Framework())::add_field($field);
 
                                         ?>
-                                    </td>
+                                    </th>
                                 </tr>
 
                                 <?php
