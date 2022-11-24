@@ -50,12 +50,12 @@ function sanitize_pom_form_code_js($value): string {
     return stripslashes($filtered_js);
 }
 
-function sanitize_pom_form_color($value) {
+function sanitize_pom_form_color($value): string {
     return sanitize_hex_color(sanitize_text_field($value));
 }
 
-function sanitize_pom_form_color_palette($value) {
-    return sanitize_hex_color(sanitize_text_field($value));
+function sanitize_pom_form_color_palette($value): string {
+    return sanitize_text_field($value);
 }
 
 function sanitize_pom_form_date($value, $format = 'Y-m-d') {

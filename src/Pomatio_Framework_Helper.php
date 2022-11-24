@@ -58,10 +58,6 @@ class Pomatio_Framework_Helper {
         return apply_filters('pom_form_icon_libraries', $libraries);
     }
 
-    public static function get_color_palette(): array {
-        return apply_filters('pom_form_color_palette', []);
-    }
-
     /**
      * https://stackoverflow.com/questions/4356289/php-random-string-generator
      * @param int $length
