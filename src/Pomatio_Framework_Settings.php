@@ -149,9 +149,16 @@ class Pomatio_Framework_Settings {
 
         ?>
 
-        <div class="subsection-desc" style="font-size: 1.4rem; line-height: 1.5; padding: 20px 0;">
-            <?= $settings_array[$current_tab]['tab'][$current_subsection]['description'] ?? '' ?>
-        </div>
+        <h1><?= $settings_array[$current_tab]['tab'][$current_subsection]['title'] ?? '' ?></h1>
+
+        <?php
+
+        $description =  $settings_array[$current_tab]['tab'][$current_subsection]['description'];
+        if (isset($description) && !empty($description)) {
+            echo "<p>$description</p>";
+        }
+
+        ?>
 
         <form method="POST" action="<?= $action_url ?>">
             <?php
@@ -164,7 +171,16 @@ class Pomatio_Framework_Settings {
             foreach ($settings as $setting_key => $setting) {
                 ?>
 
-                <h3><?= $setting['title'] ?></h3>
+                <h2 class="title"><?= $setting['title'] ?? '' ?></h2>
+
+                <?php
+
+                if (isset($setting['description']) && !empty($setting['description'])) {
+                    echo "<p>{$setting['description']}</p>";
+                }
+
+                ?>
+
                 <table class="form-table">
                     <tbody>
 
