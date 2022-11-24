@@ -28,7 +28,9 @@ class Color_Palette {
                 ?>
 
                 <input type="radio" name="<?= $args['name'] ?>" id="<?= $args['name'] . '_' . $i ?>" value="<?= $color_slug ?>" <?= $checked ?>>
-                <label style="background-color: <?= $hex ?? '#f3f3f3' ?>" for="<?= $args['name'] . '_' . $i ?>"></label>
+                <label style="background-color: <?= $hex ?? '#f3f3f3' ?>" for="<?= $args['name'] . '_' . $i ?>">
+                    <span class="name"><?= $color_slug ?></span>
+                </label>
 
                 <?php
 
