@@ -17,13 +17,21 @@ class Color_Palette {
 
         $colors = $args['options'] ?? [];
 
+        $value = '';
+        if (isset($args['value']) && !empty($args['value'])) {
+            $value = $args['value'];
+        }
+        elseif (isset($args['default']) && !empty($args['default'])) {
+            $value = $args['default'];
+        }
+
         echo '<div class="color-palette-wrapper">';
 
         if (!empty($colors)) {
             $i = 0;
 
             foreach ($colors as $color_slug => $color_data) {
-                $checked = checked((string)$args['value'], (string)$color_slug, false);
+                $checked = checked($value, (string)$color_slug, false);
 
                 ?>
 
@@ -53,6 +61,19 @@ class Color_Palette {
             }
         }
 
+        if (isset($args['default']) && !empty($args['default'])) {
+            ?>
+
+            <label class="restore-color-palette" data-default="<?= $args['default'] ?>">
+                <span class="icon">
+                    <span class="dashicons dashicons-undo"></span>
+                </span>
+                <span class="name"><?php _e('Restore default', 'pomatio-framework') ?></span>
+            </label>
+
+            <?php
+        }
+
         echo '</div>';
 
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
@@ -62,6 +83,7 @@ class Color_Palette {
         echo '</div>';
 
         wp_enqueue_style('pomatio-framework-color-palette', POM_FORM_SRC_URI . '/dist/css/color-palette.min.css');
+        wp_enqueue_script('pomatio-framework-color-palette',  POM_FORM_SRC_URI . '/dist/js/color_palette' . POMATIO_MIN . '.js', [], null, true);
     }
 
 }

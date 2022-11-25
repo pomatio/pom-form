@@ -15,6 +15,7 @@
       height: 100%;
       width: 100%;
 
+      .dashicons-undo,
       svg {
         display: block;
         margin: 0 auto;
@@ -43,7 +44,6 @@
     }
   }
 
-
   input[type="radio"]:checked + label {
     box-shadow: 0 0 0 3px #0085ba inset;
   }
@@ -51,5 +51,9 @@
   input[type="radio"] {
     position: absolute;
     visibility: hidden;
+  }
+
+  .restore-color-palette {
+    background-color: #f3f3f3;
   }
 }
