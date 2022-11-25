@@ -9,6 +9,18 @@
     position: relative;
     width: 62px;
 
+    .icon {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      width: 100%;
+
+      svg {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+
     .name {
       background: #000;
       border-radius: 10px;
