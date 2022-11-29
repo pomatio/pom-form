@@ -1,0 +1,46 @@
+.pomatio-framework-range {
+  .restore-range {
+    border: 2px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 0 0 3px #ddd inset;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 40px;
+    position: relative;
+    width: 62px;
+
+    .icon {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      width: 100%;
+
+      .dashicons-undo {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+
+    .name {
+      background: #000;
+      border-radius: 10px;
+      bottom: 0;
+      color: #fff;
+      font-size: 8px;
+      left: 50%;
+      line-height: 1;
+      opacity: 0;
+      padding: 2px 5px 3px;
+      position: absolute;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    &:hover {
+      .name {
+        opacity: 1;
+      }
+    }
+  }
+}

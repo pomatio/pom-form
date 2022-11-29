@@ -43,6 +43,19 @@ class Range {
                 <?php
             }
 
+            if (isset($args['default']) && !empty($args['default'])) {
+                ?>
+
+                <span class="restore-range" data-default="<?= $args['default'] ?>">
+                    <span class="icon">
+                        <span class="dashicons dashicons-undo"></span>
+                    </span>
+                    <span class="name"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                </span>
+
+                <?php
+            }
+
             ?>
         </div>
 
@@ -52,6 +65,7 @@ class Range {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        wp_enqueue_style('pomatio-framework-range', POM_FORM_SRC_URI . '/dist/css/range.min.css');
         wp_enqueue_script('pomatio-framework-range',  POM_FORM_SRC_URI . '/dist/js/range' . POMATIO_MIN . '.js', ['jquery'], null, true);
     }
 

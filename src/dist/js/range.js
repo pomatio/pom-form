@@ -16,4 +16,11 @@ jQuery(function($) {
         let $value = $this.val();
         $this.closest('.pomatio-framework-range').find('.slider').val($value).trigger('change');
     });
+
+    $(document).on('click', '.restore-range', function() {
+        let $this = $(this);
+        let $default = $this.attr('data-default');
+        $this.closest('.pomatio-framework-range').find('.slider').val($default);
+        $this.closest('.pomatio-framework-range').find('.value').val($default);
+    });
 });
