@@ -35,6 +35,7 @@
       position: absolute;
       transform: translateX(-50%);
       white-space: nowrap;
+      z-index: 2;
     }
 
     &:hover {
