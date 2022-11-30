@@ -229,6 +229,10 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
 }
 
 function sanitize_pom_form_select($value): string {
+    if (is_array($value)) {
+        return sanitize_text_field(implode(',', $value));
+    }
+
     return sanitize_text_field($value);
 }
 

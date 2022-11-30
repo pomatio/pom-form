@@ -22,7 +22,6 @@ class Select {
         echo '<select id="' . $args['id'] . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '" data-type="select"' . $disabled . $multiple . '>';
 
         foreach ($args['options'] as $select_value => $select_label) {
-
             // optgroup options
             if (is_array($select_label)) {
                 $label = isset($select_label['group_name']) ? ' label="' . $select_label['group_name'] . '"' : '';
@@ -36,8 +35,14 @@ class Select {
                 continue;
             }
 
-            // default option
-            $selected = selected($select_value, $args['value'], false);
+            if (!empty($multiple)) {
+                $values = explode(',', $args['value']);
+                $selected = in_array($select_value, $values) ? 'selected' : '';
+            }
+            else {
+                $selected = selected($select_value, $args['value'], false);
+            }
+
             echo '<option value="' . $select_value . '" ' . $selected . '>' . $select_label . '</option>';
         }
 

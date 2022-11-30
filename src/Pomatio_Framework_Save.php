@@ -32,7 +32,7 @@ class Pomatio_Framework_Save {
                         continue;
                     }
 
-                    $setting_name = str_replace("{$dir}_", '', $name);
+                    $setting_name = str_replace(["{$dir}_", '[]'], '', $name);
 
                     $type = (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $sanitize_function_name = "sanitize_pom_form_{$type}";
