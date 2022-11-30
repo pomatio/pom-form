@@ -53,6 +53,10 @@ jQuery(function($) {
                         $field_value = $($field).is(':checked') ? 'yes' : 'no';
                     }
 
+                    if ($field.getAttribute('data-type') === 'select' && $($field).prop('multiple')) {
+                        $field_value = $($field).val().join(',');
+                    }
+
                     if ($field.getAttribute('data-type') === 'font_picker') {
                         let $font_type = $field_name.match(/\[(.*)\]/)[1];
                         $field_name = $field_name.split('[')[0];

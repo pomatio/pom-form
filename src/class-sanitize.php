@@ -207,16 +207,17 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
                         }
 
                         $sanitize_function_name = "sanitize_pom_form_{$arr_value['type']}";
+                        $field_name = str_replace('[]', '', $arr_key);
 
                         if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js')) {
-                            $file_name = "{$array_settings['name']}_{$repeater_identifier}_{$arr_key}";
-                            $sanitized_array[$type][$index][$arr_key]['value'] = Pomatio_Framework_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
+                            $file_name = "{$array_settings['name']}_{$repeater_identifier}_{$field_name}";
+                            $sanitized_array[$type][$index][$field_name]['value'] = Pomatio_Framework_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
                         }
                         else {
-                            $sanitized_array[$type][$index][$arr_key]['value'] = $sanitize_function_name($arr_value['value']);
+                            $sanitized_array[$type][$index][$field_name]['value'] = $sanitize_function_name($arr_value['value']);
                         }
 
-                        $sanitized_array[$type][$index][$arr_key]['type'] = $arr_value['type'];
+                        $sanitized_array[$type][$index][$field_name]['type'] = $arr_value['type'];
                     }
                 }
             }
