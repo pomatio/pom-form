@@ -43,7 +43,7 @@
         }
 
         label,
-        input,
+        input:not([type='checkbox']),
         textarea,
         select,
         small {
