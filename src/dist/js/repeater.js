@@ -165,6 +165,17 @@ jQuery(function($) {
                 $spinner.hide();
             }
         });
+
+        // Load custom fields as Select2 or color picker.
+        $(document).ajaxComplete(function () {
+            if (typeof $.fn.select2 !== 'undefined') {
+                $('.pomatio-framework-select.multiple').select2();
+            }
+
+            if (typeof $.fn.wpColorPicker !== 'undefined') {
+                $('.pomatio-framework-color-picker').wpColorPicker();
+            }
+        });
     });
 
     /**

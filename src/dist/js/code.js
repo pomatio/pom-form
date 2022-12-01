@@ -63,7 +63,7 @@ jQuery(function($) {
 
             $this.addClass('codemirror-rendered');
         });
-    }
+    };
 
     $render_code_editor();
 
