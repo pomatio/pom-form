@@ -55,7 +55,7 @@ class Pomatio_Framework_Helper {
             'path' => ''
         ];
 
-        return apply_filters('pom_form_icon_libraries', $libraries);
+        return apply_filters('pomatio_framework_icon_libraries', $libraries);
     }
 
     /**
@@ -67,7 +67,7 @@ class Pomatio_Framework_Helper {
      */
     public static function generate_random_string(int $length = 10, bool $numbers = true): string {
         $number_string = $numbers ? '0123456789' : '';
-        $characters = $number_string . 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = "{$number_string}abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
