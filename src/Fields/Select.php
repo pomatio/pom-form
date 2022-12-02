@@ -2,10 +2,13 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Select {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
+        $id = isset($args['multiple']) && $args['multiple'] === true ? "{$args['id']}_" . Pomatio_Framework_Helper::generate_random_string() : $args['id'];
 
         if (!isset($args['options'])) {
             return;
@@ -14,12 +17,13 @@ class Select {
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+            echo '<label for="' . $id . '">' . $args['label'] . '</label>';
         }
+
         $multiple = isset($args['multiple']) && $args['multiple'] === true ? ' multiple' : '';
         $name = isset($args['multiple']) && $args['multiple'] === true ? "{$args['name']}[]" : $args['name'];
 
-        echo '<select id="' . $args['id'] . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '" data-type="select"' . $disabled . $multiple . '>';
+        echo '<select id="' . $id . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '" data-type="select"' . $disabled . $multiple . '>';
 
         foreach ($args['options'] as $select_value => $select_label) {
             // optgroup options
