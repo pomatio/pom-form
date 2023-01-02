@@ -8,7 +8,6 @@ class Checkbox {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         if (isset($args['options']) && is_array($args['options']) && !empty($args['options'])) {
-
             if (!empty($args['label'])) {
                 echo '<label>' . $args['label'] . '</label>';
             }
@@ -32,7 +31,6 @@ class Checkbox {
             }
         }
         else {
-
             $checked = isset($args['value']) && $args['value'] === 'yes' ? 'checked="checked"' : '';
 
             ?>

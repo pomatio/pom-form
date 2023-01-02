@@ -54,6 +54,12 @@ class Pomatio_Framework_Settings {
         return $value;
     }
 
+    public static function is_setting_enabled($setting_name, $page_slug): bool {
+        $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+
+        return isset($enabled_settings[$setting_name]) && $enabled_settings[$setting_name] === '1';
+    }
+
     public static function render($page_slug, $settings_file_path): void {
         Pomatio_Framework_Save::save_settings($page_slug, $settings_file_path);
 
