@@ -1,7 +1,5 @@
 <?php
 
-if (!defined( 'WP_CLI' ) && WP_CLI) {
-    return;
+if (defined('WP_CLI') && WP_CLI) {
+    require_once 'commands/enable-theme-option.php';
 }
-
-require_once 'commands/enable-theme-option.php';
