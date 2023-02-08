@@ -31,7 +31,13 @@ class Checkbox {
             }
         }
         else {
-            $checked = isset($args['value']) && $args['value'] === 'yes' ? 'checked="checked"' : '';
+            $checked = '';
+            if (isset($args['value']) && $args['value'] === 'yes') {
+                $checked = 'checked="checked"';
+            }
+            elseif (isset($args['default']) && $args['default'] === 'yes') {
+                $checked = 'checked="checked"';
+            }
 
             ?>
 
