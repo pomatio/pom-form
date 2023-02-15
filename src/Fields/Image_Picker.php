@@ -16,6 +16,14 @@ class Image_Picker {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
+        $value = '';
+        if (isset($args['value']) && !empty($args['value'])) {
+            $value = $args['value'];
+        }
+        elseif (isset($args['default']) && !empty($args['default'])) {
+            $value = $args['default'];
+        }
+
         ?>
 
         <div class="pomatio-framework-image-wrapper">
@@ -23,13 +31,13 @@ class Image_Picker {
             <div class="image-wrapper">
                 <?php
 
-                if (!empty($args['value'])) {
-                    echo '<img width="280px" alt="" src="' . $args['value'] . '">';
+                if (!empty($value)) {
+                    echo '<img width="280px" alt="" src="' . $value . '">';
                 }
 
                 ?>
             </div>
-            <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>">
+            <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $value ?>">
             <button class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></button>
         </div>
 
