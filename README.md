@@ -1,4 +1,4 @@
-# POM Form
+# Pomatio Framework
 An easy way to render form fields in WordPress.
 
 ## Install
@@ -7,7 +7,7 @@ composer require pom/form
 ```
 
 ## Requirements
-* PHP 7 or higher
+* PHP 7.4 or higher
 * WordPress 5.0 or higher.
 
 ## Dependencies
@@ -30,12 +30,13 @@ Example of how to render a field:
 echo (new Pomatio_Framework())::add_field([
     'type' => 'text',
     'label' => 'Test Framework',
-    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
-    'placeholder' => 'Lorem Ipsum',
+    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
+    'placeholder' => 'Lorem Ipsum', // optional
     'name' => 'name',
     'class' => 'regular-text',
     'value' => '',
-    'description_position' => 'below_label'
+    'description_position' => 'below_label' // optional
+    'default' => '' // optional
 ]);
 ```
 
