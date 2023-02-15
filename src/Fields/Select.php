@@ -52,13 +52,11 @@ class Select {
             }
             else {
                 $selected = '';
-                if (isset($args['value'])) {
+                if (isset($args['value']) && !empty($args['value'])) {
                     $selected = selected($select_value, $args['value'], false);
-
                 }
-                elseif (isset($args['default']) && $args['default'] === (string)$select_value) {
+                elseif (isset($args['default']) && !empty($args['default'])) {
                     $selected = selected($select_value, $args['default'], false);
-
                 }
             }
 
