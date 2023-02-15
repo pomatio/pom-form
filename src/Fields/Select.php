@@ -31,7 +31,14 @@ class Select {
                 $label = isset($select_label['group_name']) ? ' label="' . $select_label['group_name'] . '"' : '';
                 echo '<optgroup' . $label . '>';
                 foreach ($select_label['group_options'] as $optgroup_key => $optgroup_label) {
-                    $selected = (string)$args['value'] === (string)$optgroup_key ? 'selected' : '';
+                    $selected = '';
+                    if (isset($args['value']) && $args['value'] === (string)$optgroup_key) {
+                        $selected = 'selected';
+                    }
+                    elseif (isset($args['default']) && $args['default'] === (string)$optgroup_key) {
+                        $selected = 'checked="checked"';
+                    }
+
                     echo '<option value="' . $optgroup_key . '" ' . $selected . '>' . $optgroup_label . '</option>';
                 }
                 echo '</optgroup>';
@@ -44,7 +51,15 @@ class Select {
                 $selected = in_array($select_value, $values) ? 'selected' : '';
             }
             else {
-                $selected = selected($select_value, $args['value'], false);
+                $selected = '';
+                if (isset($args['value'])) {
+                    $selected = selected($select_value, $args['value'], false);
+
+                }
+                elseif (isset($args['default']) && $args['default'] === (string)$select_value) {
+                    $selected = selected($select_value, $args['default'], false);
+
+                }
             }
 
             echo '<option value="' . $select_value . '" ' . $selected . '>' . $select_label . '</option>';
