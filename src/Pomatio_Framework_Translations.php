@@ -3,6 +3,9 @@
 namespace PomatioFramework;
 
 class Pomatio_Framework_Translations {
+    /**
+     * TODO: When a field that has already been translatable is no longer translatable, it does not disappear from the translatable strings.
+     */
 
     public function __construct() {
         add_action('admin_init', [$this, 'register_translatable_strings']);
