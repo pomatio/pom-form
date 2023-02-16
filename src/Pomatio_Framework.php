@@ -20,6 +20,7 @@ class Pomatio_Framework {
         require_once 'Pomatio_Framework_Settings.php';
         require_once 'Pomatio_Framework_Ajax.php';
         require_once 'Pomatio_Framework_Save.php';
+        require_once 'Pomatio_Framework_Translations.php';
 
         require_once 'cli/init-cli.php';
     }
