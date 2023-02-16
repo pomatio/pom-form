@@ -97,21 +97,10 @@ class Pomatio_Framework_Save {
         }
     }
 
-    /**
-     * Gets the index of the child array
-     * within a multidimensional array.
-     *
-     * @param $settings_array
-     * @param string $setting_name Fields name as is stored in file. Without tweak name prefix.
-     * @param $field_name
-     *
-     * @return string|null
-     */
     private function get_field_type($settings_array, string $setting_name, $field_name): ?string {
         $fields = Pomatio_Framework_Settings::read_fields($settings_array['config']['settings_dir'], $setting_name);
 
         foreach ($fields as $field) {
-
             if ($field['name'] === str_replace("{$setting_name}_", '', $field_name)) {
                 return $field['type'];
             }
