@@ -1,4 +1,7 @@
 <?php
+/**
+ *
+ */
 
 namespace PomatioFramework;
 
@@ -7,7 +10,11 @@ class Pomatio_Framework_Translations {
      * TODO: When a field that has already been translatable is no longer translatable, it does not disappear from the translatable strings.
      */
 
-    public function __construct() {
+    private $settings_dir;
+
+    public function __construct($settings_dir) {
+        $this->settings_dir = $settings_dir;
+
         add_action('admin_init', [$this, 'register_translatable_strings']);
     }
 
@@ -16,13 +23,14 @@ class Pomatio_Framework_Translations {
             return;
         }
 
-        $settings_path = (new Pomatio_Framework_Disk)->get_settings_path('pom-theme-options');
+        $settings_path = (new Pomatio_Framework_Disk)->get_settings_path($this->settings_dir);
 
         $strings = include "{$settings_path}translatable_strings.php";
 
         if (!empty($strings)) {
             foreach ($strings as $name => $data) {
-                pll_register_string($name, $data['string'], 'Pomatio Framework', $data['multiline']);
+                $string = Pomatio_Framework_Settings::get_setting_value($this->settings_dir, $data['filename'], $name, $data['type']);
+                pll_register_string($name, $string, 'Pomatio Framework', $data['multiline']);
             }
         }
     }
@@ -30,14 +38,15 @@ class Pomatio_Framework_Translations {
     /**
      * Saves in a file all the information needed to register the translatable strings.
      */
-    public static function register($setting_name, $string, $multiline, $settings_dir): void {
+    public static function register($setting_name, $settings_dir, $filename, $multiline, $type): void {
         $strings = Pomatio_Framework_Disk::read_file('translatable_strings.php', $settings_dir, 'array');
 
         $strings = empty($strings) ? [] : $strings;
 
         $strings[$setting_name] = [
-            'string' => $string,
+            'filename' => $filename,
             'multiline' => $multiline,
+            'type' => $type
         ];
 
         $content = (new Pomatio_Framework_Disk())->generate_file_content($strings, 'String translations.');
@@ -57,4 +66,3 @@ class Pomatio_Framework_Translations {
     }
 
 }
-new Pomatio_Framework_Translations();

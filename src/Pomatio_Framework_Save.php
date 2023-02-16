@@ -50,7 +50,7 @@ class Pomatio_Framework_Save {
                         $translatable = (new self)->is_translatable($settings_file_path, $dir, $name) ?? false;
                         if ($translatable && ($type === 'Text' || $type === 'Textarea' || $type === 'Tinymce')) {
                             $multiline = $type === 'Textarea' || $type === 'Tinymce';
-                            Pomatio_Framework_Translations::register($setting_name, $sanitized, $multiline, $page_slug);
+                            Pomatio_Framework_Translations::register($setting_name, $page_slug, $dir, $multiline, $type);
                         }
                     }
                 }
