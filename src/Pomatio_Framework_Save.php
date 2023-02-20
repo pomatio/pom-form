@@ -40,8 +40,14 @@ class Pomatio_Framework_Save {
                     if ($type === 'repeater') {
                         $data[$setting_name] = $sanitize_function_name($value, ['name' => $name], $page_slug);
                     }
-                    elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js') {
-                        $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), str_replace('code_', '', $type), $page_slug);
+                    elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js' || $type === 'Tinymce') {
+                        $extension = $type === 'Tinymce' ? 'html' : str_replace('code_', '', $type);
+                        $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
+
+                        $translatable = (new self)->is_translatable($settings_file_path, $dir, $name) ?? false;
+                        if ($translatable && $type === 'Tinymce') {
+                            Pomatio_Framework_Translations::register($setting_name, $page_slug, $dir, true, $type);
+                        }
                     }
                     else {
                         $sanitized = $sanitize_function_name($value);
