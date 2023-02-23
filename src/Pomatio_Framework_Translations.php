@@ -25,7 +25,10 @@ class Pomatio_Framework_Translations {
 
         $settings_path = (new Pomatio_Framework_Disk)->get_settings_path($this->settings_dir);
 
-        $strings = include "{$settings_path}translatable_strings.php";
+        $strings = [];
+        if (file_exists("{$settings_path}translatable_strings.php")) {
+            $strings = include "{$settings_path}translatable_strings.php";
+        }
 
         if (!empty($strings)) {
             foreach ($strings as $name => $data) {

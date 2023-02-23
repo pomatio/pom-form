@@ -42,7 +42,7 @@ function sanitize_pom_form_code_css($value, $compression_level = 'default'): str
  */
 function sanitize_pom_form_code_html($value): string {
     $allowed_tags = Pomatio_Framework_Helper::get_allowed_html();
-    return wp_kses(stripslashes($value), $allowed_tags, []);
+    return wp_kses(stripslashes($value), $allowed_tags);
 }
 
 function sanitize_pom_form_code_js($value): string {
@@ -271,7 +271,7 @@ function sanitize_pom_form_time($value) {
 
 function sanitize_pom_form_tinymce($value): string {
     $allowed_tags = Pomatio_Framework_Helper::get_allowed_html();
-    return wp_kses($value, $allowed_tags, []);
+    return wp_kses($value, $allowed_tags);
 }
 
 function sanitize_pom_form_toggle($value): string {
