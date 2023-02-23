@@ -38,7 +38,7 @@ class Image_Picker {
                 ?>
             </div>
             <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $value ?>">
-            <button class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></button>
+            <span class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></span>
         </div>
 
         <?php

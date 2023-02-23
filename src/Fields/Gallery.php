@@ -41,7 +41,7 @@ class Gallery {
 
                 ?>
             </div>
-            <button class="button open-gallery-modal"><?php _e('Select items', 'pomatio-framework') ?></button>
+            <span class="button open-gallery-modal"><?php _e('Select items', 'pomatio-framework') ?></span>
             <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
         </div>
 

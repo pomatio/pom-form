@@ -28,7 +28,7 @@ class Font_Picker {
                 <div class="font-variant <?= $extension ?>" style="margin-bottom: 10px;">
                     <label for="<?= $id . '-' . $extension ?>" style="display: block;"><?= $extension_label ?></label>
                     <input id="<?= $id . '-' . $extension ?>" type="url" name="<?= "{$args['name']}[$extension]" ?>" value="<?= $value ?>" data-type="font_picker">
-                    <button class="button open-font-picker"><?php _e('Select font file', 'pomatio-framework') ?></button>
+                    <span class="button open-font-picker"><?php _e('Select font file', 'pomatio-framework') ?></span>
                 </div>
 
                 <?php
