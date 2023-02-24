@@ -30,7 +30,7 @@ class Url {
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="url" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="url"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="url"<?= $disabled ?>>
 
             <?php
 

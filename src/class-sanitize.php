@@ -285,5 +285,11 @@ function sanitize_pom_form_toggle($value): string {
  * @return string
  */
 function sanitize_pom_form_url($value): string {
-    return sanitize_url($value);
+    $value = trim($value);
+
+    if (strpos($value, '#') === 0) {
+        return '#' . sanitize_title($value);
+    }
+
+    return $value;
 }
