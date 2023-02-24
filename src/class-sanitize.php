@@ -291,5 +291,5 @@ function sanitize_pom_form_url($value): string {
         return '#' . sanitize_title($value);
     }
 
-    return $value;
+    return sanitize_url($value);
 }
