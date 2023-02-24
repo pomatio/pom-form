@@ -31,7 +31,7 @@ class Icon_Picker {
 
                 ?>
             </div>
-            <button class="button open-icon-picker-modal"><?php _e('Select icon', 'pomatio-framework') ?></button>
+            <span class="button open-icon-picker-modal"><?php _e('Select icon', 'pomatio-framework') ?></span>
             <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
         </div>
 
