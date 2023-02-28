@@ -96,6 +96,8 @@ class Background_Image {
             </div>
         </div>
 
+        <input type="hidden" name="<?= $args['name'] ?>" value="">
+
         <?php
 
         if (!empty($args['description'])) {
