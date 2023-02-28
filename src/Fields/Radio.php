@@ -15,7 +15,17 @@ class Radio {
         }
 
         foreach ($args['options'] as $radio_value => $radio_label) {
-            $checked = $args['value'] === $radio_value ? 'checked' : '';
+            $checked = '';
+            if (isset($args['value']) && !empty($args['value'])) {
+                if ($args['value'] === $radio_value) {
+                    $checked = 'checked="checked"';
+                }
+            }
+            elseif (isset($args['default']) && !empty($args['default'])) {
+                if ($args['default'] === $radio_value) {
+                    $checked = 'checked="checked"';
+                }
+            }
 
             ?>
 
