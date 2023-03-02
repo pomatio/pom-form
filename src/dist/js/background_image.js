@@ -16,4 +16,13 @@ jQuery(function($) {
             $('.custom-vertical-wrapper').hide();
         }
     });
+
+    $(document).on('change', 'select[name="background_size"]', function() {
+        if ($('input[name="background_size"][value="custom"]').is(':selected')) {
+            $('.custom-background-size-wrapper').show();
+        }
+        else {
+            $('.custom-background-size-wrapper').hide();
+        }
+    });
 });
