@@ -10,7 +10,7 @@ class Email {
         echo '<div class="form-group">';
 
             if (!empty($args['label'])) {
-                echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+                echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label><br>';
             }
 
             if (!empty($args['description']) && $args['description_position'] === 'below_label') {
@@ -27,7 +27,7 @@ class Email {
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="email" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="email"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>" placeholder="<?= $args['placeholder'] ?? '' ?>" type="email" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="email"<?= $disabled ?>>
 
             <?php
 

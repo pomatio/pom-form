@@ -4,12 +4,26 @@ namespace PomatioFramework\Fields;
 
 use PomatioFramework\Pomatio_Framework;
 
+
+// Meter input de imagen, con opción a que renderice 2 (normal y mobile por ejemplo)
 class Background_Image {
 
     public static function render_field(array $args): void {
         ?>
 
         <div class="background-image-wrapper">
+            <div class="image-wrapper">
+                <?php
+
+                echo (new Pomatio_Framework())::add_field([
+                    'label' => __('Background image', 'pomatio-framework'),
+                    'type' => 'Image_Picker',
+                    'name' => 'background_image',
+                ]);
+
+                ?>
+            </div>
+
             <div class="horizontal-alignment">
                 <?php
 

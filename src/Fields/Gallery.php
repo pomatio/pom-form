@@ -9,7 +9,7 @@ class Gallery {
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label><br>';
         }
 
         if (!empty($args['description']) && $args['description_position'] === 'below_label') {

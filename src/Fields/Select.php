@@ -17,7 +17,7 @@ class Select {
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . $id . '">' . $args['label'] . '</label>';
+            echo '<label for="' . $id . '">' . $args['label'] . '</label><br>';
         }
 
         $multiple = isset($args['multiple']) && $args['multiple'] === true ? ' multiple' : '';
