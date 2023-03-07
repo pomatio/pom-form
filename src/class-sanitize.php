@@ -6,8 +6,16 @@
 use PomatioFramework\Pomatio_Framework_Disk;
 use PomatioFramework\Pomatio_Framework_Helper;
 
-function sanitize_pom_form_background_image($value): array {
-    return !empty($value) && is_array($value) ? $value : [];
+function sanitize_pom_form_background_image($value) {
+    if (empty($value)) {
+        return [];
+    }
+
+    if (is_array($value)) {
+        return $value;
+    }
+
+    return json_decode(stripslashes($value), true);
 }
 
 function sanitize_pom_form_button($value) {

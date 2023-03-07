@@ -35,7 +35,9 @@ jQuery(function($) {
         // When a file is selected, grab the URL and set it as the field's value
         $media_modal.on('select', function() {
             let $attachment = $media_modal.state().get('selection').first().toJSON();
+
             $clicked_button.closest('.pomatio-framework-image-wrapper').find('input[type="url"]').val($attachment.url);
+            $clicked_button.closest('.pomatio-framework-image-wrapper').find('input[type="url"]').trigger('change');
             $clicked_button.closest('.pomatio-framework-image-wrapper').find('.image-wrapper').empty().append('<img width="280px" alt="" src="' + $attachment.url + '">');
             $clicked_button.closest('.pomatio-framework-image-wrapper').find('.remove-selected-image').css('display', 'inherit');
         });

@@ -42,7 +42,7 @@ class Background_Image {
 
                 ?>
 
-                <div class="custom-horizontal-wrapper" style="display: none">
+                <div class="custom-horizontal_alignment-wrapper" style="display: none">
                     <?php
 
                     echo (new Pomatio_Framework())::add_field([
@@ -84,7 +84,7 @@ class Background_Image {
 
                 ?>
 
-                <div class="custom-vertical-wrapper" style="display: none">
+                <div class="custom-vertical_alignment-wrapper" style="display: none">
                     <?php
 
                     echo (new Pomatio_Framework())::add_field([
@@ -107,99 +107,98 @@ class Background_Image {
 
                     ?>
                 </div>
-                <div>
+            </div>
+            <?php
+
+            echo (new Pomatio_Framework())::add_field([
+                'type' => 'Select',
+                'label' => __('Background position', 'pomatio-framework'),
+                'name' => 'background_position',
+                'options' => [
+                    'repeat' => __('Repeat', 'pomatio-framework'),
+                    'repeat-x' => __('Repeat horizontally', 'pomatio-framework'),
+                    'prepeat-y' => __('Repeat vertically', 'pomatio-framework'),
+                    'no-repeat' => __('No repeat', 'pomatio-framework'),
+                ],
+                'default' => 'repeat'
+            ]);
+
+            echo (new Pomatio_Framework())::add_field([
+                'type' => 'Select',
+                'label' => __('Background attachment', 'pomatio-framework'),
+                'name' => 'background_attachment',
+                'options' => [
+                    'scroll' => __('Scroll', 'pomatio-framework'),
+                    'fixed' => __('Fixed', 'pomatio-framework'),
+                ],
+                'default' => 'scroll'
+            ]);
+
+            ?>
+
+            <div class="background-size-wrapper">
+                <?php
+
+                echo (new Pomatio_Framework())::add_field([
+                    'type' => 'Select',
+                    'label' => __('Background size', 'pomatio-framework'),
+                    'name' => 'background_size',
+                    'options' => [
+                        'auto' => __('Auto', 'pomatio-framework'),
+                        'cover' => __('Cover', 'pomatio-framework'),
+                        'contain' => __('Contain', 'pomatio-framework'),
+                        //'custom' => __('Custom', 'pomatio-framework'),
+                    ],
+                    'default' => 'auto'
+                ]);
+
+                ?>
+
+                <div class="custom-background-size-wrapper" style="display: none">
                     <?php
 
                     echo (new Pomatio_Framework())::add_field([
-                        'type' => 'Select',
-                        'label' => __('Background position', 'pomatio-framework'),
-                        'name' => 'background_position',
-                        'options' => [
-                            'repeat' => __('Repeat', 'pomatio-framework'),
-                            'repeat-x' => __('Repeat horizontally', 'pomatio-framework'),
-                            'prepeat-y' => __('Repeat vertically', 'pomatio-framework'),
-                            'no-repeat' => __('No repeat', 'pomatio-framework'),
-                        ],
-                        'default' => 'repeat'
+                        'type' => 'Text',
+                        'placeholder' => __('Custom width', 'pomatio-framework'),
+                        'name' => 'custom_background_size_width_number'
                     ]);
 
                     echo (new Pomatio_Framework())::add_field([
                         'type' => 'Select',
-                        'label' => __('Background attachment', 'pomatio-framework'),
-                        'name' => 'background_attachment',
+                        'name' => 'custom_background_size_width_unit',
                         'options' => [
-                            'scroll' => __('Scroll', 'pomatio-framework'),
-                            'fixed' => __('Fixed', 'pomatio-framework'),
+                            '%' => '%',
+                            'px' => 'px',
+                            'rem' => 'rem',
+                            'em' => 'em',
                         ],
-                        'default' => 'scroll'
+                        'default' => 'px'
+                    ]);
+
+                    echo (new Pomatio_Framework())::add_field([
+                        'type' => 'Text',
+                        'placeholder' => __('Custom height', 'pomatio-framework'),
+                        'name' => 'custom_background_size_height_number'
+                    ]);
+
+                    echo (new Pomatio_Framework())::add_field([
+                        'type' => 'Select',
+                        'name' => 'custom_background_size_height_unit',
+                        'options' => [
+                            '%' => '%',
+                            'px' => 'px',
+                            'rem' => 'rem',
+                            'em' => 'em',
+                        ],
+                        'default' => 'px'
                     ]);
 
                     ?>
-
-                    <div class="background-size-wrapper">
-                        <?php
-
-                        echo (new Pomatio_Framework())::add_field([
-                            'type' => 'Select',
-                            'label' => __('Background size', 'pomatio-framework'),
-                            'name' => 'background_size',
-                            'options' => [
-                                'auto' => __('Auto', 'pomatio-framework'),
-                                'cover' => __('Cover', 'pomatio-framework'),
-                                'contain' => __('Contain', 'pomatio-framework'),
-                                'custom' => __('Custom', 'pomatio-framework'),
-                            ],
-                            'default' => 'auto'
-                        ]);
-
-                        ?>
-                        <div class="custom-background-size-wrapper" style="display: none">
-                            <?php
-
-                            echo (new Pomatio_Framework())::add_field([
-                                'type' => 'Text',
-                                'placeholder' => __('Custom width', 'pomatio-framework'),
-                                'name' => 'custom_background_size_width_number'
-                            ]);
-
-                            echo (new Pomatio_Framework())::add_field([
-                                'type' => 'Select',
-                                'name' => 'custom_background_size_width_unit',
-                                'options' => [
-                                    '%' => '%',
-                                    'px' => 'px',
-                                    'rem' => 'rem',
-                                    'em' => 'em',
-                                ],
-                                'default' => 'px'
-                            ]);
-
-                            echo (new Pomatio_Framework())::add_field([
-                                'type' => 'Text',
-                                'placeholder' => __('Custom height', 'pomatio-framework'),
-                                'name' => 'custom_background_size_height_number'
-                            ]);
-
-                            echo (new Pomatio_Framework())::add_field([
-                                'type' => 'Select',
-                                'name' => 'custom_background_size_height_unit',
-                                'options' => [
-                                    '%' => '%',
-                                    'px' => 'px',
-                                    'rem' => 'rem',
-                                    'em' => 'em',
-                                ],
-                                'default' => 'px'
-                            ]);
-
-                            ?>
-                        </div>
-                    <div>
                 </div>
             </div>
-        </div>
 
-        <input type="hidden" name="<?= $args['name'] ?>" value="">
+            <input type="hidden" name="<?= $args['name'] ?>" value="<?= htmlspecialchars(json_encode($args['value'])) ?>" data-type="background_image">
+        </div>
 
         <?php
 
