@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,yBAA0B,CACxB,UAAU,CAAE,GAAG",
+"sources": ["background-image.scss"],
+"names": [],
+"file": "background-image.min.css"
+}

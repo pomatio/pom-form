@@ -230,6 +230,7 @@ class Background_Image {
             echo '<p class="description">' . $args['description'] . '</p>';
         }
 
+        wp_enqueue_style('pomatio-framework-background-image', POM_FORM_SRC_URI . '/dist/css/background-image.min.css');
         wp_enqueue_script('pomatio-framework-background-image',  POM_FORM_SRC_URI . '/dist/js/background_image' . POMATIO_MIN . '.js', ['jquery'], null, true);
     }
 
