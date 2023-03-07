@@ -29,13 +29,25 @@ class Background_Image {
 
                 echo (new Pomatio_Framework())::add_field([
                     'label' => __('Horizontal alignment', 'pomatio-framework'),
-                    'type' => 'Radio',
+                    'type' => 'Radio_Icons',
                     'name' => 'horizontal_alignment',
                     'options' => [
-                        'left' => __('Left', 'pomatio-framework'),
-                        'center' => __('Center', 'pomatio-framework'),
-                        'right' => __('Right', 'pomatio-framework'),
-                        'custom' => __('Custom', 'pomatio-framework'),
+                        'left' => [
+                            'label' => __('Left', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-100.svg',
+                        ],
+                        'center' => [
+                            'label' => __('Center', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-300.svg',
+                        ],
+                        'right' => [
+                            'label' => __('Right', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-600.svg',
+                        ],
+                        'custom' => [
+                            'label' => __('Custom', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-900.svg',
+                        ],
                     ],
                     'default' => 'center'
                 ]);
@@ -71,13 +83,25 @@ class Background_Image {
 
                 echo (new Pomatio_Framework())::add_field([
                     'label' => __('Vertical alignment', 'pomatio-framework'),
-                    'type' => 'Radio',
+                    'type' => 'Radio_Icons',
                     'name' => 'vertical_alignment',
                     'options' => [
-                        'top' => __('Top', 'pomatio-framework'),
-                        'center' => __('Center', 'pomatio-framework'),
-                        'bottom' => __('Bottom', 'pomatio-framework'),
-                        'custom' => __('Custom', 'pomatio-framework'),
+                        'top' => [
+                            'label' => __('Top', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-100.svg',
+                        ],
+                        'center' => [
+                            'label' => __('Center', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-300.svg',
+                        ],
+                        'bottom' => [
+                            'label' => __('Bottom', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-600.svg',
+                        ],
+                        'custom' => [
+                            'label' => __('Custom', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-900.svg',
+                        ],
                     ],
                     'default' => 'center'
                 ]);
