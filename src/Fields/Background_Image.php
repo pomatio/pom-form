@@ -88,19 +88,19 @@ class Background_Image {
                     'options' => [
                         'top' => [
                             'label' => __('Top', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-100.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-100.svg',
                         ],
                         'center' => [
                             'label' => __('Center', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-300.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-300.svg',
                         ],
                         'bottom' => [
                             'label' => __('Bottom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-600.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-600.svg',
                         ],
                         'custom' => [
                             'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-900.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-900.svg',
                         ],
                     ],
                     'default' => 'center'
