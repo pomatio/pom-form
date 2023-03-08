@@ -178,11 +178,11 @@ jQuery(function($) {
         }
     });
 
-    $(document).on('change', 'select[name="background_position"]', function() {
+    $(document).on('change', 'select[name="background_repeat"]', function() {
         let $this = $(this);
         let $value = {};
 
-        $value.background_position = $this.val();
+        $value.background_repeat = $this.val();
         $set_hidden_value($this, $value);
     });
 

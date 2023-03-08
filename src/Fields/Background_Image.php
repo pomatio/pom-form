@@ -136,8 +136,8 @@ class Background_Image {
 
             echo (new Pomatio_Framework())::add_field([
                 'type' => 'Select',
-                'label' => __('Background position', 'pomatio-framework'),
-                'name' => 'background_position',
+                'label' => __('Background repeat', 'pomatio-framework'),
+                'name' => 'background_repeat',
                 'options' => [
                     'repeat' => __('Repeat', 'pomatio-framework'),
                     'repeat-x' => __('Repeat horizontally', 'pomatio-framework'),
