@@ -26,6 +26,7 @@ jQuery(function($) {
                 else if ($field.is(":radio") && key === 'background_size') {
                     if (fvalue !== 'auto' && fvalue !== 'cover' && fvalue !== 'contain') {
                         $this.find(`[name="${key}"][value="custom"]`).prop("checked", true);
+                        $this.find(`.custom-background-size-wrapper`).show();
 
                         let $values = fvalue.split(' ');
 
@@ -193,16 +194,16 @@ jQuery(function($) {
         $set_hidden_value($this, $value);
     });
 
-    $(document).on('click', 'select[name="background_size"], input[name="custom_background_size_width_number"], select[name="custom_background_size_width_unit"], input[name="custom_background_size_height_number"], select[name="custom_background_size_height_unit"]', function() {
+    $(document).on('change keyup', 'input[name="background_size"], input[name="custom_background_size_width_number"], select[name="custom_background_size_width_unit"], input[name="custom_background_size_height_number"], select[name="custom_background_size_height_unit"]', function() {
         let $this = $(this);
         let $value = {};
         let $size = $this.closest('.background-size-wrapper').find('select[name="background_size"]').val();
 
         if ($size === 'custom') {
-            let $width_number = $this.closest('.custom-background-size-wrapper').find('input[name="custom_background_size_width_number"]').val();
-            let $width_unit = $this.closest('.custom-background-size-wrapper').find('select[name="custom_background_size_width_unit"]').val();
-            let $height_number = $this.closest('.custom-background-size-wrapper').find('input[name="custom_background_size_height_number"]').val();
-            let $height_unit = $this.closest('.custom-background-size-wrapper').find('select[name="custom_background_size_height_unit"]').val();
+            let $width_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_width_number"]').val();
+            let $width_unit = $this.closest('.background-size-wrapper').find('select[name="custom_background_size_width_unit"]').val();
+            let $height_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_height_number"]').val();
+            let $height_unit = $this.closest('.background-size-wrapper').find('select[name="custom_background_size_height_unit"]').val();
 
             $value.background_size = `${$width_number}${$width_unit} ${$height_number}${$height_unit}`;
         }
