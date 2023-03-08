@@ -34,19 +34,19 @@ class Background_Image {
                     'options' => [
                         'left' => [
                             'label' => __('Left', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-100.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-100.svg',
                         ],
                         'center' => [
                             'label' => __('Center', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-300.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-300.svg',
                         ],
                         'right' => [
                             'label' => __('Right', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-600.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-600.svg',
                         ],
                         'custom' => [
                             'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_URI . '/dist/icons/font-weight-900.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-900.svg',
                         ],
                     ],
                     'default' => 'center'
@@ -58,7 +58,7 @@ class Background_Image {
                     <?php
 
                     echo (new Pomatio_Framework())::add_field([
-                        'type' => 'Text',
+                        'type' => 'Number',
                         'placeholder' => __('Custom', 'pomatio-framework'),
                         'name' => 'custom_horizontal_alignment_number'
                     ]);
@@ -112,7 +112,7 @@ class Background_Image {
                     <?php
 
                     echo (new Pomatio_Framework())::add_field([
-                        'type' => 'Text',
+                        'type' => 'Number',
                         'placeholder' => __('Custom', 'pomatio-framework'),
                         'name' => 'custom_vertical_alignment_number'
                     ]);
@@ -171,7 +171,7 @@ class Background_Image {
                         'auto' => __('Auto', 'pomatio-framework'),
                         'cover' => __('Cover', 'pomatio-framework'),
                         'contain' => __('Contain', 'pomatio-framework'),
-                        //'custom' => __('Custom', 'pomatio-framework'),
+                        'custom' => __('Custom', 'pomatio-framework'),
                     ],
                     'default' => 'auto'
                 ]);
@@ -182,7 +182,7 @@ class Background_Image {
                     <?php
 
                     echo (new Pomatio_Framework())::add_field([
-                        'type' => 'Text',
+                        'type' => 'Number',
                         'placeholder' => __('Custom width', 'pomatio-framework'),
                         'name' => 'custom_background_size_width_number'
                     ]);
@@ -200,7 +200,7 @@ class Background_Image {
                     ]);
 
                     echo (new Pomatio_Framework())::add_field([
-                        'type' => 'Text',
+                        'type' => 'Number',
                         'placeholder' => __('Custom height', 'pomatio-framework'),
                         'name' => 'custom_background_size_height_number'
                     ]);
