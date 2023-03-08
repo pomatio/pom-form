@@ -1,3 +1,38 @@
 .background-image-wrapper {
-  background: red;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 15px;
+
+  > div {
+    margin-bottom: 15px;
+  }
+
+  select {
+    max-width: 100%;
+    min-width: 300px;
+  }
+
+  .custom-horizontal_alignment-wrapper,
+  .custom-vertical_alignment-wrapper {
+    display: table;
+    min-width: 300px;
+
+    > .form-group {
+      display: table-cell;
+      padding: 1px;
+
+      &:last-child {
+        width: 50px;
+      }
+    }
+
+    input {
+      width: 100%;
+    }
+
+    select {
+      margin-top: -3px;
+      min-width: 0;
+    }
+  }
 }
