@@ -29,18 +29,21 @@ jQuery(function($) {
                         $this.find(`.custom-background-size-wrapper`).show();
 
                         let $values = fvalue.split(' ');
+                        if ($values.length === 2) {
+                            let $width_number = $values[0].match(/\d+/);
+                            let $width_unit = $values[0].replace($width_number, '');
 
-                        let $width_number = $values[0].match(/\d+/);
-                        let $width_unit = $values[0].replace($width_number, '');
-                        $this.find(`[name="custom_background_size_width_number"]`).val($width_number);
-                        $this.find(`[name="custom_background_size_width_unit"] option[value="${$width_unit}"]`).prop('selected', true);
+                            $this.find(`[name="custom_background_size_width_number"]`).val($width_number);
+                            $this.find(`[name="custom_background_size_width_unit"] option[value="${$width_unit}"]`).prop('selected', true);
 
-                        let $height_number = $values[1].match(/\d+/);
-                        let $height_unit = $values[1].replace($width_number, '');
-                        $this.find(`[name="custom_background_size_height_number"]`).val($height_number);
-                        $this.find(`[name="custom_background_size_height_unit"] option[value="${$height_unit}"]`).prop('selected', true);
+                            let $height_number = $values[1].match(/\d+/);
+                            let $height_unit = $values[1].replace($height_number, '');
+                            $this.find(`[name="custom_background_size_height_number"]`).val($height_number);
+                            $this.find(`[name="custom_background_size_height_unit"] option[value="${$height_unit}"]`).prop('selected', true);
 
-                        $this.find('.custom-background-size-wrapper').show();
+                            $this.find('.custom-background-size-wrapper').show();
+                        }
+
                     }
                     else {
                         $this.find(`[name="${key}"][value="${fvalue}"]`).prop("checked", true);
@@ -197,7 +200,7 @@ jQuery(function($) {
     $(document).on('change keyup', 'input[name="background_size"], input[name="custom_background_size_width_number"], select[name="custom_background_size_width_unit"], input[name="custom_background_size_height_number"], select[name="custom_background_size_height_unit"]', function() {
         let $this = $(this);
         let $value = {};
-        let $size = $this.closest('.background-size-wrapper').find('select[name="background_size"]').val();
+        let $size = $this.closest('.background-size-wrapper').find('input[name="background_size"]:checked').val();
 
         if ($size === 'custom') {
             let $width_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_width_number"]').val();
