@@ -164,14 +164,26 @@ class Background_Image {
                 <?php
 
                 echo (new Pomatio_Framework())::add_field([
-                    'type' => 'Select',
+                    'type' => 'Radio_Icons',
                     'label' => __('Background size', 'pomatio-framework'),
                     'name' => 'background_size',
                     'options' => [
-                        'auto' => __('Auto', 'pomatio-framework'),
-                        'cover' => __('Cover', 'pomatio-framework'),
-                        'contain' => __('Contain', 'pomatio-framework'),
-                        'custom' => __('Custom', 'pomatio-framework'),
+                        'auto' => [
+                            'label' => __('Auto', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-100.svg',
+                        ],
+                        'cover' => [
+                            'label' => __('Cover', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-300.svg',
+                        ],
+                        'contain' => [
+                            'label' => __('Contain', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-600.svg',
+                        ],
+                        'custom' => [
+                            'label' => __('Custom', 'pomatio-framework'),
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-900.svg',
+                        ],
                     ],
                     'default' => 'auto'
                 ]);
@@ -198,6 +210,8 @@ class Background_Image {
                         ],
                         'default' => 'px'
                     ]);
+
+                    echo ' x ';
 
                     echo (new Pomatio_Framework())::add_field([
                         'type' => 'Number',
