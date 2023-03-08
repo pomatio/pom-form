@@ -23,6 +23,7 @@ class Pomatio_Framework_Save {
 
         foreach ($settings_dirs as $dir) {
             $data = [];
+            $translatables = [];
 
             foreach ($_POST as $name => $value) {
                 if (strpos($name, "{$dir}_") === 0) {
@@ -33,7 +34,6 @@ class Pomatio_Framework_Save {
                     }
 
                     $setting_name = str_replace(["{$dir}_", '[]'], '', $name);
-
                     $type = (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $sanitize_function_name = "sanitize_pom_form_{$type}";
 
@@ -43,24 +43,34 @@ class Pomatio_Framework_Save {
                     elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js' || $type === 'Tinymce') {
                         $extension = $type === 'Tinymce' ? 'html' : str_replace('code_', '', $type);
                         $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
-
                         $translatable = (new self)->is_translatable($settings_file_path, $dir, $name) ?? false;
+
                         if ($translatable && $type === 'Tinymce') {
-                            Pomatio_Framework_Translations::register($setting_name, $page_slug, $dir, true, $type);
+                            $translatables[$setting_name] = [
+                                'filename' => $dir,
+                                'multiline' => true,
+                                'type' => $type
+                            ];
                         }
                     }
                     else {
                         $sanitized = $sanitize_function_name($value);
                         $data[$setting_name] = $sanitized;
-
                         $translatable = (new self)->is_translatable($settings_file_path, $dir, $name) ?? false;
-                        if ($translatable && ($type === 'Text' || $type === 'Textarea' || $type === 'Tinymce')) {
+
+                        if ($translatable && ($type === 'Text' || $type === 'Url' || $type === 'Textarea' || $type === 'Tinymce')) {
                             $multiline = $type === 'Textarea' || $type === 'Tinymce';
-                            Pomatio_Framework_Translations::register($setting_name, $page_slug, $dir, $multiline, $type);
+                            $translatables[$setting_name] = [
+                                'filename' => $dir,
+                                'multiline' => $multiline,
+                                'type' => $type
+                            ];
                         }
                     }
                 }
             }
+
+            Pomatio_Framework_Translations::register($translatables, $page_slug);
 
             (new self)->save_settings_files($page_slug, $dir, $data);
 

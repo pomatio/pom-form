@@ -41,21 +41,22 @@ class Pomatio_Framework_Translations {
     /**
      * Saves in a file all the information needed to register the translatable strings.
      */
-    public static function register($setting_name, $settings_dir, $filename, $multiline, $type): void {
-        $strings = Pomatio_Framework_Disk::read_file('translatable_strings.php', $settings_dir, 'array');
+    public static function register($translatables, $settings_dir): void {
+        if (empty($translatables)) {
+            return;
+        }
 
-        $strings = empty($strings) ? [] : $strings;
+        $saved_strings = Pomatio_Framework_Disk::read_file('translatable_strings.php', $settings_dir, 'array');
 
-        $strings[$setting_name] = [
-            'filename' => $filename,
-            'multiline' => $multiline,
-            'type' => $type
-        ];
+        foreach ($translatables as $translatable_key => $translatable_data) {
+            $saved_strings[$translatable_key] = $translatable_data;
+        }
 
-        $content = (new Pomatio_Framework_Disk())->generate_file_content($strings, 'String translations.');
+        var_dump($saved_strings);
+
+        $content = (new Pomatio_Framework_Disk())->generate_file_content($saved_strings, 'String translations.');
         Pomatio_Framework_Disk::save_to_file('translatable_strings', $content, 'php', $settings_dir);
     }
-
 
     /**
      * If Polylang is active, translate a previously registered string.
