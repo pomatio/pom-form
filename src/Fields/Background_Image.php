@@ -34,19 +34,19 @@ class Background_Image {
                     'options' => [
                         'left' => [
                             'label' => __('Left', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-100.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-left.svg',
                         ],
                         'center' => [
                             'label' => __('Center', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-300.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-center.svg',
                         ],
                         'right' => [
                             'label' => __('Right', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-600.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-right.svg',
                         ],
                         'custom' => [
                             'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-900.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-custom.svg',
                         ],
                     ],
                     'default' => 'center'
@@ -88,19 +88,19 @@ class Background_Image {
                     'options' => [
                         'top' => [
                             'label' => __('Top', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-100.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-top.svg',
                         ],
                         'center' => [
                             'label' => __('Center', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-300.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-center.svg',
                         ],
                         'bottom' => [
                             'label' => __('Bottom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-600.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-down.svg',
                         ],
                         'custom' => [
                             'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-900.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-custom.svg',
                         ],
                     ],
                     'default' => 'center'
@@ -170,19 +170,19 @@ class Background_Image {
                     'options' => [
                         'auto' => [
                             'label' => __('Auto', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-100.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-auto.svg',
                         ],
                         'cover' => [
                             'label' => __('Cover', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-300.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-cover.svg',
                         ],
                         'contain' => [
                             'label' => __('Contain', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-600.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-contain.svg',
                         ],
                         'custom' => [
                             'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/font-weight-900.svg',
+                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-custom.svg',
                         ],
                     ],
                     'default' => 'auto'
