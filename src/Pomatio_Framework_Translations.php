@@ -52,8 +52,6 @@ class Pomatio_Framework_Translations {
             $saved_strings[$translatable_key] = $translatable_data;
         }
 
-        var_dump($saved_strings);
-
         $content = (new Pomatio_Framework_Disk())->generate_file_content($saved_strings, 'String translations.');
         Pomatio_Framework_Disk::save_to_file('translatable_strings', $content, 'php', $settings_dir);
     }
