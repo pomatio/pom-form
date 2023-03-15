@@ -98,7 +98,13 @@ jQuery(function($) {
     });
 
     let $get_hidden_value = function ($element) {
-        return $element.closest('.background-image-wrapper').find('input[type="hidden"]').val();
+        let $val = $element.closest('.background-image-wrapper').find('input[type="hidden"]').val();
+
+        if ($val === '[]') {
+            $val = {};
+        }
+
+        return $val;
     };
 
     let $set_hidden_value = function ($element, $object) {
