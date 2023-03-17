@@ -18,7 +18,7 @@ class Background_Image {
                 echo (new Pomatio_Framework())::add_field([
                     'label' => __('Background image', 'pomatio-framework'),
                     'type' => 'Image_Picker',
-                    'name' => 'background_image',
+                    'name' => 'background-image',
                 ]);
 
                 ?>
@@ -137,7 +137,7 @@ class Background_Image {
             echo (new Pomatio_Framework())::add_field([
                 'type' => 'Select',
                 'label' => __('Background repeat', 'pomatio-framework'),
-                'name' => 'background_repeat',
+                'name' => 'background-repeat',
                 'options' => [
                     'repeat' => __('Repeat', 'pomatio-framework'),
                     'repeat-x' => __('Repeat horizontally', 'pomatio-framework'),
@@ -150,7 +150,7 @@ class Background_Image {
             echo (new Pomatio_Framework())::add_field([
                 'type' => 'Select',
                 'label' => __('Background attachment', 'pomatio-framework'),
-                'name' => 'background_attachment',
+                'name' => 'background-attachment',
                 'options' => [
                     'scroll' => __('Scroll', 'pomatio-framework'),
                     'fixed' => __('Fixed', 'pomatio-framework'),
@@ -166,7 +166,7 @@ class Background_Image {
                 echo (new Pomatio_Framework())::add_field([
                     'type' => 'Radio_Icons',
                     'label' => __('Background size', 'pomatio-framework'),
-                    'name' => 'background_size',
+                    'name' => 'background-size',
                     'options' => [
                         'auto' => [
                             'label' => __('Auto', 'pomatio-framework'),

@@ -23,7 +23,7 @@ jQuery(function($) {
                         $this.find(`[name="custom_${key}_unit"] option[value="${$unit}"]`).prop('selected', true);
                     }
                 }
-                else if ($field.is(":radio") && key === 'background_size') {
+                else if ($field.is(":radio") && key === 'background-size') {
                     if (fvalue !== 'auto' && fvalue !== 'cover' && fvalue !== 'contain') {
                         $this.find(`[name="${key}"][value="custom"]`).prop("checked", true);
                         $this.find(`.custom-background-size-wrapper`).show();
@@ -56,11 +56,11 @@ jQuery(function($) {
         }
     });
 
-    $(document).on('change', 'input[name="background_image"]', function() {
+    $(document).on('change', 'input[name="background-image"]', function() {
         let $this = $(this);
         let $value = {};
 
-        $value.background_image = $this.val();
+        $value['background-image'] = $this.val();
         $set_hidden_value($this, $value);
     });
 
@@ -86,7 +86,7 @@ jQuery(function($) {
         }
     });
 
-    $(document).on('click', 'input[name="background_size"]', function() {
+    $(document).on('click', 'input[name="background-size"]', function() {
         let $this = $(this);
 
         if ($this.val() === 'custom') {
@@ -116,6 +116,9 @@ jQuery(function($) {
         }
 
         $.extend($data, $object);
+
+        // Merge horizontal aligment and vertical alignment
+        $data['background-position'] = `${$data.horizontal_alignment} ${$data.vertical_alignment}`;
 
         let $value = JSON.stringify($data);
         $element.closest('.background-image-wrapper').find('input[type="hidden"]').val($value);
@@ -163,7 +166,7 @@ jQuery(function($) {
         let $this = $(this);
         let $horizontal_alignment = $this.closest('.horizontal-alignment').find('input[name="horizontal_alignment"]:checked').val();
         let $vertical_alignment = $this.closest('.vertical-alignment').find('input[name="vertical_alignment"]:checked').val();
-        let $background_size = $this.closest('.background-size-wrapper').find('input[name="background_size"]:checked').val();
+        let $background_size = $this.closest('.background-size-wrapper').find('input[name="background-size"]:checked').val();
 
         if ($horizontal_alignment === 'custom') {
             $this.closest('.horizontal-alignment').find('.custom-horizontal_alignment-wrapper').show();
@@ -187,26 +190,26 @@ jQuery(function($) {
         }
     });
 
-    $(document).on('change', 'select[name="background_repeat"]', function() {
+    $(document).on('change', 'select[name="background-repeat"]', function() {
         let $this = $(this);
         let $value = {};
 
-        $value.background_repeat = $this.val();
+        $value['background-repeat'] = $this.val();
         $set_hidden_value($this, $value);
     });
 
-    $(document).on('change', 'select[name="background_attachment"]', function() {
+    $(document).on('change', 'select[name="background-attachment"]', function() {
         let $this = $(this);
         let $value = {};
 
-        $value.background_attachment = $this.val();
+        $value['background-attachment'] = $this.val();
         $set_hidden_value($this, $value);
     });
 
-    $(document).on('change keyup', 'input[name="background_size"], input[name="custom_background_size_width_number"], select[name="custom_background_size_width_unit"], input[name="custom_background_size_height_number"], select[name="custom_background_size_height_unit"]', function() {
+    $(document).on('change keyup', 'input[name="background-size"], input[name="custom_background_size_width_number"], select[name="custom_background_size_width_unit"], input[name="custom_background_size_height_number"], select[name="custom_background_size_height_unit"]', function() {
         let $this = $(this);
         let $value = {};
-        let $size = $this.closest('.background-size-wrapper').find('input[name="background_size"]:checked').val();
+        let $size = $this.closest('.background-size-wrapper').find('input[name="background-size"]:checked').val();
 
         if ($size === 'custom') {
             let $width_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_width_number"]').val();
@@ -214,10 +217,10 @@ jQuery(function($) {
             let $height_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_height_number"]').val();
             let $height_unit = $this.closest('.background-size-wrapper').find('select[name="custom_background_size_height_unit"]').val();
 
-            $value.background_size = `${$width_number}${$width_unit} ${$height_number}${$height_unit}`;
+            $value['background-size'] = `${$width_number}${$width_unit} ${$height_number}${$height_unit}`;
         }
         else {
-            $value.background_size = $this.val();
+            $value['background-size'] = $this.val();
         }
 
         $set_hidden_value($this, $value);
