@@ -18,16 +18,18 @@ class Textarea {
             }
 
             $value = '';
-            if (isset($args['value']) && !empty($args['value'])) {
+            if (!empty($args['value'])) {
                 $value = $args['value'];
             }
-            elseif (isset($args['default']) && !empty($args['default'])) {
+            elseif (!empty($args['default'])) {
                 $value = $args['default'];
             }
 
+            $class = !empty($args['class']) ? ' ' . $args['class'] : '';
+
             ?>
 
-            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" data-type="textarea"<?= $disabled ?>><?= $value ?></textarea>
+            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control<?= $class ?>"  data-type="textarea"<?= $disabled ?>><?= $value ?></textarea>
 
             <?php
 
