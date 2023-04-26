@@ -7,7 +7,7 @@ class Button {
     public static function render_field(array $args): void {
         $label = !empty($args['label']) ? $args['label'] : '';
         $class = !empty($args['class']) ? ' class="' . $args['class'] . '"' : '';
-        $type = !empty($args['type']) ? $args['type'] : 'button';
+        $type = isset($args['submit']) && $args['submit'] === true ? 'submit' : 'button';
 
         ?>
 
