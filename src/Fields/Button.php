@@ -5,13 +5,13 @@ namespace PomatioFramework\Fields;
 class Button {
 
     public static function render_field(array $args): void {
-
-        //unset($args['value']);
         $label = !empty($args['label']) ? $args['label'] : '';
+        $class = !empty($args['class']) ? ' class="' . $args['class'] . '"' : '';
+        $type = !empty($args['type']) ? $args['type'] : 'button';
 
         ?>
 
-        <input type="button" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $label ?>">
+        <input aria-label="<?= $label ?>" type="<?= $type ?>" id="<?= $args['id'] ?>"<?= $class ?> name="<?= $args['name'] ?>" value="<?= $label ?>">
 
         <?php
 
