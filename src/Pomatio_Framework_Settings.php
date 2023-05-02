@@ -25,7 +25,7 @@ class Pomatio_Framework_Settings {
         }
 
         $tabs = $settings_array[self::get_current_tab($settings_array)]['tab'];
-        if (isset($tabs) && !empty($tabs)) {
+        if (!empty($tabs)) {
             return array_key_first($tabs);
         }
 
@@ -112,7 +112,7 @@ class Pomatio_Framework_Settings {
         <?php
 
         $tabs = $settings_array[$current_tab]['tab'];
-        if (isset($tabs) && !empty($tabs)) {
+        if (!empty($tabs)) {
             ?>
 
             <ul class="subsubsub">
@@ -160,7 +160,7 @@ class Pomatio_Framework_Settings {
         <?php
 
         $description =  $settings_array[$current_tab]['tab'][$current_subsection]['description'];
-        if (isset($description) && !empty($description)) {
+        if (!empty($description)) {
             echo "<p>$description</p>";
         }
 
@@ -181,7 +181,7 @@ class Pomatio_Framework_Settings {
 
                 <?php
 
-                if (isset($setting['description']) && !empty($setting['description'])) {
+                if (!empty($setting['description'])) {
                     echo "<p>{$setting['description']}</p>";
                 }
 
@@ -208,7 +208,7 @@ class Pomatio_Framework_Settings {
 
                                 <?php
 
-                                if (isset($setting['description']) && !empty($setting['description'])) {
+                                if (!empty($setting['description'])) {
                                     ?>
 
                                     <p class="description"><?= $setting['description'] ?></p>
@@ -228,7 +228,9 @@ class Pomatio_Framework_Settings {
                         (isset($setting['requires_initialization']) && $setting['requires_initialization'] !== true) ||
                         (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
                     ) {
-                        $fields = self::read_fields($settings_array['config']['settings_dir'], $setting_key);
+                        // Check $settings_array[$_GET['section']]['settings_dir'] for plugins.
+                        $settings_dir = isset($settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
+                        $fields = self::read_fields($settings_dir, $setting_key);
                         foreach ($fields as $field) {
                             if ($field['type'] === 'Separator') {
                                 ?>
