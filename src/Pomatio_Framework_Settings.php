@@ -229,7 +229,7 @@ class Pomatio_Framework_Settings {
                         (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
                     ) {
                         // Check $settings_array[$_GET['section']]['settings_dir'] for plugins.
-                        $settings_dir = isset($settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
+                        $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
                         $fields = self::read_fields($settings_dir, $setting_key);
                         foreach ($fields as $field) {
                             if ($field['type'] === 'Separator') {
