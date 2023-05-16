@@ -7,14 +7,7 @@ namespace PomatioFramework;
 
 class Pomatio_Framework_Disk {
 
-    /**
-     * Current site data.
-     */
-    private $site_data;
-
     public function __construct() {
-        $this->site_data = get_blog_details();
-
         /**
          * Set allowed font mime types and save the fonts in a custom directory.
          */
@@ -87,7 +80,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      * @return string
      */
     public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
-        $multisite_path = is_multisite() ? "sites/{$this->site_data->blog_id}/" : '';
+        $multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
 
         return WP_CONTENT_DIR . "/settings/$settings_dir/$multisite_path";
     }
@@ -139,7 +132,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
         $file_content .= ' *' . PHP_EOL;
         $file_content .= ' * This file is automatically created.' . PHP_EOL;
         $file_content .= ' *' . PHP_EOL;
-        $file_content .= ' * @site ' . $this->site_data->siteurl . PHP_EOL;
+        $file_content .= ' * @site ' . get_site_url() . PHP_EOL;
         $file_content .= ' * @time ' . current_time('D, d M Y H:i:s', true) . ' GMT' . PHP_EOL;
         $file_content .= ' */' . PHP_EOL;
         $file_content .= PHP_EOL;
