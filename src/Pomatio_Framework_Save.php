@@ -78,8 +78,10 @@ class Pomatio_Framework_Save {
             /**
              * "enabled_settings.php" has to be invalidated in each loop because otherwise it doesn't save well.
              */
-            opcache_invalidate("{$settings_path}enabled_settings.php", true);
-            opcache_invalidate("{$settings_path}{$dir}.php", true);
+            if (function_exists('opcache_invalidate')) {
+                opcache_invalidate("{$settings_path}enabled_settings.php", true);
+                opcache_invalidate("$settings_path$dir.php", true);
+            }
         }
     }
 
