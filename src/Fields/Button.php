@@ -10,12 +10,12 @@ class Button {
         $type = isset($args['submit']) && $args['submit'] === true ? 'submit' : 'button';
 
         $link = isset($args['link']) && $args['link'] === true;
-        $href = !empty($args['href']) ? ' href="' . $args['href'] . '"' : '';
+        $href = !empty($args['href']) ? $args['href'] : '';
 
         if ($link && !empty($href)) {
             ?>
 
-            <a href="<?= $href ?>"<?= $class ?>>$label</a>
+            <a href="<?= $href ?>"<?= $class ?>><?= $label ?></a>
 
             <?php
         }
