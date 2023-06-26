@@ -5,15 +5,27 @@ namespace PomatioFramework\Fields;
 class Button {
 
     public static function render_field(array $args): void {
-        $label = !empty($args['label']) ? $args['label'] : '';
+        $label = !empty($args['text']) ? $args['text'] : '';
         $class = !empty($args['class']) ? ' class="' . $args['class'] . '"' : '';
         $type = isset($args['submit']) && $args['submit'] === true ? 'submit' : 'button';
 
-        ?>
+        $link = isset($args['link']) && $args['link'] === true;
+        $href = !empty($args['href']) ? ' href="' . $args['href'] . '"' : '';
 
-        <input aria-label="<?= $label ?>" type="<?= $type ?>" id="<?= $args['id'] ?>"<?= $class ?> name="<?= $args['name'] ?>" value="<?= $label ?>">
+        if ($link && !empty($href)) {
+            ?>
 
-        <?php
+            <a href="<?= $href ?>"<?= $class ?>>$label</a>
+
+            <?php
+        }
+        else {
+            ?>
+
+            <input aria-label="<?= $label ?>" type="<?= $type ?>" id="<?= $args['id'] ?>"<?= $class ?> name="<?= $args['name'] ?>" value="<?= $label ?>">
+
+            <?php
+        }
 
         if (!empty($args['description'])) {
             echo '<p class="description">' . $args['description'] . '</p>';
