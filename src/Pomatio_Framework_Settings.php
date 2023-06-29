@@ -164,6 +164,8 @@ class Pomatio_Framework_Settings {
             echo "<p>$description</p>";
         }
 
+        do_action('pomatio_framework_after_description');
+
         ?>
 
         <form method="POST" action="<?= $action_url ?>">
