@@ -159,12 +159,13 @@ class Pomatio_Framework_Settings {
 
         <?php
 
-        $description =  $settings_array[$current_tab]['tab'][$current_subsection]['description'];
+        $description =  $settings_array[$current_tab]['tab'][$current_subsection]['description'] ?? '';
+
         if (!empty($description)) {
             echo "<p>$description</p>";
         }
 
-        do_action('pomatio_framework_after_description');
+        do_action('pomatio_framework_after_description', $current_tab, $current_subsection);
 
         ?>
 
