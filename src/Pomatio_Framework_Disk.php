@@ -174,7 +174,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
             return $return === 'array' ? include $path : file_get_contents($path);
         }
 
-        return '';
+        return $return === 'array' ? [] : '';
     }
 
     /**
