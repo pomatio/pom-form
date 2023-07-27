@@ -9,6 +9,7 @@ class Select {
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
         $id = isset($args['multiple']) && $args['multiple'] === true ? "{$args['id']}_" . Pomatio_Framework_Helper::generate_random_string() : $args['id'];
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
 
         if (!isset($args['options'])) {
             return;
@@ -23,7 +24,7 @@ class Select {
         $multiple = isset($args['multiple']) && $args['multiple'] === true ? ' multiple' : '';
         $name = isset($args['multiple']) && $args['multiple'] === true ? "{$args['name']}[]" : $args['name'];
 
-        echo '<select id="' . $id . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '" data-type="select"' . $disabled . $multiple . '>';
+        echo '<select id="' . $id . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '"' . $data_dependencies . ' data-type="select"' . $disabled . $multiple . '>';
 
         foreach ($args['options'] as $select_value => $select_label) {
             // optgroup options
@@ -48,14 +49,14 @@ class Select {
 
             if (!empty($multiple)) {
                 $values = explode(',', $args['value']);
-                $selected = in_array($select_value, $values) ? 'selected' : '';
+                $selected = in_array($select_value, $values, true) ? 'selected' : '';
             }
             else {
                 $selected = '';
-                if (isset($args['value']) && !empty($args['value'])) {
+                if (!empty($args['value'])) {
                     $selected = selected($select_value, $args['value'], false);
                 }
-                elseif (isset($args['default']) && !empty($args['default'])) {
+                elseif (!empty($args['default'])) {
                     $selected = selected($select_value, $args['default'], false);
                 }
             }

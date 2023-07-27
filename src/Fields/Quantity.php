@@ -2,10 +2,13 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Quantity {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
 
         echo '<div class="form-group">';
 
@@ -29,7 +32,7 @@ class Quantity {
 
         <div class="quantity">
             <span class="number-down"></span>
-            <input aria-label="<?= $args['label'] ?? '' ?>" type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control input-text qty text <?= $args['class'] ?? '' ?>" pattern="[0-9]*" inputmode="numeric" aria-labelledby="" data-type="quantity"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>" type="number" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control input-text qty text <?= $args['class'] ?? '' ?>" pattern="[0-9]*" inputmode="numeric" aria-labelledby="" data-type="quantity"<?= $disabled ?><?= $data_dependencies ?>>
             <span class="number-up"></span>
         </div>
 

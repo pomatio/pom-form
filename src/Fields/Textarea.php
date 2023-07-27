@@ -2,10 +2,13 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Textarea {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
 
         echo '<div class="form-group">';
 
@@ -29,7 +32,7 @@ class Textarea {
 
             ?>
 
-            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control<?= $class ?>"  data-type="textarea"<?= $disabled ?>><?= $value ?></textarea>
+            <textarea aria-label="<?= $args['label'] ?? '' ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control<?= $class ?>"  data-type="textarea"<?= $disabled ?><?= $data_dependencies ?>><?= $value ?></textarea>
 
             <?php
 

@@ -2,10 +2,13 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Text {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
 
         echo '<div class="form-group">';
 
@@ -21,16 +24,16 @@ class Text {
             $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
 
             $value = '';
-            if (isset($args['value']) && !empty($args['value'])) {
+            if (!empty($args['value'])) {
                 $value = $args['value'];
             }
-            elseif (isset($args['default']) && !empty($args['default'])) {
+            elseif (!empty($args['default'])) {
                 $value = $args['default'];
             }
 
             ?>
 
-            <input aria-label="<?= $args['label'] ?? '' ?>" placeholder="<?= $args['placeholder'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-type="text"<?= $disabled ?>>
+            <input aria-label="<?= $args['label'] ?? '' ?>" placeholder="<?= $args['placeholder'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control<?= $used_for_title ?> <?= $args['class'] ?? '' ?>"<?= $data_dependencies ?> data-type="text"<?= $disabled ?>>
 
             <?php
 

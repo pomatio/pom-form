@@ -24,7 +24,7 @@ class Tinymce {
         if (file_exists($args['value'])) {
             $value = file_get_contents($args['value']);
         }
-        elseif (isset($args['default']) && !empty($args['default'])) {
+        elseif (!empty($args['default'])) {
             $value = $args['default'];
         }
 

@@ -5,11 +5,11 @@ namespace PomatioFramework\Fields;
 class Separator {
 
     public static function render_field(array $args): void {
-        if (isset($args['label']) && !empty($args['label'])) {
+        if (!empty($args['label'])) {
             echo "<h2 class='title'>{$args['label']}</h2>";
         }
 
-        if (isset($args['description']) && !empty($args['description'])) {
+        if (!empty($args['description'])) {
             echo "<p>{$args['description']}</p>";
         }
     }

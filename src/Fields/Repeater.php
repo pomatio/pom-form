@@ -28,12 +28,15 @@ class Repeater {
             'title' => $args['title'] ?? '',
             'fields' => $args['fields'] ?? []
         ];
+
         if (isset($args['limit'])) {
             $repeater_config['limit'] = $args['limit'];
         }
+
         if (isset($args['cloneable'])) {
             $repeater_config['cloneable'] = $args['cloneable'];
         }
+
         $repeater_config = base64_encode(json_encode($repeater_config));
 
         //$json = json_decode(htmlspecialchars_decode($args['value']), true);

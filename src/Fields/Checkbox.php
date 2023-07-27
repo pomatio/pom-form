@@ -7,7 +7,7 @@ class Checkbox {
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
-        if (isset($args['options']) && is_array($args['options']) && !empty($args['options'])) {
+        if (!empty($args['options']) && is_array($args['options'])) {
             if (!empty($args['label'])) {
                 echo '<label>' . $args['label'] . '</label>';
             }
@@ -32,12 +32,12 @@ class Checkbox {
         }
         else {
             $checked = '';
-            if (isset($args['value']) && !empty($args['value'])) {
+            if (!empty($args['value'])) {
                 if ($args['value'] === 'yes') {
                     $checked = 'checked="checked"';
                 }
             }
-            elseif (isset($args['default']) && !empty($args['default'])) {
+            elseif (!empty($args['default'])) {
                 if ($args['default'] === 'yes') {
                     $checked = 'checked="checked"';
                 }

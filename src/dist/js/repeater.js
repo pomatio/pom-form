@@ -86,7 +86,7 @@ jQuery(function($) {
                         const field_value = $(`[name="${$dependency.field}"]`).val();
 
                         if ($dependency.values.includes(field_value)) {
-                            $field.closest('.form-group').style.display = 'inline-block';
+                            $field.closest('.form-group').style.display = 'block';
                         }
                         else {
                             $field.closest('.form-group').style.display = 'none';
