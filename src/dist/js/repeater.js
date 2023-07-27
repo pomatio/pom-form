@@ -25,7 +25,7 @@ jQuery(function($) {
             let $is_default = $repeater_elements[$i].classList.contains('default');
             let $repeater_type = $is_default ? 'default' : 'new';
 
-            let $repeater_fields = $repeater_elements[$i].querySelectorAll("input, select, checkbox, textarea");
+            let $repeater_fields = $repeater_elements[$i].querySelectorAll("input, select, textarea");
             let $obj = {};
 
             let $font_input_val = {};
@@ -72,6 +72,26 @@ jQuery(function($) {
                         'value': $field_value,
                         'type': $field.getAttribute('data-type') || ''
                     };
+                }
+
+                /**
+                 * Manage dependent fields.
+                 */
+                if ($field.getAttribute('data-dependencies')) {
+                    let json = $field.getAttribute('data-dependencies');
+                    json = json.replaceAll("'", '"');
+                    let $dependencies = JSON.parse(json);
+
+                    for (const $dependency of $dependencies) {
+                        const field_value = $(`[name="${$dependency.field}"]`).val();
+
+                        if ($dependency.values.includes(field_value)) {
+                            $field.closest('.form-group').style.display = 'inline-block';
+                        }
+                        else {
+                            $field.closest('.form-group').style.display = 'none';
+                        }
+                    }
                 }
             }
 
@@ -180,6 +200,7 @@ jQuery(function($) {
 
     /**
      * Delete repeater element.
+     *
      * If it is a parent repeater, we directly remove it from the value using its index.
      * If it's a child repeater, we update the value of the child repeater and then call the function to update the parent repeater.
      * TODO: Delete file from server on delete when repeater has code fields.

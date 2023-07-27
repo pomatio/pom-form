@@ -4,7 +4,6 @@
  * If changes are made to the HTML of a repeater element,
  * update it in Pomatio_Framework_Ajax.php as well --> get_repeater_item_html().
  */
-// TODO: Warning! Sometimes code field content is replaced by file path.
 
 namespace PomatioFramework\Fields;
 
@@ -53,7 +52,7 @@ class Repeater {
             <?php
 
             // Render defaults if set
-            if (empty($json['default']) && isset($args['defaults']) && !empty($args['defaults'])) {
+            if (empty($json['default']) && !empty($args['defaults'])) {
                 $defaults_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
 
                 foreach ($args['defaults'] as $default) {
@@ -164,7 +163,7 @@ class Repeater {
 
                                     echo '<div class="repeater-action-row">';
 
-                                    if ($repeater_type === 'default' && isset($repeater_item['default_values']) && !empty($repeater_item['default_values'])) {
+                                    if ($repeater_type === 'default' && !empty($repeater_item['default_values'])) {
                                         ?>
 
                                         <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
@@ -207,7 +206,7 @@ class Repeater {
                 }
             }
 
-            if (!isset($args['disable_new']) || (isset($args['disable_new']) && $args['disable_new'] !== true)) {
+            if (!isset($args['disable_new']) || $args['disable_new'] !== true) {
                 ?>
 
                 <button class="button add-new-repeater-item"><?php _e('Add new', 'pomatio-framework') ?></button>
@@ -216,7 +215,7 @@ class Repeater {
                 <?php
             }
 
-            if (isset($args['defaults']) && !empty($args['defaults'])) {
+            if (!empty($args['defaults'])) {
                 ?>
 
                 <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pomatio-framework') ?></button>

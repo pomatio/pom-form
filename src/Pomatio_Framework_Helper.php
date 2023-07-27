@@ -8,6 +8,23 @@ class Pomatio_Framework_Helper {
         return __DIR__;
     }
 
+    public static function get_dependencies_data_attr($args): string {
+        $data_dependencies = '';
+        $dependencies = !empty($args['dependency']) ? $args['dependency'] : [];
+
+        if (!empty($dependencies) && is_array($dependencies)) {
+            // Encode the array into JSON format
+            $jsonString = json_encode($dependencies, JSON_UNESCAPED_UNICODE | JSON_HEX_APOS);
+
+            // Replace double quotes with single quotes
+            $jsonDataAttribute = str_replace('"', "'", $jsonString);
+
+            $data_dependencies = ' data-dependencies="' . $jsonDataAttribute . '"';
+        }
+
+        return $data_dependencies;
+    }
+
     /**
      * Convert an associative array into valid HTML attributes
      */
