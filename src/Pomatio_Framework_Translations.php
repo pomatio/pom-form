@@ -47,6 +47,7 @@ class Pomatio_Framework_Translations {
         }
 
         $saved_strings = Pomatio_Framework_Disk::read_file('translatable_strings.php', $settings_dir, 'array');
+        $saved_strings = !empty($saved_strings) && is_array($saved_strings) ? $saved_strings : [];
 
         foreach ($translatables as $translatable_key => $translatable_data) {
             $saved_strings[$translatable_key] = $translatable_data;
