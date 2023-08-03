@@ -4,6 +4,37 @@
 
 jQuery(function($) {
     /**
+     * Manage dependent fields.
+     */
+    $('.repeater-wrapper').each(function() {
+        let $repeater_fields = $(this).find('input, select, textarea');
+        console.log($repeater_fields);
+
+        for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
+            let $field = $repeater_fields[$i2];
+
+            if ($field.getAttribute('data-dependencies')) {
+                let json = $field.getAttribute('data-dependencies');
+                json = json.replaceAll("'", '"');
+                let $dependencies = JSON.parse(json);
+
+                let isVisible = false;
+
+                for (const $dependency of $dependencies) {
+                    const field_value = $(`[name="${$dependency.field}"]`).val();
+
+                    if ($dependency.values.includes(field_value)) {
+                        isVisible = true;
+                        break;
+                    }
+                }
+
+                $field.closest('.form-group').style.display = isVisible ? 'inline-block' : 'none';
+            }
+        }
+    });
+
+    /**
      * Toggle the repeater
      */
     $(document).on('click', '.repeater .title', function() {
