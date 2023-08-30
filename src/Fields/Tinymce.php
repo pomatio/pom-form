@@ -18,7 +18,11 @@ class Tinymce {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        $custom_attrs = Pomatio_Framework_Helper::convert_html_attributes_to_array($args['custom_attrs']);
+        $custom_attrs = [];
+
+        if (!empty($args['custom_attrs'])) {
+            $custom_attrs = Pomatio_Framework_Helper::convert_html_attributes_to_array($args['custom_attrs']);
+        }
 
         $value = '';
         if (file_exists($args['value'])) {
