@@ -8,6 +8,22 @@ class Pomatio_Framework_Helper {
         return __DIR__;
     }
 
+    public static function get_current_user_role() {
+        $current_user = wp_get_current_user();
+
+        if (is_null($current_user)) {
+            return null;
+        }
+
+        $user_roles = $current_user->roles;
+
+        if (!empty($user_roles)) {
+            return $user_roles[0];
+        }
+
+        return null;
+    }
+
     public static function get_dependencies_data_attr($args): string {
         $data_dependencies = '';
         $dependencies = !empty($args['dependency']) ? $args['dependency'] : [];

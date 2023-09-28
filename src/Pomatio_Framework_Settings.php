@@ -82,6 +82,7 @@ class Pomatio_Framework_Settings {
             return;
         }
 
+        $current_user_role = Pomatio_Framework_Helper::get_current_user_role();
         $current_tab = self::get_current_tab($settings_array);
         $current_subsection = self::get_current_subsection($settings_array);
 
@@ -93,6 +94,15 @@ class Pomatio_Framework_Settings {
             foreach ($settings_array as $tab_key => $tab_data) {
                 if ($tab_key === 'config') {
                     continue;
+                }
+
+                if (isset($tab_data['allowed_roles'])) {
+                    if (is_super_admin(get_current_user_id())) {
+                        // Allow everything
+                    }
+                    elseif (!in_array($current_user_role, $tab_data['allowed_roles'], true)) {
+                        continue;
+                    }
                 }
 
                 $active = $tab_key === $current_tab ? ' nav-tab-active' : '';
@@ -110,6 +120,10 @@ class Pomatio_Framework_Settings {
         </nav>
 
         <?php
+
+        if (!$this->is_allowed_role($settings_array)) {
+            return;
+        }
 
         $tabs = $settings_array[$current_tab]['tab'];
         if (!empty($tabs)) {
@@ -150,6 +164,11 @@ class Pomatio_Framework_Settings {
     private function render_content($page_slug, $settings_array = []): void {
         $current_tab = self::get_current_tab($settings_array);
         $current_subsection = self::get_current_subsection($settings_array);
+
+        if (!$this->is_allowed_role($settings_array)) {
+            (new self)->render_error_page($settings_array);
+            return;
+        }
 
         $action_url = admin_url("options-general.php?page=$page_slug&section=$current_tab&tab=$current_subsection");
 
@@ -314,6 +333,25 @@ class Pomatio_Framework_Settings {
         </form>
 
         <?php
+    }
+
+    private function is_allowed_role($settings_array): bool {
+        $current_tab = self::get_current_tab($settings_array);
+        $current_user_role = Pomatio_Framework_Helper::get_current_user_role();
+        $allowed_roles = $settings_array[$current_tab]['allowed_roles'] ?? [];
+        $is_super_admin = is_super_admin(get_current_user_id());
+
+        if (!$is_super_admin && !in_array($current_user_role, $allowed_roles, true)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function render_error_page($settings_array): void {
+        if (!$this->is_allowed_role($settings_array)) {
+            echo '<h2>' . __('You do not have access to this page', ) . '</h2>';
+        }
     }
 
 }
