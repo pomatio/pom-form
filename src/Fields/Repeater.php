@@ -143,7 +143,7 @@ class Repeater {
                                     }
 
                                     foreach ($args['fields'] as $field) {
-                                        if (array_key_exists($field['name'], $repeater_item)) {
+                                        if (isset($field['name']) && array_key_exists($field['name'], $repeater_item)) {
                                             if ($field['type'] === 'repeater') {
                                                 $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
                                             }

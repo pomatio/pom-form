@@ -42,8 +42,8 @@ class Pomatio_Framework {
         $field_args['type'] = $field_args['type'] ?? 'text';
         $field_args['label'] = $field_args['label'] ?? '';
         $field_args['description'] = $field_args['description'] ?? '';
-        $field_args['name'] = sanitize_title($field_args['name']);
-        $field_args['id'] = $field_args['id'] ?? sanitize_title($field_args['name']);
+        $field_args['name'] = isset($field_args['name']) ? sanitize_title($field_args['name']) : '';
+        $field_args['id'] = $field_args['id'] ?? $field_args['name'];
         $field_args['value'] = $field_args['value'] ?? '';
         $field_args['class'] = isset($field_args['class']) ? sanitize_html_class($field_args['class']) : '';
         $field_args['description_position'] = $field_args['description_position'] ?? 'under_field';
