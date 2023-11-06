@@ -11,24 +11,35 @@ jQuery(function($) {
 
         for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
             let $field = $repeater_fields[$i2];
-
+            
             if ($field.getAttribute('data-dependencies')) {
                 let json = $field.getAttribute('data-dependencies');
                 json = json.replaceAll("'", '"');
                 let $dependencies = JSON.parse(json);
-
-                let isVisible = false;
-
+                
+                let $conditions_met = [];
+                
                 for (const $dependency of $dependencies) {
                     const field_value = $(`[name="${$dependency.field}"]`).val();
-
+                    
                     if ($dependency.values.includes(field_value)) {
-                        isVisible = true;
-                        break;
+                        $conditions_met.push(true);
+                    }
+                    else {
+                        $conditions_met.push(false);
                     }
                 }
-
-                $field.closest('.form-group').style.display = isVisible ? 'block' : 'none';
+                
+                const allTrue = $conditions_met.every(function(value) {
+                    return value === true;
+                });
+                
+                if (allTrue) {
+                    $field.closest('.form-group').style.display = 'block';
+                }
+                else {
+                    $field.closest('.form-group').style.display = 'none';
+                }
             }
         }
     });
@@ -112,15 +123,28 @@ jQuery(function($) {
                     json = json.replaceAll("'", '"');
                     let $dependencies = JSON.parse(json);
 
+                    let $conditions_met = [];
+                    
                     for (const $dependency of $dependencies) {
                         const field_value = $(`[name="${$dependency.field}"]`).val();
 
                         if ($dependency.values.includes(field_value)) {
-                            $field.closest('.form-group').style.display = 'block';
+                            $conditions_met.push(true);
                         }
                         else {
-                            $field.closest('.form-group').style.display = 'none';
+                            $conditions_met.push(false);
                         }
+                    }
+                    
+                    const allTrue = $conditions_met.every(function(value) {
+                        return value === true;
+                    });
+                    
+                    if (allTrue) {
+                        $field.closest('.form-group').style.display = 'block';
+                    }
+                    else {
+                        $field.closest('.form-group').style.display = 'none';
                     }
                 }
             }
