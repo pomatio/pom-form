@@ -28,7 +28,7 @@ jQuery(function($) {
                     }
                 }
 
-                $field.closest('.form-group').style.display = isVisible ? 'inline-block' : 'none';
+                $field.closest('.form-group').style.display = isVisible ? 'block' : 'none';
             }
         }
     });
