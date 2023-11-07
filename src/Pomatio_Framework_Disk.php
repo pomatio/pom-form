@@ -53,7 +53,7 @@ class Pomatio_Framework_Disk {
      *
      * @return void
      */
-    private function create_htaccess_file(): void {
+    public function create_htaccess_file(): void {
         $htaccess = WP_CONTENT_DIR . "/settings/.htaccess";
 
         if (!is_file($htaccess)) {
