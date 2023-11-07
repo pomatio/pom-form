@@ -122,9 +122,11 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      * @return string
      */
     public function generate_file_content($data, string $description = ''): string {
-        if (empty($data)) {
+        if (empty($data) && empty($description)) {
             return '';
         }
+
+		$data = empty($data) ? [] : $data;
 
         $file_content = '<?php' . PHP_EOL;
         $file_content .= '/**' . PHP_EOL;
