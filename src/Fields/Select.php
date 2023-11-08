@@ -49,7 +49,7 @@ class Select {
 
             if (!empty($multiple)) {
                 $values = explode(',', $args['value']);
-                $selected = in_array($select_value, $values, true) ? 'selected' : '';
+                $selected = in_array($select_value, $values, false) ? 'selected' : '';
             }
             else {
                 $selected = '';
