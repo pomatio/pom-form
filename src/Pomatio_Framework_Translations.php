@@ -30,7 +30,7 @@ class Pomatio_Framework_Translations {
             $strings = include "{$settings_path}translatable_strings.php";
         }
 
-        if (!empty($strings)) {
+        if (!empty($strings) && is_array($strings)) {
             foreach ($strings as $name => $data) {
                 $string = Pomatio_Framework_Settings::get_setting_value($this->settings_dir, $data['filename'], $name, $data['type']);
                 pll_register_string($name, $string, 'Pomatio Framework', $data['multiline']);
