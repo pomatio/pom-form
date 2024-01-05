@@ -350,7 +350,7 @@ class Pomatio_Framework_Settings {
 
     private function render_error_page($settings_array): void {
         if (!$this->is_allowed_role($settings_array)) {
-            echo '<h2>' . __('You do not have access to this page', ) . '</h2>';
+            echo '<h2>' . __('You do not have access to this page', 'pomatio-framework') . '</h2>';
         }
     }
 
