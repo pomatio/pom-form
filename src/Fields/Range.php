@@ -35,7 +35,7 @@ class Range {
 
             <?php
 
-            if (isset($args['suffix']) && !empty($args['suffix'])) {
+            if (!empty($args['suffix'])) {
                 ?>
 
                 <span class="suffix"><?= $args['suffix'] ?></span>
@@ -43,7 +43,7 @@ class Range {
                 <?php
             }
 
-            if (isset($args['default']) && !empty($args['default'])) {
+            if (!empty($args['default'])) {
                 ?>
 
                 <span class="restore-range" data-default="<?= $args['default'] ?>">

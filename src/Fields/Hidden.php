@@ -8,10 +8,10 @@ class Hidden {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
 
         $value = '';
-        if (isset($args['value']) && !empty($args['value'])) {
+        if (!empty($args['value'])) {
             $value = $args['value'];
         }
-        elseif (isset($args['default']) && !empty($args['default'])) {
+        elseif (!empty($args['default'])) {
             $value = $args['default'];
         }
 

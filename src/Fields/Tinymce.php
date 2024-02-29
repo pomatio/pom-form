@@ -7,7 +7,6 @@ use PomatioFramework\Pomatio_Framework_Helper;
 class Tinymce {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
@@ -46,7 +45,6 @@ class Tinymce {
         }
 
         echo '</div>';
-
     }
 
 }

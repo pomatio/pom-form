@@ -7,7 +7,6 @@ use PomatioFramework\Pomatio_Framework_Helper;
 class Code_HTML {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
@@ -22,7 +21,7 @@ class Code_HTML {
         if (file_exists($args['value'])) {
             $value = file_get_contents($args['value']);
         }
-        elseif (isset($args['default']) && !empty($args['default'])) {
+        elseif (!empty($args['default'])) {
             $value = $args['default'];
         }
 
@@ -49,7 +48,6 @@ class Code_HTML {
                 'codeMirrorSettings' => $codemirror_settings
             ]
         );
-
     }
 
 }

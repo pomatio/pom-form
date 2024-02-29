@@ -41,7 +41,7 @@ class Pomatio_Framework_Save {
                     if ($type === 'repeater') {
                         $data[$setting_name] = $sanitize_function_name($value, ['name' => $name], $page_slug);
                     }
-                    elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js' || $type === 'tinymce') {
+                    elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js' || $type === 'code_json' || $type === 'tinymce') {
                         $extension = $type === 'tinymce' ? 'html' : str_replace('code_', '', $type);
                         $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
                         $translatable = (new self)->is_translatable($settings_file_path, $dir, $name) ?? false;

@@ -255,7 +255,7 @@ class Repeater {
                             if (is_array($repeater_item_value)) {
                                 foreach ($repeater_item_value as $repeater_item_arr_key => $repeater_item_arr_value) {
                                     if ($repeater_item_arr_key === 'type') {
-                                        if ($repeater_item_arr_value === 'code_html' || $repeater_item_arr_value === 'code_css' || $repeater_item_arr_value === 'code_js') {
+                                        if ($repeater_item_arr_value === 'code_html' || $repeater_item_arr_value === 'code_css' || $repeater_item_arr_value === 'code_js' || $repeater_item_arr_value === 'code_json') {
                                             if (file_exists($repeater_item_value['value'])) {
                                                 $args['value']['new'][$repeater_key][$repeater_item_key]['value'] = file_get_contents($repeater_item_value['value']);
                                             }

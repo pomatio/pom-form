@@ -21,7 +21,7 @@ class Font_Picker {
 
             foreach ($font_extensions as $extension => $extension_label) {
                 $id = Pomatio_Framework_Helper::generate_random_string(10, false);
-                $value = isset($args['value'][$extension]) && !empty($args['value'][$extension]) ? $args['value'][$extension] : '';
+                $value = !empty($args['value'][$extension]) ? $args['value'][$extension] : '';
 
                 ?>
 

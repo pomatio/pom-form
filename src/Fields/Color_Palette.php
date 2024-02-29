@@ -18,10 +18,10 @@ class Color_Palette {
         $colors = $args['options'] ?? [];
 
         $value = '';
-        if (isset($args['value']) && !empty($args['value'])) {
+        if (!empty($args['value'])) {
             $value = $args['value'];
         }
-        elseif (isset($args['default']) && !empty($args['default'])) {
+        elseif (!empty($args['default'])) {
             $value = $args['default'];
         }
 
@@ -61,7 +61,7 @@ class Color_Palette {
             }
         }
 
-        if (isset($args['default']) && !empty($args['default'])) {
+        if (!empty($args['default'])) {
             ?>
 
             <label class="restore-color-palette" data-default="<?= $args['default'] ?>">

@@ -24,10 +24,10 @@ class Url {
             $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
 
             $value = '';
-            if (isset($args['value']) && !empty($args['value'])) {
+            if (!empty($args['value'])) {
                 $value = $args['value'];
             }
-            elseif (isset($args['default']) && !empty($args['default'])) {
+            elseif (!empty($args['default'])) {
                 $value = $args['default'];
             }
 

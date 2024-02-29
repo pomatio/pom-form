@@ -5,7 +5,6 @@ namespace PomatioFramework\Fields;
 class Code_JS {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
@@ -20,7 +19,7 @@ class Code_JS {
         if (file_exists($args['value'])) {
             $value = file_get_contents($args['value']);
         }
-        elseif (isset($args['default']) && !empty($args['default'])) {
+        elseif (!empty($args['default'])) {
             $value = $args['default'];
         }
 
@@ -47,7 +46,6 @@ class Code_JS {
                 'codeMirrorSettings' => $codemirror_settings
             ]
         );
-
     }
 
 }

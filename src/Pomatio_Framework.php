@@ -87,8 +87,9 @@ class Pomatio_Framework {
          */
         if ($field_args['type'] === 'repeater' && !empty($field_args['fields'])) {
             foreach ($field_args['fields'] as $repeater_field) {
-                if (isset($repeater_field['type']) && ($repeater_field['type'] === 'code_html' || $repeater_field['type'] === 'code_css' || $repeater_field['type'] === 'code_js')) {
+                if (isset($repeater_field['type']) && ($repeater_field['type'] === 'code_html' || $repeater_field['type'] === 'code_css' || $repeater_field['type'] === 'code_js' || $repeater_field['type'] === 'code_json')) {
                     $codemirror_settings = wp_enqueue_code_editor([]);
+
                     wp_enqueue_script('wp-theme-plugin-editor');
                     wp_enqueue_style('wp-codemirror');
                     wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], NULL, true);

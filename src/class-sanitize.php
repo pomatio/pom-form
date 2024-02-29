@@ -62,6 +62,11 @@ function sanitize_pom_form_code_js($value): string {
     return stripslashes($filtered_js);
 }
 
+function sanitize_pom_form_code_json($value): string {
+	$filtered_js = esc_js($value);
+	return stripslashes($filtered_js);
+}
+
 function sanitize_pom_form_color($value): string {
     return sanitize_hex_color(sanitize_text_field($value));
 }
@@ -196,7 +201,7 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
     if (!empty($value)) {
         $sanitized_array = [];
 
-        $limit = isset($array_settings['limit']) && !empty($array_settings['limit']) ? (int)$array_settings['limit'] : '';
+        $limit = !empty($array_settings['limit']) ? (int)$array_settings['limit'] : '';
 
         $i = 0;
         foreach ($value as $type => $items) {
@@ -221,8 +226,8 @@ function sanitize_pom_form_repeater($value, $array_settings = [], $settings_dir 
                         $sanitize_function_name = "sanitize_pom_form_{$arr_value['type']}";
                         $field_name = str_replace('[]', '', $arr_key);
 
-                        if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js')) {
-                            $file_name = "{$array_settings['name']}_{$repeater_identifier}_{$field_name}";
+                        if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js' || $arr_value['type'] === 'code_json')) {
+                            $file_name = "{$array_settings['name']}_{$repeater_identifier}_$field_name";
                             $sanitized_array[$type][$index][$field_name]['value'] = Pomatio_Framework_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
                         }
                         else {
