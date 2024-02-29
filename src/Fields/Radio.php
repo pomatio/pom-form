@@ -5,7 +5,6 @@ namespace PomatioFramework\Fields;
 class Radio {
 
     public static function render_field(array $args): void {
-
         if (!isset($args['options'])) {
             return;
         }
@@ -40,7 +39,6 @@ class Radio {
         if (!empty($args['description'])) {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
-
     }
 
 }

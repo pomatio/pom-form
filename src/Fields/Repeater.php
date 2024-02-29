@@ -13,7 +13,6 @@ use PomatioFramework\Pomatio_Framework;
 class Repeater {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {

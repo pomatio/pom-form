@@ -5,7 +5,6 @@ namespace PomatioFramework\Fields;
 class Image_Picker {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
@@ -59,7 +58,6 @@ class Image_Picker {
                 'button' => __('Choose Image', 'pomatio-framework'),
             ]
         );
-
     }
 
 }

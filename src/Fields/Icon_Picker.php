@@ -7,7 +7,6 @@ use PomatioFramework\Pomatio_Framework_Helper;
 class Icon_Picker {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {

@@ -5,7 +5,6 @@ namespace PomatioFramework\Fields;
 class Gallery {
 
     public static function render_field(array $args): void {
-
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {

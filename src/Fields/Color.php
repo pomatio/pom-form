@@ -5,7 +5,6 @@ namespace PomatioFramework\Fields;
 class Color {
 
 	public static function render_field(array $args): void {
-
 		echo '<div class="form-group">';
 
 		if (!empty($args['label'])) {
