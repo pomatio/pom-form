@@ -7,7 +7,7 @@ use PomatioFramework\Pomatio_Framework_Helper;
 class Signature {
 
 	public static function render_field(array $args): void {
-		$disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
+		$disabled = isset($args['disabled']) && $args['disabled'] === true ? ' class="disabled"' : '';
         $button_class = $args['button_class'] ?? '';
 
 		echo '<div class="form-group">';
@@ -32,9 +32,9 @@ class Signature {
 
 		<div class="form-control <?= $args['class'] ?? '' ?>">
 			<div class="signature-pad">
-				<canvas class="<?= $disabled ?>"></canvas>
+				<canvas<?= $disabled ?>></canvas>
 				<br>
-				<button id="signature-canvas-clear" class="<?= $button_class ?>"><?php _e('Clear', 'pomatio-framework') ?></button>
+				<button class="signature-canvas-clear <?= $button_class ?>"><?php _e('Clear', 'pomatio-framework') ?></button>
 			</div>
 			<input type="hidden" name="signature" id="signature" value="<?= $value ?>">
 		</div>

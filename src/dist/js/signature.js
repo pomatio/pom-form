@@ -1,39 +1,42 @@
-const canvas = document.getElementById("signature-canvas");
-const ctx = canvas.getContext("2d");
+const canvases = document.querySelectorAll(".signature-canvas");
 
-// Set canvas dimensions to match its natural resolution
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
-
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
-
-canvas.addEventListener("mousedown", function (e) {
-	isDrawing = true;
-	let rect = canvas.getBoundingClientRect();
-	lastX = e.clientX - rect.left;
-	lastY = e.clientY - rect.top;
-});
-
-canvas.addEventListener("mousemove", function (e) {
-	if (isDrawing) {
+canvases.forEach(canvas => {
+	const ctx = canvas.getContext("2d");
+	
+	// Set canvas dimensions to match its natural resolution
+	canvas.width = canvas.offsetWidth;
+	canvas.height = canvas.offsetHeight;
+	
+	let isDrawing = false;
+	let lastX = 0;
+	let lastY = 0;
+	
+	canvas.addEventListener("mousedown", function (e) {
+		isDrawing = true;
 		let rect = canvas.getBoundingClientRect();
-		let mouseX = e.clientX - rect.left;
-		let mouseY = e.clientY - rect.top;
-		drawLine(ctx, lastX, lastY, mouseX, mouseY);
-		lastX = mouseX;
-		lastY = mouseY;
-	}
-});
-
-canvas.addEventListener("mouseup", function () {
-	isDrawing = false;
-	saveCanvasData();
-});
-
-canvas.addEventListener("mouseout", function () {
-	isDrawing = false;
+		lastX = e.clientX - rect.left;
+		lastY = e.clientY - rect.top;
+	});
+	
+	canvas.addEventListener("mousemove", function (e) {
+		if (isDrawing) {
+			let rect = canvas.getBoundingClientRect();
+			let mouseX = e.clientX - rect.left;
+			let mouseY = e.clientY - rect.top;
+			drawLine(ctx, lastX, lastY, mouseX, mouseY);
+			lastX = mouseX;
+			lastY = mouseY;
+		}
+	});
+	
+	canvas.addEventListener("mouseup", function () {
+		isDrawing = false;
+		saveCanvasData(canvas);
+	});
+	
+	canvas.addEventListener("mouseout", function () {
+		isDrawing = false;
+	});
 });
 
 function drawLine(ctx, x1, y1, x2, y2) {
@@ -46,13 +49,21 @@ function drawLine(ctx, x1, y1, x2, y2) {
 	ctx.closePath();
 }
 
-const clearButton = document.getElementById("signature-canvas-clear");
-clearButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	saveCanvasData();
+const clearButtons = document.querySelectorAll(".signature-canvas-clear");
+
+clearButtons.forEach(button => {
+	button.addEventListener("click", function (e) {
+		e.preventDefault();
+		
+		const canvas = this.parentElement.querySelector("canvas");
+		const ctx = canvas.getContext("2d");
+		
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		
+		saveCanvasData(canvas);
+	});
 });
 
-function saveCanvasData() {
-	document.getElementById('signature').value = canvas.toDataURL();
+function saveCanvasData(canvas) {
+	canvas.parentElement.querySelector('.signature').value = canvas.toDataURL();
 }
