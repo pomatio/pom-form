@@ -254,6 +254,10 @@ function sanitize_pom_form_select($value): string {
     return sanitize_text_field($value);
 }
 
+function sanitize_pom_form_signature($value): string {
+	return sanitize_text_field($value);
+}
+
 /**
  * Returns the entered value if it is a valid phone.
  * If not, it returns false.

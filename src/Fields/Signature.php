@@ -31,8 +31,8 @@ class Signature {
 		?>
 
 		<div class="form-control <?= $args['class'] ?? '' ?>">
-			<div id="signature-pad" class="signature-pad">
-				<canvas id="signature-canvas" class="<?= $disabled ?>"></canvas>
+			<div class="signature-pad">
+				<canvas class="<?= $disabled ?>"></canvas>
 				<br>
 				<button id="signature-canvas-clear" class="<?= $button_class ?>"><?php _e('Clear', 'pomatio-framework') ?></button>
 			</div>
