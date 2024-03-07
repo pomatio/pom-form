@@ -1,0 +1,10 @@
+canvas {
+  cursor: pointer;
+  height: 200px;
+  width: 100%;
+
+  &.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
