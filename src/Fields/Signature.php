@@ -30,14 +30,14 @@ class Signature {
 
 		?>
 
-		<div class="form-control <?= $args['class'] ?? '' ?>">
-			<div class="signature-pad">
-				<canvas<?= $disabled ?>></canvas>
-				<br>
-				<button class="signature-canvas-clear <?= $button_class ?>"><?php _e('Clear', 'pomatio-framework') ?></button>
-			</div>
-			<input type="hidden" name="signature" id="signature" value="<?= $value ?>">
-		</div>
+        <div class="signature-pad-wrapper <?= $args['class'] ?? '' ?>">
+            <div class="signature-pad">
+                <canvas class="signature-canvas<?= $disabled ?>"></canvas>
+                <br>
+                <button class="signature-canvas-clear <?= $button_class ?>"><?php _e('Clear', 'pomatio-framework') ?></button>
+                <input type="hidden" name="<?= $args['name'] ?>" class="signature-value" value="<?= $value ?>">
+            </div>
+        </div>
 
 		<?php
 

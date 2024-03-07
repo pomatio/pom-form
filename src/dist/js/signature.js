@@ -1,4 +1,4 @@
-const canvases = document.querySelectorAll(".signature-canvas");
+const canvases = document.querySelectorAll('.signature-canvas');
 
 canvases.forEach(canvas => {
 	const ctx = canvas.getContext("2d");
@@ -11,14 +11,14 @@ canvases.forEach(canvas => {
 	let lastX = 0;
 	let lastY = 0;
 	
-	canvas.addEventListener("mousedown", function (e) {
+	canvas.addEventListener('mousedown', function (e) {
 		isDrawing = true;
 		let rect = canvas.getBoundingClientRect();
 		lastX = e.clientX - rect.left;
 		lastY = e.clientY - rect.top;
 	});
 	
-	canvas.addEventListener("mousemove", function (e) {
+	canvas.addEventListener('mousemove', function (e) {
 		if (isDrawing) {
 			let rect = canvas.getBoundingClientRect();
 			let mouseX = e.clientX - rect.left;
@@ -49,14 +49,14 @@ function drawLine(ctx, x1, y1, x2, y2) {
 	ctx.closePath();
 }
 
-const clearButtons = document.querySelectorAll(".signature-canvas-clear");
+const clearButtons = document.querySelectorAll('.signature-canvas-clear');
 
 clearButtons.forEach(button => {
-	button.addEventListener("click", function (e) {
+	button.addEventListener('click', function (e) {
 		e.preventDefault();
 		
 		const canvas = this.parentElement.querySelector("canvas");
-		const ctx = canvas.getContext("2d");
+		const ctx = canvas.getContext('2d');
 		
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
@@ -65,5 +65,5 @@ clearButtons.forEach(button => {
 });
 
 function saveCanvasData(canvas) {
-	canvas.parentElement.querySelector('.signature').value = canvas.toDataURL();
+	canvas.parentElement.querySelector('.signature-value').value = canvas.toDataURL();
 }
