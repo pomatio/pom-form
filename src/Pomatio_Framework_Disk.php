@@ -78,7 +78,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
 		$path = $uploads_array['basedir'] . "$multisite_path/signatures/";
 
 		if (!is_dir($path)) {
-			if (!mkdir($path, 0777, true) && !is_dir($path)) {
+			if (!mkdir($path, 0755, true) && !is_dir($path)) {
 				return false;
 			}
 
