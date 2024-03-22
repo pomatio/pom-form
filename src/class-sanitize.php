@@ -255,7 +255,7 @@ function sanitize_pom_form_select($value): string {
 }
 
 function sanitize_pom_form_signature($value): string {
-	return sanitize_text_field($value);
+	return $value;
 }
 
 /**

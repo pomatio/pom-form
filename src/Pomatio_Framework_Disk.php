@@ -72,6 +72,35 @@ $htaccess_content = '<IfModule mod_authz_core.c>
         }
     }
 
+	public function save_signature_image($data) {
+		$multisite_path = is_multisite() && ! is_main_site() ? 'sites/' . get_current_blog_id() : '';
+		$uploads_array = wp_get_upload_dir();
+		$path = $uploads_array['basedir'] . "$multisite_path/signatures/";
+
+		if (!is_dir($path)) {
+			if (!mkdir($path, 0777, true) && !is_dir($path)) {
+				return false;
+			}
+
+			$htaccessContent = "deny from all";
+			$htaccessPath = $path . '/.htaccess';
+			file_put_contents($htaccessPath, $htaccessContent);
+		}
+
+		$filename = Pomatio_Framework_Helper::generate_random_string(20, false) . '.png';
+		$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
+		$saved = file_put_contents($path . $filename, $data);
+
+		return $saved ? $path . $filename : false;
+	}
+
+	public function get_signature_image($path): string {
+		$image_data = file_get_contents($path);
+		$image_base64 = base64_encode($image_data);
+
+		return 'data:image/png;base64,' . $image_base64;
+	}
+
     /**
      * Establish the path in which the actions related to files are executed.
      *
