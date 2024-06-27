@@ -48,7 +48,10 @@ class Pomatio_Framework_Settings {
 
         if (!empty($type)) {
             $sanitize_function_name = "sanitize_pom_form_$type";
-            $value = $sanitize_function_name($value);
+            
+            if (function_exists($sanitize_function_name)) {
+	            $value = $sanitize_function_name($value);
+            }
         }
 
         return $value;
