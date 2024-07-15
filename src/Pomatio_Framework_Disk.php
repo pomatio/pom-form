@@ -108,11 +108,11 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @return string
      */
-    public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
-        $multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
-
-        return WP_CONTENT_DIR . "/settings/$settings_dir/$multisite_path";
-    }
+	public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
+		$multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
+		
+		return WP_CONTENT_DIR . "/settings/pomatio-framework/$multisite_path$settings_dir/";
+	}
 
     /**
      * Creates the directory in which the configuration files are saved.
