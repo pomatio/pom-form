@@ -16,9 +16,9 @@ class Pomatio_Framework_Disk {
     }
 
     public function set_fonts_upload_dir($path) {
-        if (!isset($_POST['name'])) {
-            return $path;
-        }
+	    if (!isset($_POST['name']) || is_array($_POST['name'])) {
+		    return $path;
+	    }
 
         $extension = substr(strrchr($_POST['name'], '.'), 1);
 
