@@ -286,8 +286,9 @@ jQuery(function($) {
   /**
    * Update repeater value.
    */
-  $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select, .repeater-wrapper checkbox', function() {
+  $(document).on('input', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
     const $this = $(this);
+
     $update_repeater($this.closest('.repeater-wrapper'));
   });
 
