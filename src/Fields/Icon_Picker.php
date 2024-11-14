@@ -7,6 +7,8 @@ use PomatioFramework\Pomatio_Framework_Helper;
 class Icon_Picker {
 
     public static function render_field(array $args): void {
+        $class = !empty($args['class']) ? ' ' . $args[ 'class'] : '';
+
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
@@ -31,7 +33,7 @@ class Icon_Picker {
                 ?>
             </div>
             <span class="button open-icon-picker-modal"><?php _e('Select icon', 'pomatio-framework') ?></span>
-            <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>" data-type="icon_picker">
+            <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $class ?>" data-type="icon_picker">
         </div>
 
         <?php
