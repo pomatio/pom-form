@@ -286,9 +286,14 @@ jQuery(function($) {
   /**
    * Update repeater value.
    */
-  $(document).on('input', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
+  $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
     const $this = $(this);
+    $update_repeater($this.closest('.repeater-wrapper'));
+  });
 
+  // Fix for Icon Picker fields
+  $(document).on('input', '.repeater-wrapper input[data-type="icon_picker"]', function() {
+    const $this = $(this);
     $update_repeater($this.closest('.repeater-wrapper'));
   });
 
