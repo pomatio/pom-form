@@ -34,6 +34,11 @@
       border-top: 0;
       padding: 25px 15px 10px;
 
+      .form-check {
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+
       .form-group {
         display: block;
         margin-bottom: 20px;

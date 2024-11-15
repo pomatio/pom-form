@@ -105,7 +105,7 @@ jQuery(function($) {
         }
         else {
           let $field_value = $field.value.trim();
-          if ($field.getAttribute('data-type') === 'checkbox') {
+          if ($field.getAttribute('data-type') === 'checkbox' || $field.getAttribute('data-type') === 'toggle') {
             $field_value = $($field).is(':checked') ? 'yes' : 'no';
           }
 

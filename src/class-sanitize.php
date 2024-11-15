@@ -11,11 +11,11 @@ if (!function_exists('sanitize_pom_form_background_image')) {
 		if (empty($value)) {
 			return [];
 		}
-		
+
 		if (is_array($value)) {
 			return $value;
 		}
-		
+
 		return json_decode(stripslashes($value), true);
 	}
 }
@@ -39,9 +39,15 @@ if (!function_exists('sanitize_pom_form_checkbox')) {
 		if (is_array($value)) {
 			return !empty($value) ? $value : [];
 		}
-		
+
 		return $value === 'yes' ? 'yes' : 'no';
 	}
+}
+
+if (!function_exists('sanitize_pom_form_toggle')) {
+    function sanitize_pom_form_toggle($value): string {
+        return $value === 'yes' ? 'yes' : 'no';
+    }
 }
 
 if (!function_exists('sanitize_pom_form_code_css')) {
@@ -50,7 +56,7 @@ if (!function_exists('sanitize_pom_form_code_css')) {
 		$csstidy->set_cfg('optimise_shorthands', 2);
 		$csstidy->set_cfg('template', $compression_level); // compression level
 		$csstidy->parse($value);
-		
+
 		return $csstidy->print->plain();
 	}
 }
@@ -65,7 +71,7 @@ if (!function_exists('sanitize_pom_form_code_css')) {
 if (!function_exists('sanitize_pom_form_code_html')) {
 	function sanitize_pom_form_code_html($value): string {
 		$allowed_tags = Pomatio_Framework_Helper::get_allowed_html();
-		
+
 		return wp_kses(stripslashes($value), $allowed_tags);
 	}
 }
@@ -73,7 +79,7 @@ if (!function_exists('sanitize_pom_form_code_html')) {
 if (!function_exists('sanitize_pom_form_code_js')) {
 	function sanitize_pom_form_code_js($value): string {
 		$filtered_js = esc_js($value);
-		
+
 		return stripslashes($filtered_js);
 	}
 }
@@ -81,7 +87,7 @@ if (!function_exists('sanitize_pom_form_code_js')) {
 if (!function_exists('sanitize_pom_form_code_json')) {
 	function sanitize_pom_form_code_json($value): string {
 		$filtered_js = esc_js($value);
-		
+
 		return stripslashes($filtered_js);
 	}
 }
@@ -101,7 +107,7 @@ if (!function_exists('sanitize_pom_form_color_palette')) {
 if (!function_exists('sanitize_pom_form_date')) {
 	function sanitize_pom_form_date($value, $format = 'Y-m-d') {
 		$timestamp = strtotime(sanitize_text_field($value));
-		
+
 		return date($format, $timestamp);
 	}
 }
@@ -109,7 +115,7 @@ if (!function_exists('sanitize_pom_form_date')) {
 if (!function_exists('sanitize_pom_form_datetime')) {
 	function sanitize_pom_form_datetime($value, $format = 'Y-m-d H:i') {
 		$timestamp = strtotime(sanitize_text_field($value));
-		
+
 		return date($format, $timestamp);
 	}
 }
@@ -123,7 +129,7 @@ if (!function_exists('sanitize_pom_form_email')) {
 if (!function_exists('sanitize_pom_form_file')) {
 	function sanitize_pom_form_file($value) {
 		$max_file_size = apply_filters('pom_form_max_file_size', 1073741824); // In bytes. Default max 1GB
-		
+
 		$allowed_mime_types = [
 			'text/plain',
 			'application/msword', // .doc
@@ -134,7 +140,7 @@ if (!function_exists('sanitize_pom_form_file')) {
 			'image/gif'
 		];
 		$allowed_mime_types = apply_filters('pom_form_allowed_mime_types', $allowed_mime_types);
-		
+
 		// TODO: Finish sanitizing.
 		return $value;
 	}
@@ -150,7 +156,7 @@ if (!function_exists('sanitize_pom_form_file')) {
 if (!function_exists('sanitize_pom_form_gallery')) {
 	function sanitize_pom_form_gallery($value) {
 		$validate = preg_match("/^[0-9,]+$/", $value);
-		
+
 		return $validate ? $value : false;
 	}
 }
@@ -235,21 +241,21 @@ if (!function_exists('sanitize_pom_form_font_picker')) {
 			$value = str_replace('&quot;', '"', $value);
 			$value = json_decode($value, true);
 		}
-		
+
 		if (!is_array($value)) {
 			return [];
 		}
-		
+
 		$font_extensions = array_keys(Pomatio_Framework_Helper::get_allowed_font_types());
 		$sanitized = [];
 		foreach ($value as $font_extension => $font_url) {
 			if (!in_array($font_extension, $font_extensions, true)) {
 				continue;
 			}
-			
+
 			$sanitized[$font_extension] = sanitize_url($font_url);
 		}
-		
+
 		return $sanitized;
 	}
 }
@@ -259,19 +265,19 @@ if (!function_exists('sanitize_pom_form_repeater')) {
 		if (is_string($value)) {
 			$value = json_decode(stripslashes($value), true);
 		}
-		
+
 		if (!empty($value)) {
 			$sanitized_array = [];
-			
+
 			$limit = !empty($array_settings['limit']) ? (int)$array_settings['limit'] : '';
-			
+
 			$i = 0;
 			foreach ($value as $type => $items) {
 				foreach ($items as $index => $arr_data) {
 					if (!empty($limit) && $limit === $i++) {
 						break;
 					}
-					
+
 					$repeater_identifier = '';
 					foreach ($arr_data as $arr_key => $arr_value) {
 						if ($arr_key === 'repeater_identifier') {
@@ -284,10 +290,10 @@ if (!function_exists('sanitize_pom_form_repeater')) {
 							if (empty($arr_value['type'])) {
 								continue;
 							}
-							
+
 							$sanitize_function_name = "sanitize_pom_form_{$arr_value['type']}";
 							$field_name = str_replace('[]', '', $arr_key);
-							
+
 							if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js' || $arr_value['type'] === 'code_json')) {
 								$file_name = "{$array_settings['name']}_{$repeater_identifier}_$field_name";
 								$sanitized_array[$type][$index][$field_name]['value'] = Pomatio_Framework_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);
@@ -295,16 +301,16 @@ if (!function_exists('sanitize_pom_form_repeater')) {
 							else {
 								$sanitized_array[$type][$index][$field_name]['value'] = $sanitize_function_name($arr_value['value']);
 							}
-							
+
 							$sanitized_array[$type][$index][$field_name]['type'] = $arr_value['type'];
 						}
 					}
 				}
 			}
-			
+
 			return $sanitized_array;
 		}
-		
+
 		return [];
 	}
 }
@@ -314,7 +320,7 @@ if (!function_exists('sanitize_pom_form_select')) {
 		if (is_array($value)) {
 			return sanitize_text_field(implode(',', $value));
 		}
-		
+
 		return sanitize_text_field($value);
 	}
 }
@@ -336,7 +342,7 @@ if (!function_exists('sanitize_pom_form_signature')) {
 if (!function_exists('sanitize_pom_form_tel')) {
 	function sanitize_pom_form_tel($value) {
 		$validate = preg_match("/^\\+?[1-9][0-9]{7,14}$/", $value);
-		
+
 		return $validate ? $value : false;
 	}
 }
@@ -364,7 +370,7 @@ if (!function_exists('sanitize_pom_form_textarea')) {
 if (!function_exists('sanitize_pom_form_time')) {
 	function sanitize_pom_form_time($value) {
 		$validate = preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $value);
-		
+
 		return $validate ? $value : false;
 	}
 }
@@ -372,25 +378,19 @@ if (!function_exists('sanitize_pom_form_time')) {
 if (!function_exists('sanitize_pom_form_tinymce')) {
 	function sanitize_pom_form_tinymce($value): string {
 		$allowed_tags = Pomatio_Framework_Helper::get_allowed_html();
-		
-		return wp_kses($value, $allowed_tags);
-	}
-}
 
-if (!function_exists('sanitize_pom_form_toggle')) {
-	function sanitize_pom_form_toggle($value): string {
-		return $value === 'yes' || $value === 'true' || $value === true ? 'yes' : 'no';
+		return wp_kses($value, $allowed_tags);
 	}
 }
 
 if (!function_exists('sanitize_pom_form_url')) {
 	function sanitize_pom_form_url($value): string {
 		$value = trim($value);
-		
+
 		if (strpos($value, '#') === 0) {
 			return '#' . sanitize_title($value);
 		}
-		
+
 		return sanitize_url($value);
 	}
 }
