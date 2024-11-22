@@ -16,9 +16,9 @@ class Pomatio_Framework_Disk {
     }
 
     public function set_fonts_upload_dir($path) {
-	    if (!isset($_POST['name']) || is_array($_POST['name'])) {
-		    return $path;
-	    }
+        if (!isset($_POST['name']) || is_array($_POST['name'])) {
+            return $path;
+        }
 
         $extension = substr(strrchr($_POST['name'], '.'), 1);
 
@@ -28,12 +28,12 @@ class Pomatio_Framework_Disk {
             return $path;
         }
 
-        $custom_dir     = '/fonts';
-        $path['path']   = str_replace($path['subdir'], '', $path['path']); //remove default subdir (year/month)
-        $path['url']    = str_replace($path['subdir'], '', $path['url']);
+        $custom_dir = '/fonts';
+        $path['path'] = str_replace($path['subdir'], '', $path['path']); //remove default subdir (year/month)
+        $path['url'] = str_replace($path['subdir'], '', $path['url']);
         $path['subdir'] = $custom_dir;
-        $path['path']  .= $custom_dir;
-        $path['url']   .= $custom_dir;
+        $path['path'] .= $custom_dir;
+        $path['url'] .= $custom_dir;
 
         return $path;
     }
@@ -57,7 +57,7 @@ class Pomatio_Framework_Disk {
         $htaccess = WP_CONTENT_DIR . "/settings/.htaccess";
 
         if (!is_file($htaccess)) {
-$htaccess_content = '<IfModule mod_authz_core.c>
+            $htaccess_content = '<IfModule mod_authz_core.c>
     Require all denied
 </IfModule>
 <IfModule !mod_authz_core.c>
@@ -72,34 +72,34 @@ $htaccess_content = '<IfModule mod_authz_core.c>
         }
     }
 
-	public function save_signature_image($data) {
-		$multisite_path = is_multisite() && ! is_main_site() ? 'sites/' . get_current_blog_id() : '';
-		$uploads_array = wp_get_upload_dir();
-		$path = $uploads_array['basedir'] . "$multisite_path/signatures/";
+    public function save_signature_image($data) {
+        $multisite_path = is_multisite() && !is_main_site() ? 'sites/' . get_current_blog_id() : '';
+        $uploads_array = wp_get_upload_dir();
+        $path = $uploads_array['basedir'] . "$multisite_path/signatures/";
 
-		if (!is_dir($path)) {
-			if (!mkdir($path, 0755, true) && !is_dir($path)) {
-				return false;
-			}
+        if (!is_dir($path)) {
+            if (!mkdir($path, 0755, true) && !is_dir($path)) {
+                return false;
+            }
 
-			$htaccessContent = "deny from all";
-			$htaccessPath = $path . '/.htaccess';
-			file_put_contents($htaccessPath, $htaccessContent);
-		}
+            $htaccessContent = "deny from all";
+            $htaccessPath = $path . '/.htaccess';
+            file_put_contents($htaccessPath, $htaccessContent);
+        }
 
-		$filename = Pomatio_Framework_Helper::generate_random_string(20, false) . '.png';
-		$data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
-		$saved = file_put_contents($path . $filename, $data);
+        $filename = Pomatio_Framework_Helper::generate_random_string(20, false) . '.png';
+        $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
+        $saved = file_put_contents($path . $filename, $data);
 
-		return $saved ? $path . $filename : false;
-	}
+        return $saved ? $path . $filename : false;
+    }
 
-	public function get_signature_image($path): string {
-		$image_data = file_get_contents($path);
-		$image_base64 = base64_encode($image_data);
+    public function get_signature_image($path): string {
+        $image_data = file_get_contents($path);
+        $image_base64 = base64_encode($image_data);
 
-		return 'data:image/png;base64,' . $image_base64;
-	}
+        return 'data:image/png;base64,' . $image_base64;
+    }
 
     /**
      * Establish the path in which the actions related to files are executed.
@@ -108,11 +108,11 @@ $htaccess_content = '<IfModule mod_authz_core.c>
      *
      * @return string
      */
-	public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
-		$multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
-		
-		return WP_CONTENT_DIR . "/settings/pomatio-framework/$multisite_path$settings_dir/";
-	}
+    public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
+        $multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
+
+        return WP_CONTENT_DIR . "/settings/pomatio-framework/$multisite_path$settings_dir/";
+    }
 
     /**
      * Creates the directory in which the configuration files are saved.
@@ -155,7 +155,7 @@ $htaccess_content = '<IfModule mod_authz_core.c>
             return '';
         }
 
-		$data = empty($data) ? [] : $data;
+        $data = empty($data) ? [] : $data;
 
         $file_content = '<?php' . PHP_EOL;
         $file_content .= '/**' . PHP_EOL;
