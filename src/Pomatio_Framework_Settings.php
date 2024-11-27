@@ -16,6 +16,7 @@ class Pomatio_Framework_Settings {
         }
 
         $first_key = array_key_first($settings_array);
+
         return $first_key === 'config' ? array_key_first(array_slice($settings_array, 1)) : array_key_first($settings_array);
     }
 
@@ -48,9 +49,9 @@ class Pomatio_Framework_Settings {
 
         if (!empty($type)) {
             $sanitize_function_name = "sanitize_pom_form_$type";
-            
+
             if (function_exists($sanitize_function_name)) {
-	            $value = $sanitize_function_name($value);
+                $value = $sanitize_function_name($value);
             }
         }
 
@@ -170,6 +171,7 @@ class Pomatio_Framework_Settings {
 
         if (!$this->is_allowed_role($settings_array)) {
             (new self)->render_error_page($settings_array);
+
             return;
         }
 
@@ -181,7 +183,7 @@ class Pomatio_Framework_Settings {
 
         <?php
 
-        $description =  $settings_array[$current_tab]['tab'][$current_subsection]['description'] ?? '';
+        $description = $settings_array[$current_tab]['tab'][$current_subsection]['description'] ?? '';
 
         if (!empty($description)) {
             echo "<p>$description</p>";
@@ -213,114 +215,120 @@ class Pomatio_Framework_Settings {
                 ?>
 
                 <table class="form-table">
-                    <tbody>
+                <tbody>
+
+                <?php
+
+                if (isset($setting['requires_initialization']) && $setting['requires_initialization'] === true) {
+                    ?>
+
+                    <tr>
+                        <th scope="row">
+                            <label for="<?= "$setting_key-enabled" ?>">
+                                <?php _e('Enable', 'pomatio-framework') ?>
+                            </label>
+                        </th>
+                        <td>
+                            <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
+                            <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
+                            <label for="<?= "$setting_key-enabled" ?>"><?php _e('Check to enable this setting.', 'pomatio-framework') ?></label>
+
+                            <?php
+
+                            if (!empty($setting['description'])) {
+                                ?>
+
+                                <p class="description"><?= $setting['description'] ?></p>
+
+                                <?php
+                            }
+
+                            ?>
+
+                        </td>
+                    </tr>
 
                     <?php
+                }
 
-                    if (isset($setting['requires_initialization']) && $setting['requires_initialization'] === true) {
+                if (
+                    (isset($setting['requires_initialization']) && $setting['requires_initialization'] !== true) ||
+                    (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
+                ) {
+                    $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'])
+                        ? $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']
+                        : '';
+
+                    if (empty($settings_dir)) {
+                        $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
+                    }
+
+                    $fields = self::read_fields($settings_dir, $setting_key);
+
+                    foreach ($fields as $field) {
+                        if ($field['type'] === 'Separator') {
+                            ?>
+
+                            </tbody>
+                            </table>
+
+                            <?php
+
+                            echo (new Pomatio_Framework())::add_field($field);
+
+                            ?>
+
+                            <table class="form-table">
+                            <tbody>
+                            <?php
+
+                            continue;
+                        }
+
                         ?>
 
                         <tr>
                             <th scope="row">
-                                <label for="<?= "$setting_key-enabled" ?>">
-                                    <?php _e('Enable', 'pomatio-framework') ?>
+                                <label for="<?= $field['name'] ?? '' ?>">
+                                    <?= $field['label'] ?? '' ?>
                                 </label>
                             </th>
                             <td>
-                                <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
-                                <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
-                                <label for="<?= "$setting_key-enabled" ?>"><?php _e('Check to enable this setting.', 'pomatio-framework') ?></label>
-
                                 <?php
 
-                                if (!empty($setting['description'])) {
-                                    ?>
+                                $description = $field['description'] ?? '';
+                                unset($field['label'], $field['description']);
 
-                                    <p class="description"><?= $setting['description'] ?></p>
+                                $value = self::get_setting_value($page_slug, $setting_key, $field['name']);
+                                $field['name'] = $setting_key . '_' . $field['name'];
 
-                                    <?php
+                                if ($field['type'] === 'checkbox' && isset($field['value']) && $field['value'] === true) {
+                                    $field['value'] = 'yes';
+                                }
+                                elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
+                                    $value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
+                                    $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
+                                    $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
+                                }
+                                else {
+                                    $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
+                                    $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
                                 }
 
-                                ?>
+                                echo (new Pomatio_Framework())::add_field($field);
 
+                                ?>
+                                <p class="description" id="<?= $field['name'] ?>"><?= $description ?></p>
                             </td>
                         </tr>
 
                         <?php
                     }
+                }
 
-                    if (
-                        (isset($setting['requires_initialization']) && $setting['requires_initialization'] !== true) ||
-                        (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
-                    ) {
-                        // Check $settings_array[$_GET['section']]['settings_dir'] for plugins.
-                        $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
-                        $fields = self::read_fields($settings_dir, $setting_key);
-                        foreach ($fields as $field) {
-                            if ($field['type'] === 'Separator') {
-                                ?>
+                ?>
 
-                                    </tbody>
-                                </table>
-
-                                <?php
-
-                                echo (new Pomatio_Framework())::add_field($field);
-
-                                ?>
-
-                                <table class="form-table">
-                                    <tbody>
-                                <?php
-
-                                continue;
-                            }
-
-                            ?>
-
-                            <tr>
-                                <th scope="row">
-                                    <label for="<?= $field['name'] ?? '' ?>">
-                                        <?= $field['label'] ?? '' ?>
-                                    </label>
-                                </th>
-                                <td>
-                                    <?php
-
-                                    $description = $field['description'] ?? '';
-                                    unset($field['label'], $field['description']);
-
-                                    $value = self::get_setting_value($page_slug, $setting_key, $field['name']);
-
-                                    $field['name'] = $setting_key . '_' . $field['name'];
-
-                                    if ($field['type'] === 'checkbox' && isset($field['value']) && $field['value'] === true) {
-                                        $field['value'] = 'yes';
-                                    }
-                                    elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
-                                        $value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
-                                        $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
-                                        $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
-                                    }
-                                    else {
-                                        $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
-                                        $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
-                                    }
-
-                                    echo (new Pomatio_Framework())::add_field($field);
-
-                                    ?>
-                                    <p class="description" id="<?= $field['name'] ?>"><?= $description ?></p>
-                                </td>
-                            </tr>
-
-                            <?php
-                        }
-                    }
-
-                    ?>
-
-                    </tbody>
+                </tbody>
                 </table>
 
                 <hr>
