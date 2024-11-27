@@ -1,0 +1,23 @@
+{
+  "name": "pomatio-framework",
+  "sideEffects": false,
+  "devDependencies": {
+    "css-loader": "7.1.2",
+    "css-minimizer-webpack-plugin": "7.0.0",
+    "mini-css-extract-plugin": "2.9.2",
+    "sass": "1.80.6",
+    "sass-loader": "16.0.3",
+    "terser-webpack-plugin": "5.3.10",
+    "webpack": "5.96.1",
+    "webpack-cli": "5.1.4",
+    "webpack-remove-empty-scripts": "1.0.4"
+  },
+  "scripts": {
+    "build:js": "webpack --config webpack.js.config.js",
+    "build:css": "webpack --config webpack.scss.config.js",
+    "build": "npm run build:js && npm run build:css",
+    "watch:js": "webpack --config webpack.js.config.js --watch",
+    "watch:css": "webpack --config webpack.scss.config.js --watch",
+    "watch": "npm run watch:js & npm run watch:css"
+  }
+}

@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AACE,qBAAO,CACL,gBAAgB,CAAE,eAAkB,CACpC,MAAM,CAAE,OAAO,CACf,MAAM,CAAE,KAAK,CACb,KAAK,CAAE,IAAI,CAEX,8BAAW,CACT,MAAM,CAAE,WAAW,CACnB,cAAc,CAAE,IAAI",
-"sources": ["signature.scss"],
-"names": [],
-"file": "signature.min.css"
-}
