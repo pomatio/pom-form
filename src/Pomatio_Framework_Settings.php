@@ -255,9 +255,12 @@ class Pomatio_Framework_Settings {
                     (isset($setting['requires_initialization']) && $setting['requires_initialization'] !== true) ||
                     (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
                 ) {
-                    $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'])
-                        ? $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']
-                        : '';
+                    $settings_dir = (
+                        isset($_GET['section'], $_GET['tab']) &&
+                        isset($settings_array[$_GET['section']]['tab']) &&
+                        isset($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']) &&
+                        is_dir($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'])
+                    ) ? $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'] : '';
 
                     if (empty($settings_dir)) {
                         $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
