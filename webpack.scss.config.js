@@ -10,6 +10,7 @@ module.exports = {
     'gallery': './src/dist/css/gallery.scss',
     'icon-picker': './src/dist/css/icon-picker.scss',
     'image-picker': './src/dist/css/image-picker.scss',
+    'quantity': './src/dist/css/quantity.scss',
     'radio-icons': './src/dist/css/radio-icons.scss',
     'range': './src/dist/css/range.scss',
     'repeater': './src/dist/css/repeater.scss',
