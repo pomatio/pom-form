@@ -48,7 +48,7 @@ class Pomatio_Framework_Save {
                         $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
                         $translatable = (new self)->is_translatable($settings_file_path, $dir, $name) ?? false;
 
-                        if ($translatable && $type === 'tinymce') {
+                        if ($translatable && $extension === 'html') {
                             $translatables[$setting_name] = [
                                 'filename' => $dir,
                                 'multiline' => true,
