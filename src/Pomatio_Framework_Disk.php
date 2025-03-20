@@ -73,9 +73,9 @@ class Pomatio_Framework_Disk {
     }
 
     public function save_signature_image($data) {
-        $multisite_path = is_multisite() && !is_main_site() ? 'sites/' . get_current_blog_id() : '';
+        $multisite_path = is_multisite() && !is_main_site() ? 'sites/' . get_current_blog_id() . '/' : '';
         $uploads_array = wp_get_upload_dir();
-        $path = $uploads_array['basedir'] . "$multisite_path/signatures/";
+        $path = trailingslashit($uploads_array['basedir']) . $multisite_path . 'signatures/';
 
         if (!is_dir($path)) {
             if (!mkdir($path, 0755, true) && !is_dir($path)) {
@@ -95,7 +95,15 @@ class Pomatio_Framework_Disk {
     }
 
     public function get_signature_image($path): string {
+        if (!file_exists($path) || !is_readable($path)) {
+            return '';
+        }
+
         $image_data = file_get_contents($path);
+        if ($image_data === false) {
+            return '';
+        }
+
         $image_base64 = base64_encode($image_data);
 
         return 'data:image/png;base64,' . $image_base64;
