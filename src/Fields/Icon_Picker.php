@@ -57,7 +57,7 @@ class Icon_Picker {
         );
     }
 
-    private function dialog_html(): void {
+    public function dialog_html(): void {
         ?>
 
         <div id="pomatio-framework-icons-modal" class="media-modal wp-core-ui" style="display: none;">
