@@ -153,8 +153,11 @@ jQuery(function($) {
     e.preventDefault();
 
     let $icon_url = $('#pomatio-framework-icons-modal .attachment.selected img').attr('src');
+    let $input = $clicked_button.closest('.icon-picker-wrapper').find('input[type="hidden"]');
 
-    $clicked_button.closest('.icon-picker-wrapper').find('input[type="hidden"]').val($icon_url).trigger('input');
+    $input.val($icon_url);
+    $input[0].dispatchEvent(new Event('input', { bubbles: true }));
+
     $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
     $clicked_button.closest('.icon-picker-wrapper').find('.remove-selected-icon').css('display', 'inherit');
 
