@@ -51,13 +51,14 @@ if (!function_exists('sanitize_pom_form_toggle')) {
 }
 
 if (!function_exists('sanitize_pom_form_code_css')) {
+    // TODO: Fix this
     function sanitize_pom_form_code_css($value, $compression_level = 'default'): string {
-        $csstidy = new csstidy();
+/*        $csstidy = new csstidy();
         $csstidy->set_cfg('optimise_shorthands', 2);
         $csstidy->set_cfg('template', $compression_level); // compression level
-        $csstidy->parse($value);
+        $csstidy->parse($value);*/
 
-        return $csstidy->print->plain();
+        return $value;
     }
 }
 
