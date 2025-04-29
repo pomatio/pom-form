@@ -59,7 +59,7 @@ class Pomatio_Framework_Disk {
         if (!is_file($htaccess)) {
             $htaccess_content = '<IfModule mod_authz_core.c>
     Require all denied
-    <FilesMatch "\.css$">
+    <FilesMatch "\.(?:css|js)$">
         Require all granted
     </FilesMatch>
 </IfModule>
@@ -67,7 +67,7 @@ class Pomatio_Framework_Disk {
 <IfModule !mod_authz_core.c>
     Order deny,allow
     Deny from all
-    <FilesMatch "\.css$">
+    <FilesMatch "\.(?:css|js)$">
         Order allow,deny
         Allow from all
     </FilesMatch>
