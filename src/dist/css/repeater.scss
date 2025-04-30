@@ -47,7 +47,7 @@
           margin-bottom: 0;
         }
 
-        label,
+        label:not(.form-check-label),
         input:not([type='checkbox']),
         textarea,
         select,
