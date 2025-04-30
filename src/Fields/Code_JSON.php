@@ -2,51 +2,54 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Code_JSON {
 
-	public static function render_field(array $args): void {
-		echo '<div class="form-group">';
+    public static function render_field(array $args): void {
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
 
-		if (!empty($args['label'])) {
-			echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label><br>';
-		}
+        echo '<div class="form-group">';
 
-		if (!empty($args['description']) && $args['description_position'] === 'below_label') {
-			echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
-		}
+        if (!empty($args['label'])) {
+            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label><br>';
+        }
 
-		$value = '';
-		if (file_exists($args['value'])) {
-			$value = file_get_contents($args['value']);
-		}
-		elseif (!empty($args['default'])) {
-			$value = $args['default'];
-		}
+        if (!empty($args['description']) && $args['description_position'] === 'below_label') {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+        }
 
-		?>
+        $value = '';
+        if (file_exists($args['value'])) {
+            $value = file_get_contents($args['value']);
+        }
+        elseif (!empty($args['default'])) {
+            $value = $args['default'];
+        }
 
-		<textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-json <?= $args['class'] ?>" data-type="code_json"><?= $value ?></textarea>
+        ?>
 
-		<?php
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-json <?= $args['class'] ?>"<?= $data_dependencies ?> data-type="code_json"><?= $value ?></textarea>
 
-		if (!empty($args['description']) && $args['description_position'] === 'under_field') {
-			echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
-		}
+        <?php
 
-		echo '</div>';
+        if (!empty($args['description']) && $args['description_position'] === 'under_field') {
+            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+        }
 
-		$codemirror_settings = wp_enqueue_code_editor([]);
-		wp_enqueue_script('wp-theme-plugin-editor');
-		wp_enqueue_style('wp-codemirror');
-		wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
-		wp_localize_script(
-			'pomatio-framework-code',
-			'settings',
-			[
-				'codeMirrorSettings' => $codemirror_settings
-			]
-		);
+        echo '</div>';
 
-	}
+        $codemirror_settings = wp_enqueue_code_editor([]);
+        wp_enqueue_script('wp-theme-plugin-editor');
+        wp_enqueue_style('wp-codemirror');
+        wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
+        wp_localize_script(
+            'pomatio-framework-code',
+            'settings',
+            [
+                'codeMirrorSettings' => $codemirror_settings
+            ]
+        );
+    }
 
 }

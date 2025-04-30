@@ -2,9 +2,13 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Code_JS {
 
     public static function render_field(array $args): void {
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
@@ -25,7 +29,7 @@ class Code_JS {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-js <?= $args['class'] ?>" data-type="code_js"><?= $value ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-js <?= $args['class'] ?>"<?= $data_dependencies ?> data-type="code_js"><?= $value ?></textarea>
 
         <?php
 
