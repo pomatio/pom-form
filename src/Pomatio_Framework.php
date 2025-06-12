@@ -28,6 +28,14 @@ class Pomatio_Framework {
                 require_once POM_FORM_SRC_PATH . '/' . $file;
             }
         }
+
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+    }
+
+    public function enqueue_scripts($hook): void {
+        if ($hook === 'settings_page_pom-theme-options') {
+            wp_enqueue_style('pomatio-framework-settings', POM_FORM_SRC_URI . '/dist/css/admin.min.css');
+        }
     }
 
     /**

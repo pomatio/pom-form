@@ -193,7 +193,7 @@ class Pomatio_Framework_Settings {
 
         ?>
 
-        <form method="POST" action="<?= $action_url ?>">
+        <form method="POST" class="pomatio-framework-settings-form" action="<?= $action_url ?>">
             <?php
 
             wp_nonce_field('pom_framework_save_settings', 'pom_framework_security_check');

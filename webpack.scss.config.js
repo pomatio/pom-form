@@ -5,6 +5,7 @@ const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
 module.exports = {
   entry: {
+    'admin': './src/dist/css/admin.scss',
     'background-image': './src/dist/css/background-image.scss',
     'color-palette': './src/dist/css/color-palette.scss',
     'gallery': './src/dist/css/gallery.scss',
