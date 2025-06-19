@@ -19,7 +19,9 @@ class Pomatio_Framework_Save {
         Pomatio_Framework_Disk::create_settings_dir($page_slug);
 
         $settings_path = (new Pomatio_Framework_Disk())->get_settings_path($page_slug);
-        $settings_dirs = (new self)->get_current_tab_settings_dirs($settings_file_path, Pomatio_Framework_Settings::get_current_tab($settings_file_path), Pomatio_Framework_Settings::get_current_subsection($settings_file_path));
+        $tab = Pomatio_Framework_Settings::get_current_tab($settings_file_path);
+        $subsection = Pomatio_Framework_Settings::get_current_subsection($settings_file_path);
+        $settings_dirs = (new self)->get_current_tab_settings_dirs($settings_file_path, $tab, $subsection);
 
         require_once 'class-sanitize.php';
 
@@ -85,6 +87,8 @@ class Pomatio_Framework_Save {
                 opcache_invalidate("$settings_path$dir.php", true);
             }
         }
+
+        do_action('pomatio_framework_after_save_settings', $page_slug, $tab, $subsection);
     }
 
     private function get_current_tab_settings_dirs($settings, $tab, $subsection): array {
