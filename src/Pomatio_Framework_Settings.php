@@ -225,7 +225,19 @@ class Pomatio_Framework_Settings {
                     <tr>
                         <th scope="row">
                             <label for="<?= "$setting_key-enabled" ?>">
-                                <?php _e('Enable', 'pomatio-framework') ?>
+                                <?php
+
+                                if (!empty($setting['img'])) {
+                                    ?>
+
+                                    <img src="<?= $setting['img'] ?>"/>
+
+                                    <?php
+                                }
+
+                                _e('Enable', 'pomatio-framework');
+
+                                ?>
                             </label>
                         </th>
                         <td>
@@ -235,10 +247,10 @@ class Pomatio_Framework_Settings {
 
                             <?php
 
-                            if (!empty($setting['description'])) {
+                            if (!empty($setting['description_checkbox'])) {
                                 ?>
 
-                                <p class="description"><?= $setting['description'] ?></p>
+                                <p class="description"><?= $setting['description_checkbox'] ?></p>
 
                                 <?php
                             }
