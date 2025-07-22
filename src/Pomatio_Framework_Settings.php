@@ -100,8 +100,6 @@ class Pomatio_Framework_Settings {
 
         </div>
 
-        <div class="clear pomatio-framework-settings-nav-clear"></div>
-
         <nav class="nav-tab-wrapper">
             <?php
 

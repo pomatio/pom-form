@@ -71,9 +71,7 @@ body.folded .pomatio-framework-settings-nav-heading {
 .pomatio-framework-settings-nav-clear {
   padding-top: $header-height;
 
-  @media screen and (max-width: 782px) {
-    padding-top: 102px; // This seems to be header (60) + mobile admin bar (42)
-  }
+  
 }
 
 .nav-tab-wrapper {
@@ -82,9 +80,14 @@ body.folded .pomatio-framework-settings-nav-heading {
   list-style: none;
   margin-left: -20px;
   padding-left: 30px;
+  padding-top: 69px;
   gap: 24px;
   background: $white;
   border-bottom: 1px solid $border-color-light;
+
+  @media screen and (max-width: 782px) {
+    padding-top: 111px; 
+  }
 
   a {
     font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
