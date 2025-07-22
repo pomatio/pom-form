@@ -1,23 +1,206 @@
+// ===== SETTINGS & VARIABLES =====
+
+// Layout
+$admin-menu-width: 160px;
+$admin-menu-width-folded: 36px;
+$admin-bar-height: 32px;
+$admin-bar-height-mobile: 42px;
+$header-height: 60px;
+
+// Colors
 $white: #fff;
+$black: #070707;
+$gray-dark: #505050;
+$gray-medium: #555;
+$gray-text-description: #646970;
 $border-color: #dedede;
+$border-color-light: #ebebeb;
+$border-color-medium: #ccc;
+
+// Shadows
+$box-shadow-scrolled: 0 8px 16px 0 rgba(85, 93, 102, .3);
+
+// Placeholders
+%base-input {
+  width: 100%;
+}
+
+
+// ===== STYLES =====
 
 #adminmenuback {
   z-index: 7;
 }
 
+.pomatio-framework-settings-nav-heading {
+  background: $white;
+  box-sizing: border-box;
+  position: fixed;
+  left: $admin-menu-width;
+  right: 0;
+  width: calc(100% - #{$admin-menu-width});
+  height: $header-height;
+  top: $admin-bar-height;
+  z-index: 1001;
+
+  &.is-scrolled {
+    box-shadow: $box-shadow-scrolled;
+  }
+
+  > h1 {
+    padding: 15px 0 15px 30px;
+    font-weight: 590;
+    font-size: 16px;
+    line-height: 30px;
+    color: $black;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 782px) {
+    top: $admin-bar-height-mobile;
+    width: 100%;
+    left: 0;
+  }
+}
+
+body.folded .pomatio-framework-settings-nav-heading {
+  left: $admin-menu-width-folded;
+  width: calc(100% - #{$admin-menu-width-folded});
+}
+
+.pomatio-framework-settings-nav-clear {
+  padding-top: $header-height;
+
+  @media screen and (max-width: 782px) {
+    padding-top: 102px; // This seems to be header (60) + mobile admin bar (42)
+  }
+}
+
+.nav-tab-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-left: -20px;
+  padding-left: 30px;
+  gap: 24px;
+  background: $white;
+  border-bottom: 1px solid $border-color-light;
+
+  a {
+    font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin-left: 0;
+    border: 0;
+    background: 0 0;
+    font-weight: 510;
+    font-size: 14px;
+    line-height: 20px;
+    color: $gray-dark;
+    padding: 0 0 10px 0;
+    text-decoration: none;
+  }
+
+  .nav-tab-active,
+  .nav-tab-active:focus,
+  .nav-tab-active:focus:active,
+  .nav-tab-active:hover {
+    border-bottom: 2px solid var(--wp-admin-theme-color, #2271B1);
+    color: $black;
+    background: none;
+  }
+  .nav-tab:focus,
+  .nav-tab:hover {
+    color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #2271B1));
+  }
+  
+  @media screen and (max-width: 600px) {
+    border-bottom: 0;
+  }
+}
+
+// Ensure specificity for WP overrides if needed
+.wrap h2.nav-tab-wrapper,
+h1.nav-tab-wrapper {
+  @media screen and (max-width: 600px) {
+    border-bottom: 0;
+  }
+}
+
+
 .pomatio-framework-settings-form {
-  padding-bottom: 60px;
+  padding-bottom: 60px; // Consider a variable like $submit-bar-height
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1rem;
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  img {
+    display: block;
+    max-width: 400px;
+    border-radius: 7px;
+  }
+
+  .pomatio-framework-setting {
+    border: 1px solid $border-color-medium;
+    border-radius: 8px;
+    background-color: $white;
+    overflow: hidden;
+    padding: 1.5rem;
+
+    img {
+      max-width: none;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .title {
+      margin: 0 0 1rem;
+    }
+    p {
+      font-size: 0.95rem;
+      color: $gray-medium;
+      line-height: 1.5;
+      margin: 0 0 1rem;
+    }
+    p.description {
+      font-size: 0.8rem;
+      color: $gray-text-description;
+      line-height: 1.2;
+    }
+    .main-label {
+      display: block;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+  }
 
   .submit {
     background: $white;
     border-top: 1px solid $border-color;
+    position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
     margin: 0;
     padding: 15px 30px;
-    position: fixed;
-    right: 0;
     text-align: right;
     z-index: 6;
   }
+
+  /* Make any direct child that is NOT a setting card span the full width */
+  > *:not(.pomatio-framework-setting) {
+    grid-column: 1 / -1;
+  }
+
+  /* For screens 768px wide or smaller, switch to a single column. */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+
+input[type=date], input[type=datetime-local], input[type=datetime], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea {
+  @extend %base-input;
 }

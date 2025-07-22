@@ -72,7 +72,7 @@ class Pomatio_Framework_Settings {
         <div id="<?= $page_slug ?>-settings-page" class="wrap">
             <?php
 
-            (new self)->render_tabs($page_slug, $settings_file_path);
+            //(new self)->render_tabs($page_slug, $settings_file_path);
             (new self)->render_content($page_slug, $settings_file_path);
 
             ?>
@@ -81,7 +81,9 @@ class Pomatio_Framework_Settings {
         <?php
     }
 
-    private function render_tabs($page_slug, $settings_array = []): void {
+    public static function render_tabs($page_slug, $settings_array = []): void {
+        global $pagenow;
+
         if (empty($page_slug) || empty($settings_array)) {
             return;
         }
@@ -91,6 +93,14 @@ class Pomatio_Framework_Settings {
         $current_subsection = self::get_current_subsection($settings_array);
 
         ?>
+
+        <div class="pomatio-framework-settings-nav-heading"><?php // TODO: add class .is-scrolled with js when it is scrolled. ?>
+
+            <h1><?= $settings_array[$current_tab]['tab'][$current_subsection]['title'] ?? '' ?></h1>
+
+        </div>
+
+        <div class="clear pomatio-framework-settings-nav-clear"></div>
 
         <nav class="nav-tab-wrapper">
             <?php
@@ -113,7 +123,7 @@ class Pomatio_Framework_Settings {
 
                 ?>
 
-                <a class="nav-tab<?= $active ?>" href="<?= admin_url("options-general.php?page=$page_slug&section=$tab_key") ?>">
+                <a class="nav-tab<?= $active ?>" href="<?= admin_url($pagenow ."?page=$page_slug&section=$tab_key") ?>">
                     <?= $tab_data['title'] ?>
                 </a>
 
@@ -125,7 +135,7 @@ class Pomatio_Framework_Settings {
 
         <?php
 
-        if (!$this->is_allowed_role($settings_array)) {
+        if (!self::is_allowed_role($settings_array)) {
             return;
         }
 
@@ -137,7 +147,7 @@ class Pomatio_Framework_Settings {
                 <?php
 
                 foreach ($tabs as $subsection_key => $subsection_data) {
-                    $tab_url = get_admin_url() . "options-general.php?page=$page_slug&section=$current_tab&tab=$subsection_key";
+                    $tab_url = get_admin_url() . $pagenow ."?page=$page_slug&section=$current_tab&tab=$subsection_key";
                     $current_class = $current_subsection === $subsection_key ? ' class="current"' : '';
                     $next = next($tabs) ? ' | ' : '';
 
@@ -160,7 +170,7 @@ class Pomatio_Framework_Settings {
         }
         ?>
 
-        <br class="clear">
+
 
         <?php
     }
@@ -177,11 +187,11 @@ class Pomatio_Framework_Settings {
 
         $action_url = admin_url("options-general.php?page=$page_slug&section=$current_tab&tab=$current_subsection");
 
-        ?>
 
-        <h1><?= $settings_array[$current_tab]['tab'][$current_subsection]['title'] ?? '' ?></h1>
 
-        <?php
+
+
+
 
         $description = $settings_array[$current_tab]['tab'][$current_subsection]['description'] ?? '';
 
@@ -202,6 +212,23 @@ class Pomatio_Framework_Settings {
             $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
 
             foreach ($settings as $setting_key => $setting) {
+
+                $wrapper_is_div = false;
+                if(!empty($setting['wrapper']) && $setting['wrapper'] === 'div') {
+                    $wrapper_is_div = true;
+                }
+
+                if ($wrapper_is_div) { ?>
+                    <div class="pomatio-framework-setting">
+                <?php }
+
+                if (!empty($setting['img'])) {
+                    ?>
+
+                    <img src="<?= $setting['img'] ?>"/>
+
+                    <?php
+                }
                 ?>
 
                 <h2 class="title"><?= $setting['title'] ?? '' ?></h2>
@@ -212,38 +239,62 @@ class Pomatio_Framework_Settings {
                     echo "<p>{$setting['description']}</p>";
                 }
 
-                ?>
+                
+                if (!$wrapper_is_div) { ?>
+                    <table class="form-table">
+                    <tbody>
 
-                <table class="form-table">
-                <tbody>
-
-                <?php
+                <?php }
 
                 if (isset($setting['requires_initialization']) && $setting['requires_initialization'] === true) {
-                    ?>
-
-                    <tr>
+                    
+                    if (!$wrapper_is_div) { ?>
+                        <tr>
                         <th scope="row">
+                    <?php } ?>
+
+                    
+                            <label class="main-label" for="<?= "$setting_key-enabled" ?>">
+                                <?php
+
+                                if (!empty($setting['heading_checkbox'])) {
+                                    echo $setting['heading_checkbox'];
+                                } else {
+                                    _e('Enable', 'pomatio-framework');
+                                }
+
+                                ?>
+                            </label><br>
+                    <?php if (!$wrapper_is_div) { ?>
+                        </th>
+                        <td>
+                    <?php } ?>
+                        
+                            <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
+                            <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
                             <label for="<?= "$setting_key-enabled" ?>">
                                 <?php
 
-                                if (!empty($setting['img'])) {
+                                if (!empty($setting['label_checkbox'])) {
                                     ?>
 
-                                    <img src="<?= $setting['img'] ?>"/>
+                                    <?= $setting['label_checkbox'] ?>
 
                                     <?php
+                                } else {
+                                    _e('Check to enable this setting.', 'pomatio-framework');
                                 }
 
-                                _e('Enable', 'pomatio-framework');
+
 
                                 ?>
+                                    
                             </label>
-                        </th>
-                        <td>
-                            <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
-                            <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
-                            <label for="<?= "$setting_key-enabled" ?>"><?php _e('Check to enable this setting.', 'pomatio-framework') ?></label>
+
+
+
+
+
 
                             <?php
 
@@ -256,12 +307,22 @@ class Pomatio_Framework_Settings {
                             }
 
                             ?>
-
+                <?php if (!$wrapper_is_div) { ?>
+                        
                         </td>
-                    </tr>
+                        </tr>
+
+                    </tbody>
+                    </table>
+                <?php } ?>
+
 
                     <?php
                 }
+
+                if ($wrapper_is_div) { ?>
+                    </div>
+                <?php } 
 
                 if (
                     (isset($setting['requires_initialization']) && $setting['requires_initialization'] !== true) ||
@@ -276,12 +337,23 @@ class Pomatio_Framework_Settings {
 
                     if (empty($settings_dir)) {
                         $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
-                    }
+                    } 
 
                     $fields = self::read_fields($settings_dir, $setting_key);
 
+                    if(count($fields) > 0) { ?>
+
+                    <table class="form-table">
+                    <tbody>
+                    <?php
+
+                    }
+
+
+
                     foreach ($fields as $field) {
                         if ($field['type'] === 'Separator') {
+
                             ?>
 
                             </tbody>
@@ -339,16 +411,27 @@ class Pomatio_Framework_Settings {
 
                         <?php
                     }
+
+                    if(count($fields) > 0) { ?>
+
+                    </table>
+                    </tbody>
+                    <?php
+
+                    }
                 }
 
-                ?>
+                 ?>
 
-                </tbody>
-                </table>
+                
 
-                <hr>
 
-                <?php
+                <?php if (!$wrapper_is_div) { ?>
+
+                    <hr>
+
+                <?php }
+
             }
 
             ?>
@@ -361,7 +444,7 @@ class Pomatio_Framework_Settings {
         <?php
     }
 
-    private function is_allowed_role($settings_array): bool {
+    public static function is_allowed_role($settings_array): bool {
         $current_tab = self::get_current_tab($settings_array);
         $current_user_role = Pomatio_Framework_Helper::get_current_user_role();
         $allowed_roles = $settings_array[$current_tab]['allowed_roles'] ?? [];

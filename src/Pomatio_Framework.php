@@ -9,6 +9,7 @@ define('POM_FORM_SRC_PATH', __DIR__);
 define('POM_FORM_SRC_URI', str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath(POM_FORM_SRC_PATH)));
 
 class Pomatio_Framework {
+    private static $settings_page_hooks = [];
 
     public function __construct() {
         require_once 'class-sanitize.php';
@@ -32,8 +33,14 @@ class Pomatio_Framework {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
+    public static function register_settings_page(string $hook_suffix): void {
+        if (!in_array($hook_suffix, self::$settings_page_hooks, true)) {
+            self::$settings_page_hooks[] = $hook_suffix;
+        }
+    }
+
     public function enqueue_scripts($hook): void {
-        if ($hook === 'settings_page_pom-theme-options') {
+        if (in_array($hook, self::$settings_page_hooks, true)) {
             wp_enqueue_style('pomatio-framework-settings', POM_FORM_SRC_URI . '/dist/css/admin.min.css');
         }
     }
