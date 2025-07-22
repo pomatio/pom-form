@@ -68,12 +68,6 @@ body.folded .pomatio-framework-settings-nav-heading {
   width: calc(100% - #{$admin-menu-width-folded});
 }
 
-.pomatio-framework-settings-nav-clear {
-  padding-top: $header-height;
-
-  
-}
-
 .nav-tab-wrapper {
   display: flex;
   flex-wrap: wrap;
