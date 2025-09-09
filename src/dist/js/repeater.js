@@ -16,7 +16,9 @@ jQuery(function($) {
         let allConditionsMet = true;
 
         for (let condition of group) {
-          const $dependentField = $repeaterWrapper.find(`[name="${condition.field}"]`);
+          let fieldName = condition.field;
+          fieldName = fieldName.replace('field_', '');
+          const $dependentField = $repeaterWrapper.find(`[name="${fieldName}"]`);
           const fieldValue = $dependentField.val();
 
           // If any condition fails, mark as false
