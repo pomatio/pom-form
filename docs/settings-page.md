@@ -108,10 +108,40 @@ foreach ($enabled_settings as $tweak => $status) {
 
 ## Retrieving saved values
 
-Anywhere in your plugin you can access saved settings via `Pomatio_Framework_Settings::get_setting_value()`.【F:src/Pomatio_Framework_Settings.php†L46-L59】 This method automatically re-sanitizes the value if you provide the field type.
+When a settings form is submitted the save handler loops over the payload, infers the field type from the settings definition, and calls the corresponding `sanitize_pom_form_{type}` helper before the data touches disk.【F:src/Pomatio_Framework_Save.php†L32-L80】 That means a URL field always runs through `sanitize_pom_form_url()`, a number field strips non-numeric characters with `sanitize_pom_form_number()`, and a checkbox collapses to either `yes` or `no` regardless of what the browser sends.【F:src/class-sanitize.php†L37-L229】【F:src/class-sanitize.php†L343-L397】
+
+Consider this fragment from a `fields.php` file:
 
 ```php
-$value = Pomatio_Framework_Settings::get_setting_value('dummy-slug', 'general', 'feature-toggle', 'checkbox');
+'settings' => [
+    'webhook-url' => [
+        'type' => 'url',
+    ],
+    'retry-count' => [
+        'type' => 'number',
+    ],
+    'send-digest' => [
+        'type' => 'checkbox',
+    ],
+],
 ```
+
+If the admin submits `https://example.com/hooks  ` for the URL, `3 retries` for the number, and anything other than `yes` for the checkbox, the stored PHP array becomes:
+
+```php
+[
+    'webhook-url' => 'https://example.com/hooks',
+    'retry-count' => '3',
+    'send-digest' => 'no',
+]
+```
+
+Anywhere in your plugin you can access the saved settings via `Pomatio_Framework_Settings::get_setting_value()`.【F:src/Pomatio_Framework_Settings.php†L46-L59】 Pass the same type that the field used (`url`, `number`, `checkbox`, etc.) to re-sanitise the stored value at read time.
+
+```php
+$webhook = Pomatio_Framework_Settings::get_setting_value('dummy-slug', 'general', 'webhook-url', 'url');
+```
+
+By mirroring the input type you ensure the runtime value has been filtered by the same logic that protects the form submission, guarding against manual edits or tampering in `wp-content/settings/`.
 
 Use these helpers to build fully-featured admin experiences backed by Pomatio Framework.
