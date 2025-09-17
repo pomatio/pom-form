@@ -31,6 +31,7 @@ class Pomatio_Framework_Save {
         foreach ($settings_dirs as $dir) {
             $data = [];
             $translatables = [];
+            $setting_definition = $current_settings[$dir] ?? [];
 
             foreach ($_POST as $name => $value) {
                 if (strpos($name, "{$dir}_") === 0) {
@@ -132,6 +133,10 @@ class Pomatio_Framework_Save {
             }
 
             Pomatio_Framework_Translations::register($translatables, $page_slug);
+
+            if (isset($setting_definition['requires_initialization']) && $setting_definition['requires_initialization'] === false) {
+                $data['enabled'] = 'yes';
+            }
 
             (new self)->save_settings_files($page_slug, $dir, $data);
 
