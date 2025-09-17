@@ -232,6 +232,54 @@ public function pom_ai_render_tabs(): void {
 }
 ```
 
+### How input sanitization works
+
+Every time the settings form is submitted the framework looks up the field definitions, detects the field type, and calls the matching `sanitize_pom_form_{type}` helper before writing the value to disk.【F:src/Pomatio_Framework_Save.php†L32-L80】 This guarantees that each control is cleaned according to its semantics – URLs are normalised, numbers lose stray characters, and checkboxes collapse to `yes`/`no` flags.【F:src/class-sanitize.php†L37-L229】【F:src/class-sanitize.php†L343-L397】
+
+For example, imagine the “Requests” tab contains these fields:
+
+```php
+'settings' => [
+    'company-url' => [
+        'type' => 'url',
+    ],
+    'request-limit' => [
+        'type' => 'number',
+    ],
+    'notify-team' => [
+        'type' => 'checkbox',
+    ],
+],
+```
+
+If the administrator submits the form with:
+
+```php
+$_POST = [
+    'requests_company-url' => ' https://example.com/docs ',
+    'requests_request-limit' => '25 tickets',
+    'requests_notify-team' => 'maybe',
+];
+```
+
+`Pomatio_Framework_Save::save_settings()` strips the prefix, determines the input types, and persists the following array:
+
+```php
+[
+    'company-url'   => 'https://example.com/docs', // sanitize_pom_form_url()
+    'request-limit' => '25',                       // sanitize_pom_form_number()
+    'notify-team'   => 'no',                       // sanitize_pom_form_checkbox()
+]
+```
+
+When you read the value later you can (and should) pass the same field type to `Pomatio_Framework_Settings::get_setting_value()` so the raw file contents are re-sanitized before you use them.【F:src/Pomatio_Framework_Settings.php†L46-L58】
+
+```php
+$limit = Pomatio_Framework_Settings::get_setting_value('pom-ai', 'requests', 'request-limit', 'number');
+```
+
+Because the helper reuses the same sanitizers, the value you receive matches what the framework would save if the admin resubmitted the form, which prevents stale or tampered data from leaking into your business logic.【F:src/class-sanitize.php†L197-L229】【F:src/class-sanitize.php†L343-L397】
+
 ### 7. Read saved values anywhere in your code
 
 Once the form is rendered, you can retrieve values using `Pomatio_Framework_Settings::get_setting_value()`.  Pass the framework slug, the tab identifier, the field key and the field type.
