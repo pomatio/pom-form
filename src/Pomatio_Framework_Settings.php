@@ -58,10 +58,70 @@ class Pomatio_Framework_Settings {
         return $value;
     }
 
-    public static function is_setting_enabled($setting_name, $page_slug): bool {
-        $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+    public static function is_setting_enabled($setting_name, $page_slug, array $settings_array = []): bool {
+        if (!empty($settings_array)) {
+            $enabled_settings = self::get_effective_enabled_settings($page_slug, $settings_array);
+        }
+        else {
+            $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        }
 
         return isset($enabled_settings[$setting_name]) && $enabled_settings[$setting_name] === '1';
+    }
+
+    public static function get_effective_enabled_settings(string $page_slug, array $settings_array): array {
+        Pomatio_Framework_Disk::create_settings_dir($page_slug);
+
+        $enabled_settings = (array)Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        $definitions = self::flatten_settings_definitions($settings_array);
+        $needs_write = false;
+
+        foreach ($definitions as $setting_key => $setting_definition) {
+            if (isset($setting_definition['requires_initialization']) && $setting_definition['requires_initialization'] === false) {
+                if (!isset($enabled_settings[$setting_key]) || $enabled_settings[$setting_key] !== '1') {
+                    $enabled_settings[$setting_key] = '1';
+                    $needs_write = true;
+                }
+            }
+        }
+
+        if ($needs_write) {
+            ksort($enabled_settings);
+
+            $disk = new Pomatio_Framework_Disk();
+            $settings_path = $disk->get_settings_path($page_slug);
+            $settings_content = $disk->generate_file_content($enabled_settings, 'Enabled settings array file.');
+
+            file_put_contents($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
+
+            if (function_exists('opcache_invalidate')) {
+                opcache_invalidate($settings_path . 'enabled_settings.php', true);
+            }
+        }
+
+        return $enabled_settings;
+    }
+
+    private static function flatten_settings_definitions(array $settings_array): array {
+        $settings = [];
+
+        foreach ($settings_array as $tab_key => $tab_definition) {
+            if ($tab_key === 'config' || !isset($tab_definition['tab']) || !is_array($tab_definition['tab'])) {
+                continue;
+            }
+
+            foreach ($tab_definition['tab'] as $subsection_definition) {
+                if (!isset($subsection_definition['settings']) || !is_array($subsection_definition['settings'])) {
+                    continue;
+                }
+
+                foreach ($subsection_definition['settings'] as $setting_key => $setting_definition) {
+                    $settings[$setting_key] = $setting_definition;
+                }
+            }
+        }
+
+        return $settings;
     }
 
     public static function render($page_slug, $settings_file_path): void {
@@ -207,7 +267,7 @@ class Pomatio_Framework_Settings {
             wp_nonce_field('pom_framework_save_settings', 'pom_framework_security_check');
 
             $settings = Pomatio_Framework_Helper::get_settings($settings_array, $current_tab, $current_subsection);
-            $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+            $enabled_settings = self::get_effective_enabled_settings($page_slug, $settings_array);
 
             foreach ($settings as $setting_key => $setting) {
 
@@ -237,21 +297,18 @@ class Pomatio_Framework_Settings {
                     echo "<p>{$setting['description']}</p>";
                 }
 
-                
-                if (!$wrapper_is_div) { ?>
-                    <table class="form-table">
-                    <tbody>
+                $requires_initialization = isset($setting['requires_initialization']) && $setting['requires_initialization'] === true;
 
-                <?php }
+                if ($requires_initialization) {
 
-                if (isset($setting['requires_initialization']) && $setting['requires_initialization'] === true) {
-                    
                     if (!$wrapper_is_div) { ?>
+                        <table class="form-table">
+                        <tbody>
                         <tr>
                         <th scope="row">
                     <?php } ?>
 
-                    
+
                             <label class="main-label" for="<?= "$setting_key-enabled" ?>">
                                 <?php
 
@@ -267,7 +324,7 @@ class Pomatio_Framework_Settings {
                         </th>
                         <td>
                     <?php } ?>
-                        
+
                             <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
                             <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
                             <label for="<?= "$setting_key-enabled" ?>">
@@ -286,9 +343,8 @@ class Pomatio_Framework_Settings {
 
 
                                 ?>
-                                    
-                            </label>
 
+                            </label>
 
 
 
@@ -306,7 +362,7 @@ class Pomatio_Framework_Settings {
 
                             ?>
                 <?php if (!$wrapper_is_div) { ?>
-                        
+
                         </td>
                         </tr>
 
@@ -317,13 +373,57 @@ class Pomatio_Framework_Settings {
 
                     <?php
                 }
+                else {
+                    ?>
+                    <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="yes">
+                    <?php
+
+                    $has_checkbox_copy = !empty($setting['heading_checkbox']) || !empty($setting['label_checkbox']) || !empty($setting['description_checkbox']);
+
+                    if ($has_checkbox_copy) {
+                        if (!$wrapper_is_div) { ?>
+                            <table class="form-table">
+                            <tbody>
+                            <tr>
+                            <th scope="row">
+                        <?php } ?>
+
+                        <span class="main-label">
+                            <?= !empty($setting['heading_checkbox']) ? $setting['heading_checkbox'] : __('Enable', 'pomatio-framework') ?>
+                        </span><br>
+                        <?php
+
+                        if (!$wrapper_is_div) { ?>
+                            </th>
+                            <td>
+                        <?php } ?>
+
+                        <div class="pomatio-framework-setting__auto-enabled-text">
+                            <?= !empty($setting['label_checkbox']) ? $setting['label_checkbox'] : __('Check to enable this setting.', 'pomatio-framework') ?>
+                        </div>
+                        <?php
+
+                        if (!empty($setting['description_checkbox'])) {
+                            ?>
+                            <p class="description"><?= $setting['description_checkbox'] ?></p>
+                            <?php
+                        }
+
+                        if (!$wrapper_is_div) { ?>
+                            </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                        <?php }
+                    }
+                }
 
                 if ($wrapper_is_div) { ?>
                     </div>
-                <?php } 
+                <?php }
 
                 if (
-                    (isset($setting['requires_initialization']) && $setting['requires_initialization'] !== true) ||
+                    (!$requires_initialization) ||
                     (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
                 ) {
                     $settings_dir = (
