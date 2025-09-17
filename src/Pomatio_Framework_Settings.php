@@ -44,8 +44,28 @@ class Pomatio_Framework_Settings {
     }
 
     public static function get_setting_value($page_slug, $setting_name, $field_name, $type = '') {
-        $values = Pomatio_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
-        $value = is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
+        $metadata = Pomatio_Framework_Disk::read_file('fields_save_as.php', $page_slug, 'array');
+        $value = '';
+        $value_loaded = false;
+
+        if (is_array($metadata) && isset($metadata[$setting_name][$field_name])) {
+            $field_metadata = $metadata[$setting_name][$field_name];
+            $default_value = array_key_exists('default', $field_metadata) ? $field_metadata['default'] : '';
+
+            if (($field_metadata['target'] ?? '') === 'theme_mod') {
+                $value = get_theme_mod($field_name, $default_value);
+                $value_loaded = true;
+            }
+            elseif (($field_metadata['target'] ?? '') === 'option') {
+                $value = get_option($field_name, $default_value);
+                $value_loaded = true;
+            }
+        }
+
+        if (!$value_loaded) {
+            $values = Pomatio_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
+            $value = is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
+        }
 
         if (!empty($type)) {
             $sanitize_function_name = "sanitize_pom_form_$type";
@@ -184,6 +204,9 @@ class Pomatio_Framework_Settings {
         }
 
         $action_url = admin_url("options-general.php?page=$page_slug&section=$current_tab&tab=$current_subsection");
+
+        $fields_save_metadata = Pomatio_Framework_Disk::read_file('fields_save_as.php', $page_slug, 'array');
+        $fields_save_metadata = is_array($fields_save_metadata) ? $fields_save_metadata : [];
 
 
 
@@ -384,15 +407,21 @@ class Pomatio_Framework_Settings {
                                 $description = $field['description'] ?? '';
                                 unset($field['label'], $field['description']);
 
-                                $value = self::get_setting_value($page_slug, $setting_key, $field['name']);
-                                $field['name'] = $setting_key . '_' . $field['name'];
+                                $field_name = $field['name'];
+                                $value = self::get_setting_value($page_slug, $setting_key, $field_name);
+                                $stored_externally = isset($fields_save_metadata[$setting_key][$field_name]);
+                                $field['name'] = $setting_key . '_' . $field_name;
 
                                 if ($field['type'] === 'checkbox' && isset($field['value']) && $field['value'] === true) {
                                     $field['value'] = 'yes';
                                 }
                                 elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
-                                    $value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
                                     $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
+
+                                    if (!$stored_externally) {
+                                        $value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
+                                    }
+
                                     $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
                                 }
                                 else {

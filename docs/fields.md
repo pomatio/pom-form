@@ -25,8 +25,46 @@ The minimum requirement for a field is the `type` (matching a class name in `src
 | `class`, `id` | Custom classes/IDs appended to the generated markup after being sanitised, handy for styling or JavaScript hooks.【F:src/Pomatio_Framework.php†L65-L69】【F:src/Fields/Textarea.php†L31-L36】 |
 | `disabled` | Pass `true` to render a disabled input without losing the value on save—useful for templates or repeater defaults.【F:src/Fields/Text.php†L10-L44】 |
 | `dependency` | Define conditional logic that is serialised into the `data-dependencies` attribute so JavaScript can hide or show the field based on other values.【F:src/Pomatio_Framework_Helper.php†L27-L41】 |
+| `save_as` | Override the default on-disk persistence so a field can store its data as a theme mod or option (with explicit autoload flags).【F:src/Pomatio_Framework_Save.php†L43-L118】【F:src/Pomatio_Framework_Settings.php†L46-L434】 |
 
 Because each field posts back under its `name`, `Pomatio_Framework_Save::save_settings()` can detect the field type, run the corresponding sanitizer from `class-sanitize.php`, and persist a clean value to disk.【F:src/Pomatio_Framework_Save.php†L32-L123】【F:src/class-sanitize.php†L9-L360】
+
+### Alternative storage targets
+
+By default, values are written to `wp-content/settings/pomatio-framework/<site>/<slug>/<setting>.php`. Adding a `save_as` key lets you reroute an individual field to the WordPress theme-mod or option APIs while keeping the rendering logic intact.【F:src/Pomatio_Framework_Save.php†L43-L118】 Supported directives are:
+
+| `save_as` value | Storage target |
+|-----------------|----------------|
+| _(unset)_ | Persist to the generated PHP files (legacy behaviour). |
+| `theme_mod` | Use `set_theme_mod( $field_name, $value )`. |
+| `option_autoload_yes` | Use `update_option( $field_name, $value, 'yes' )`. |
+| `option_autoload_no` | Use `update_option( $field_name, $value, 'no' )`. |
+| `option_autoload_auto` | Use `update_option( $field_name, $value, 'auto' )`. |
+
+The save handler normalises the directive, sanitizes the submitted payload with the same per-field callbacks, and either writes the disk file or dispatches the value to the chosen WordPress API.【F:src/Pomatio_Framework_Save.php†L43-L118】【F:src/class-sanitize.php†L9-L360】 For code editors the framework still strips slashes and only writes to disk when the field sticks with file storage, ensuring you are not left with stale files after switching to a theme mod or option.【F:src/Pomatio_Framework_Save.php†L61-L118】
+
+Whenever a field opts into theme mods or options, the framework records a metadata entry containing the field name, target, autoload flag, and declared default inside `fields_save_as.php`. The map lives next to the normal settings files and is regenerated on every save with opcache invalidated automatically, so runtime lookups stay fresh.【F:src/Pomatio_Framework_Save.php†L99-L152】 Removing `save_as` cleans up the metadata and the value is written back to the usual PHP array on the next save.【F:src/Pomatio_Framework_Save.php†L118-L128】
+
+`Pomatio_Framework_Settings::get_setting_value()` consults the metadata map before hitting the filesystem: if a field is mapped to a theme mod or option it fetches the external value (falling back to the stored default when empty) and only then applies the requested sanitizer.【F:src/Pomatio_Framework_Settings.php†L46-L78】 The admin renderer relies on the same getter, so forms are pre-populated from theme mods/options without duplicating logic, and code editors continue to read from disk only when they actually persisted a file.【F:src/Pomatio_Framework_Settings.php†L206-L434】 This means translation registration, repeaters, and other consumers automatically see the up-to-date value regardless of where it lives.
+
+```php
+[
+    'type'    => 'toggle',
+    'name'    => 'hero_cta',
+    'label'   => __('Enable hero CTA', 'demo'),
+    'default' => false,
+    'save_as' => 'option_autoload_yes',
+],
+
+[
+    'type'    => 'image-picker',
+    'name'    => 'header_logo',
+    'label'   => __('Header logo', 'demo'),
+    'save_as' => 'theme_mod',
+],
+```
+
+Both fields continue to use the existing sanitizers; they simply persist and load through WordPress’ option/theme-mod APIs instead of the generated PHP arrays.
 
 ## Dependencies
 

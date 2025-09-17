@@ -6,7 +6,7 @@ Pomatio Framework lets you describe WordPress admin interfaces with plain PHP ar
 
 - **Declarative settings** – Declare tabs, subsections, and fields in PHP arrays and let `Pomatio_Framework_Settings::render()` output the markup and handle form submission.【F:src/Pomatio_Framework_Settings.php†L212-L371】【F:src/Pomatio_Framework_Save.php†L10-L122】
 - **Dozens of reusable fields** – Everything from simple text inputs to repeaters, media pickers, icon pickers, code editors, and background builders are provided as drop-in field types.【F:src/Pomatio_Framework.php†L85-L149】【F:src/Fields/Repeater.php†L15-L209】
-- **Automatic sanitization and persistence** – Each field maps to a sanitizer in `class-sanitize.php`, and the save handler writes enabled settings to the WordPress content directory in a multisite-aware location.【F:src/Pomatio_Framework_Save.php†L19-L123】【F:src/class-sanitize.php†L9-L360】【F:src/Pomatio_Framework_Disk.php†L128-L189】
+- **Automatic sanitization and persistence** – Each field maps to a sanitizer in `class-sanitize.php`, and the save handler writes enabled settings to the WordPress content directory in a multisite-aware location—or, when a field declares `save_as`, routes the clean value through `set_theme_mod()`/`update_option()` and records the metadata so runtime lookups know where to fetch it.【F:src/Pomatio_Framework_Save.php†L19-L152】【F:src/class-sanitize.php†L9-L360】【F:src/Pomatio_Framework_Settings.php†L46-L434】
 - **Conditional logic and nesting** – Any field can declare dependencies and repeaters can contain other repeaters, allowing you to model complex configuration screens without bespoke PHP forms.【F:src/Pomatio_Framework_Helper.php†L27-L41】【F:src/Fields/Repeater.php†L45-L209】
 
 ## Quick start
