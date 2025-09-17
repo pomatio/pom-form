@@ -298,6 +298,66 @@ if (!empty($copyright)) {
 }
 ```
 
+### 7.1 Override the storage target with `save_as`
+
+Every field definition can now opt into an alternative storage backend via an optional `save_as` flag.  When present, the framework sanitises the submitted value and persists it using the corresponding WordPress API instead of writing it into the generated PHP settings file.  The form UI and helper methods continue to work transparently because the framework records the mapping in `fields_save_as.php` and consults it whenever values are read back.【F:src/Pomatio_Framework_Save.php†L24-L151】【F:src/Pomatio_Framework_Settings.php†L8-L105】
+
+Available directives (case-insensitive):
+
+* _Unset / `default`_ – keep the existing behaviour and store the value inside `<setting>.php`.
+* `theme_mod` – call `set_theme_mod()` with the field name as the key.
+* `option_autoload_yes` – call `update_option()` with autoload forced to `'yes'`.
+* `option_autoload_no` – call `update_option()` with autoload forced to `'no'`.
+* `option_autoload_auto` – call `update_option()` and let WordPress decide whether to autoload the option.
+
+The examples below demonstrate the syntax:
+
+```php
+return [
+    [
+        'type'    => 'text',
+        'name'    => 'footer_note',
+        'label'   => __('Footer note', 'demo'),
+        // save_as omitted => stored inside the generated PHP file
+    ],
+    [
+        'type'    => 'image-picker',
+        'name'    => 'header_logo',
+        'label'   => __('Header logo', 'demo'),
+        'default' => '',
+        'save_as' => 'theme_mod',
+    ],
+    [
+        'type'    => 'toggle',
+        'name'    => 'feature_flag',
+        'label'   => __('Enable feature', 'demo'),
+        'default' => false,
+        'save_as' => 'option_autoload_yes',
+    ],
+    [
+        'type'    => 'textarea',
+        'name'    => 'legal_blurb',
+        'label'   => __('Legal blurb', 'demo'),
+        'default' => '',
+        'save_as' => 'option_autoload_no',
+    ],
+    [
+        'type'    => 'text',
+        'name'    => 'utm_source',
+        'label'   => __('UTM source override', 'demo'),
+        'save_as' => 'option_autoload_auto',
+    ],
+];
+```
+
+When the admin saves the form:
+
+* The `header_logo` is stored in the theme modifications table so themes can call `get_theme_mod('header_logo')` immediately.
+* `feature_flag`, `legal_blurb`, and `utm_source` are saved as options with different autoload policies.
+* `footer_note` still lands in the generated PHP file because it sticks with the default path.
+
+You do not need to change your retrieval code—`Pomatio_Framework_Settings::get_setting_value()` checks the metadata first and fetches the value from the appropriate API before applying the usual sanitizers.【F:src/Pomatio_Framework_Settings.php†L8-L105】 The admin renderer, repeaters, and translation helpers reuse the same lookup so any field configured with `save_as` is pre-populated correctly across the UI.【F:src/Pomatio_Framework_Settings.php†L487-L547】【F:src/Pomatio_Framework_Translations.php†L20-L67】
+
 ### 8. Optional: enqueue assets and AJAX endpoints
 
 You are free to add the scripts, styles and AJAX callbacks your plugin needs.  The example class above enqueues a dashboard panel, fetches API credits via `wp_ajax_pom_ai_get_credits`, and displays a welcome banner on the WordPress dashboard.  Those helpers are standard WordPress code and live alongside the framework integration.
