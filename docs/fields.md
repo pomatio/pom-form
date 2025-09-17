@@ -25,8 +25,65 @@ The minimum requirement for a field is the `type` (matching a class name in `src
 | `class`, `id` | Custom classes/IDs appended to the generated markup after being sanitised, handy for styling or JavaScript hooks.【F:src/Pomatio_Framework.php†L65-L69】【F:src/Fields/Textarea.php†L31-L36】 |
 | `disabled` | Pass `true` to render a disabled input without losing the value on save—useful for templates or repeater defaults.【F:src/Fields/Text.php†L10-L44】 |
 | `dependency` | Define conditional logic that is serialised into the `data-dependencies` attribute so JavaScript can hide or show the field based on other values.【F:src/Pomatio_Framework_Helper.php†L27-L41】 |
+| `save_as` | Optional string that re-routes persistence to a theme mod or WordPress option.  See “External storage with `save_as`” below for the supported values.【F:src/Pomatio_Framework_Save.php†L24-L151】 |
 
 Because each field posts back under its `name`, `Pomatio_Framework_Save::save_settings()` can detect the field type, run the corresponding sanitizer from `class-sanitize.php`, and persist a clean value to disk.【F:src/Pomatio_Framework_Save.php†L32-L123】【F:src/class-sanitize.php†L9-L360】
+
+## External storage with `save_as`
+
+The framework now lets you decide where individual fields are stored.  Setting `save_as` on a field instructs the saver to sanitise the payload and forward it to either the theme-mod API or the options table instead of appending it to the generated `<setting>.php` file.  The saver records the routing in `fields_save_as.php` so the renderer, sanitizers, and translation helpers can look up the correct source later.【F:src/Pomatio_Framework_Save.php†L24-L180】【F:src/Pomatio_Framework_Settings.php†L8-L105】【F:src/Pomatio_Framework_Translations.php†L20-L67】
+
+Supported directives (case-insensitive):
+
+| `save_as` value | Storage target |
+|-----------------|----------------|
+| _Omitted / `default`_ | Keeps the standard behaviour and stores values in the PHP array file. |
+| `theme_mod` | Uses `set_theme_mod()` / `get_theme_mod()` with the field name as the key. |
+| `option_autoload_yes` | Calls `update_option()` with autoload forced to `'yes'`. |
+| `option_autoload_no` | Calls `update_option()` with autoload forced to `'no'`. |
+| `option_autoload_auto` | Calls `update_option()` without the autoload flag so WordPress chooses the appropriate behaviour. |
+
+Examples:
+
+```php
+return [
+    [
+        'type'    => 'text',
+        'name'    => 'footer_note',
+        'label'   => __('Footer note', 'demo'),
+        // Stored in <setting>.php because save_as is omitted.
+    ],
+    [
+        'type'    => 'Image_Picker',
+        'name'    => 'header_logo',
+        'label'   => __('Header logo', 'demo'),
+        'default' => '',
+        'save_as' => 'theme_mod',
+    ],
+    [
+        'type'    => 'Toggle',
+        'name'    => 'feature_flag',
+        'label'   => __('Enable feature', 'demo'),
+        'default' => false,
+        'save_as' => 'option_autoload_yes',
+    ],
+    [
+        'type'    => 'Textarea',
+        'name'    => 'legal_blurb',
+        'label'   => __('Legal blurb', 'demo'),
+        'default' => '',
+        'save_as' => 'option_autoload_no',
+    ],
+    [
+        'type'    => 'Text',
+        'name'    => 'utm_source',
+        'label'   => __('UTM source override', 'demo'),
+        'save_as' => 'option_autoload_auto',
+    ],
+];
+```
+
+When the administrator saves the page the framework writes the alternative targets, updates `fields_save_as.php`, and invalidates opcache so subsequent requests pick up the change immediately.【F:src/Pomatio_Framework_Save.php†L135-L173】  `Pomatio_Framework_Settings::get_setting_value()` consults that metadata before it sanitises the value, meaning your front-end code can continue to call the helper without caring whether the value lives in a PHP array, a theme mod, or an option.  The settings renderer and the translation registrar reuse the same lookup, so fields remain pre-populated in the admin UI and Polylang registrations stay in sync regardless of the storage strategy.【F:src/Pomatio_Framework_Settings.php†L8-L105】【F:src/Pomatio_Framework_Settings.php†L487-L547】【F:src/Pomatio_Framework_Translations.php†L20-L67】
 
 ## Dependencies
 
