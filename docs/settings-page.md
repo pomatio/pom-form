@@ -88,12 +88,13 @@ This pattern lets you invalidate caches, rebuild derived data, or synchronize ex
 
 ## Loading tweak definitions
 
-If you use tweak folders or other modular features, read the `enabled_settings.php` file provided by the Pomatio storage directory and include the corresponding PHP files inside your admin class constructor.【F:src/Pomatio_Framework_Disk.php†L128-L189】
+If you use tweak folders or other modular features, call `Pomatio_Framework_Settings::get_effective_enabled_settings()` inside your admin class constructor. The helper loads `enabled_settings.php`, marks any `requires_initialization => false` tweaks as active, and persists the merged result so bootstrapping code sees the default modules immediately.【F:src/Pomatio_Framework_Settings.php†L66-L205】
 
 ```php
-use PomatioFramework\Pomatio_Framework_Disk;
+use PomatioFramework\Pomatio_Framework_Settings;
 
-$enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', 'dummy-slug', 'array');
+$settings_definition = require plugin_dir_path(__FILE__) . 'settings.php';
+$enabled_settings = Pomatio_Framework_Settings::get_effective_enabled_settings('dummy-slug', $settings_definition);
 
 foreach ($enabled_settings as $tweak => $status) {
     if ($status === '1') {

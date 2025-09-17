@@ -79,7 +79,8 @@ class POM_AI_Admin_Settings {
         add_action('admin_menu', [$this, 'options_menu']);
         add_action('in_admin_header', [$this, 'pom_ai_render_tabs']);
 
-        $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', 'pom-ai', 'array');
+        $settings_definition = require POM_AI_PLUGIN_PATH . 'admin/settings.php';
+        $enabled_settings = Pomatio_Framework_Settings::get_effective_enabled_settings('pom-ai', $settings_definition);
 
         foreach ($enabled_settings as $tweak => $status) {
             if ($status === '1') {
@@ -96,7 +97,7 @@ class POM_AI_Admin_Settings {
 }
 ```
 
-`Pomatio_Framework_Disk::read_file()` automatically resolves the correct storage directory for the current site and returns the contents of `enabled_settings.php` as an array, allowing you to enable or disable tweak folders without touching PHP code.
+`Pomatio_Framework_Settings::get_effective_enabled_settings()` resolves the correct storage directory, merges the stored flags with any tweaks marked `requires_initialization => false`, and returns the up-to-date `enabled_settings.php` array so you can bootstrap modules without touching PHP code.
 
 ### 3. Register the settings page with WordPress **and** the framework
 
@@ -151,7 +152,7 @@ $pom_ai_settings['ai_base_config'] = [
     ]
 ];
 
-$enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', 'pom-ai', 'array');
+$enabled_settings = Pomatio_Framework_Settings::get_effective_enabled_settings('pom-ai', $pom_ai_settings);
 
 if (!empty($enabled_settings['ai-base-setup'])) {
     $pom_ai_settings['pom_ai_api_keys'] = [

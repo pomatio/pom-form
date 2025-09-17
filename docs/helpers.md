@@ -19,7 +19,7 @@ Pomatio Framework exposes several helper classes so you can inspect configuratio
 ## `Pomatio_Framework_Settings`
 
 * **Navigation helpers** – `get_current_tab()` and `get_current_subsection()` inspect the current request (or default to the first entries) so you can render context-aware navigation or run callbacks only on the active screen.【F:src/Pomatio_Framework_Settings.php†L10-L34】
-* **Field metadata** – `read_fields()` loads the `fields.php` definition for a given setting, and `is_setting_enabled()` checks `enabled_settings.php` to see whether a tweak is turned on.【F:src/Pomatio_Framework_Settings.php†L36-L65】
+* **Field metadata** – `read_fields()` loads the `fields.php` definition for a given setting, `get_effective_enabled_settings()` merges stored flags with auto-enabled tweaks, and `is_setting_enabled()` can use that data to determine whether a tweak is active.【F:src/Pomatio_Framework_Settings.php†L36-L205】
 * **Value retrieval** – `get_setting_value()` reads the saved PHP file and optionally re-sanitizes the value using the field type, which is perfect for use in templates or business logic.【F:src/Pomatio_Framework_Settings.php†L46-L59】
 
 Leverage these helpers together with the automatic save routine to keep your own code focused on business logic rather than boilerplate persistence.【F:src/Pomatio_Framework_Save.php†L10-L122】
