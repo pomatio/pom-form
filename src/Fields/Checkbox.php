@@ -43,12 +43,16 @@ class Checkbox {
                 }
             }
 
+            $checkbox_label = $args['label_checkbox'] ?? $args['label'] ?? '';
+
             ?>
 
             <div class="form-group">
                 <input type="hidden" name="<?= $args['name'] ?>" value="no" disabled data-type="checkbox">
                 <input<?= $disabled ?> type="checkbox" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="yes" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="checkbox">
-                <label class="form-check-label" for="<?= $args['id'] ?>"><?= $args['label'] ?></label>
+                <?php if (!empty($checkbox_label)) { ?>
+                    <label class="form-check-label" for="<?= $args['id'] ?>"><?= $checkbox_label ?></label>
+                <?php } ?>
             </div>
 
             <?php
