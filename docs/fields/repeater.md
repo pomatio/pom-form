@@ -1,3 +1,0 @@
-# Repeater
-
-Repeaters let you define lists of nested field groups that can be cloned, sorted, limited, or seeded with defaults, all while respecting per-field dependencies and nested repeaters.【F:src/Fields/Repeater.php†L15-L209】 Saved values are stored as JSON and cleaned by `sanitize_pom_form_repeater()`, which runs the correct sanitizer for each child field (including writing code-editor content to disk).【F:src/Fields/Repeater.php†L210-L254】【F:src/class-sanitize.php†L264-L316】 See [Working with repeaters](../fields.md#working-with-repeaters) for a full walkthrough and a production-ready example.
