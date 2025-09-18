@@ -24,7 +24,9 @@ class Select {
         $multiple = isset($args['multiple']) && $args['multiple'] === true ? ' multiple' : '';
         $name = isset($args['multiple']) && $args['multiple'] === true ? "{$args['name']}[]" : $args['name'];
 
-        echo '<select id="' . $id . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . '"' . $data_dependencies . ' data-type="select"' . $disabled . $multiple . '>';
+        $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
+
+        echo '<select id="' . $id . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . $used_for_title . '"' . $data_dependencies . ' data-type="select"' . $disabled . $multiple . '>';
 
         foreach ($args['options'] as $select_value => $select_label) {
             // optgroup options

@@ -338,15 +338,43 @@ jQuery(function($) {
   /**
    * Update repeater title live.
    */
-  $(document).on('keyup', '.repeater .use-for-title', function() {
-    let $title_holder = $(this).closest('.repeater').find('.title span').first();
+  let $get_repeater_title_value = function($element) {
+    if ($element.is('select')) {
+      let $selected = $element.find('option:selected');
 
-    if ($(this).val()) {
-      $title_holder.html(' - ' + $(this).val());
+      if ($selected.length > 0) {
+        let $titles = $selected
+          .map(function() {
+            return $(this).text().trim();
+          })
+          .get()
+          .filter(function(text) {
+            return text !== '';
+          });
+
+        return $titles.join(', ');
+      }
+
+      return '';
+    }
+
+    return $element.val();
+  };
+
+  let $update_repeater_title = function($element) {
+    let $title_holder = $element.closest('.repeater').find('.title span').first();
+    let $value = $get_repeater_title_value($element);
+
+    if ($value) {
+      $title_holder.html(' - ' + $value);
     }
     else {
       $title_holder.html('');
     }
+  };
+
+  $(document).on('keyup change', '.repeater .use-for-title', function() {
+    $update_repeater_title($(this));
   });
 
   /**
@@ -354,12 +382,7 @@ jQuery(function($) {
    */
   let $append_to_title = function() {
     $('.repeater-wrapper .use-for-title').each(function(i, v) {
-      let $input_value = $(this).val();
-      let $title_holder = $(this).closest('.repeater').find('.title span').first();
-
-      if ($input_value) {
-        $title_holder.html(' - ' + $input_value);
-      }
+      $update_repeater_title($(this));
     });
   };
   $append_to_title();
