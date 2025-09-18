@@ -2,8 +2,103 @@
 
 Pomatio Framework is a WordPress helper library that lets you describe admin interfaces with declarative PHP arrays, then takes care of rendering, validating, translating, and persisting the resulting settings. Whether you are building a productised plugin or a bespoke theme, the framework saves you from writing repetitive option-page boilerplate while still giving you hooks into every stage of the lifecycle.
 
+The framework allows to save each field in independent settings PHP files, as WP default options, and as theme mods.
+
 ![Placeholder – Framework overview](docs/images/framework-overview-placeholder.png)
 <!-- TODO: Replace with an annotated screenshot of a settings page rendered by Pomatio Framework. -->
+
+## Why `php settings files` Are the Right Place for Theme and Plugin Configuration
+
+In professional WordPress projects —with CI/CD, multiple environments, and many collaborators— theme configuration and plugin settings should be **deterministic, versioned, and auditable**. Storing them in a PHP file provides clear advantages over using `theme_mods` or `options` from the database.
+
+# Performance Justification for Using `php settings files`
+
+Using a php settings file for theme and plugin configuration can **significantly improve performance** compared to storing these values in the database (`options` or `theme_mods`). Here’s why — and how to justify it.
+
+## Why It’s (Usually) Faster
+
+### 1. Zero DB Round-Trips on Cold Start
+- `require_once` is a single filesystem read.
+- `get_option()`/`get_theme_mod()` need database hits unless values are autoloaded *and* the object cache is warm. On cache-cold requests (or after cache evictions), that adds latency.
+
+### 2. OPcache Wins (Compiled PHP vs DB Fetch)
+- PHP files are cached in OPcache as bytecode. After the first request, loading the settings array is almost free.
+- DB values require deserialization (`unserialize` / `json_decode`), type checking, and often multiple queries.
+
+### 3. Smaller Autoload Payload
+- Large configuration stored in `wp_options` with `autoload = yes` inflates the autoload payload loaded on *every* request.
+- Moving config to a PHP file trims that payload and improves TTFB across the board.
+
+### 4. No Scattered Lookups
+- Multiple `get_option()` calls incur overhead (function call + cache key + serialization) for each read.
+- One PHP array gives you O(1) hash lookups in memory.
+
+### 5. More Predictable Cache Behavior
+- Files are cached in both the OS page cache and OPcache.
+- Object cache (Redis/Memcached) can evict keys under memory pressure, causing random regressions. A file + OPcache is more stable under load.
+
+### 6. Cheaper Deploy-Time Invalidation
+- Code deploys naturally invalidate OPcache for the file.
+- No need to flush object caches or wait for TTLs to expire.
+
+---
+
+## Extra advantages
+
+### 1. True Version Control
+- Configuration travels with code: PRs, diffs, reviews, and rollbacks are trivial.
+- Prevents “drift” between environments (dev/staging/production) caused by manual DB edits.
+
+### 2. Reproducible Deployments
+- Each release ships with a known configuration state.
+- Rolling back means simply checking out a previous commit — no database restores needed.
+
+### 3. Performance and Predictability
+- A single PHP array load is faster and more reliable than scattered `get_option()` calls.
+- No fragile serialization, no complex schema migrations across environments.
+
+### 4. Operational Safety
+- Allows **immutable production environments** (read-only filesystem, GitOps workflow).
+
+### 5. Decoupled from Theme Lifecycle
+- `theme_mods` are tied to a specific theme; `php settings files` stays consistent even when switching themes.
+
+### 6. Less Database Bloat
+- Avoids polluting `wp_options` or loading dozens of autoloaded keys.
+- Keeps the DB for **content and state** while code holds the **behavior**.
+
+---
+
+## Common Objections
+
+**“Marketing needs to change colors via UI.”**  
+→ Pomatio Framework is meant for creating cool admin settings UI that **writes to the file**.
+
+**“What about API secrets or passwords?”**  
+→ For sensitive information, you should not store secrets in `php settings files`. That is why Pomatio Framework allows storing fields as WP options or as theme_mods, using the `save_as` flag.
+
+---
+
+## What Belongs in `php settings files` (Examples)
+
+- **Design/base**: color palette, typography, spacing, breakpoints, enabled components.
+- **Frontend behavior**: pagination defaults, date formats, masks, cache rules.
+- **Integrations (non-sensitive)**: container IDs, feature flags, taxonomy slugs, asset paths.
+
+---
+
+## When to **Avoid** Using the File (and Use DB Instead)
+
+- **User preferences** or frequently changing data.
+- **Translatable editorial content** managed by non-technical users.
+- **Ephemeral data** like counters, temporary tokens, or session info.
+
+---
+
+## Conclusion
+
+`wp-content/php settings files` brings theme configuration back to where it belongs: **alongside the code that uses it**.  
+It ensures reproducibility, traceability, and change control, while keeping the database focused on **content and state**.  
 
 ## Table of contents
 
@@ -46,7 +141,7 @@ Pomatio Framework is a WordPress helper library that lets you describe admin int
 
 ## Overview
 
-Pomatio Framework wires together helper, disk, settings, AJAX, save, and translation services as soon as you instantiate the main class. That bootstrap sequence ensures the framework injects scripts and styles only on registered settings pages, keeps sanitizers in sync with field definitions, and exposes helper methods for runtime lookups.【F:src/Pomatio_Framework.php†L11-L149】
+Pomatio Framework wires together helper, disk, settings, AJAX, save, and translation services as soon as you instantiate the main class. That bootstrap sequence ensures the framework injects scripts and styles only on registered settings pages, keeps sanitizers in sync with field definitions, and exposes helper methods for runtime lookups.
 
 ### Key features
 
@@ -119,11 +214,13 @@ wp-content/
         │   └── settings.php
         ├── assets/
         │   ├── css/
-        │   │   └── dashboard.css
         │   └── js/
-        │       └── dashboard.js
         ├── settings/
-        │   └── enabled_settings.php
+        │   ├── module-subdirectory
+        │   │   ├── fields.php -> The settings to be rendered on the admin page for that module configuration.
+        │   │   └── bootstrap.php -> What's actually included / executed when that module is enabled. 
+        │   │           If it is  not present, you can still use the settings in other parts of your theme or plugin.
+        │   └── other-module-subdirectory
         ├── vendor/
         │   └── autoload.php
         └── your-plugin.php (plugin bootstrap file)
@@ -211,7 +308,7 @@ public function register_options_menu(): void {
 
 ### 4. Describe tabs and fields in a settings definition file
 
-The settings definition file returns an associative array grouped by tab. You can hide groups unless a prerequisite tweak is enabled by inspecting the `enabled_settings.php` array.
+The settings definition file returns an associative array grouped by tab.
 
 ```php
 use PomatioFramework\Pomatio_Framework_Settings;
