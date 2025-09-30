@@ -58,7 +58,7 @@ class Pomatio_Framework_Disk {
 
         if (!is_file($htaccess)) {
             $htaccess_content = <<<'HTACCESS'
-# Bloqueo por defecto
+# Default blocking
 <IfModule mod_authz_core.c>
     Require all denied
 </IfModule>
@@ -67,7 +67,7 @@ class Pomatio_Framework_Disk {
     Deny from all
 </IfModule>
 
-# Permitir SOLO CSS/JS (y sourcemaps) y SOLO con GET/HEAD/OPTIONS
+# Allow ONLY CSS/JS (and sourcemaps) y and ONLY with GET/HEAD/OPTIONS
 <FilesMatch "\.(?:css|js|map)$">
     <IfModule mod_authz_core.c>
         Require all granted
@@ -84,17 +84,17 @@ class Pomatio_Framework_Disk {
     </IfModule>
 </FilesMatch>
 
-# Nunca ejecutar nada server-side en este directorio (defensa en profundidad)
+# Never execute server-side on this directory
 Options -Indexes -ExecCGI
 
-# Desactivar PHP / CGI / scripts (forzar texto plano si alguien los alcanza)
+# Deactivate PHP / CGI / scripts (force plaintext if someone hits)
 <FilesMatch "\.(?:php[0-9]?|phtml|phps|shtml|cgi|pl|py|jsp|asp)$">
     ForceType text/plain
     RemoveHandler .php .phtml .phps .shtml .cgi .pl .py .jsp .asp
     RemoveType .php .phtml .phps .shtml .cgi .pl .py .jsp .asp
 </FilesMatch>
 
-# Bloquear dotfiles (.env, .git, etc.)
+# Block dotfiles (.env, .git, etc.)
 <FilesMatch "^\.(.*)$">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -105,7 +105,7 @@ Options -Indexes -ExecCGI
     </IfModule>
 </FilesMatch>
 
-# Endurecer cabeceras para estáticos
+# Harden headers for static files
 <IfModule mod_headers.c>
     <FilesMatch "\.(?:css|js|map)$">
         Header set X-Content-Type-Options "nosniff"
@@ -114,7 +114,7 @@ Options -Indexes -ExecCGI
     </FilesMatch>
 </IfModule>
 
-# (Opcional) Expiraciones para cache
+# Cache expires
 <IfModule mod_expires.c>
     ExpiresActive On
     <FilesMatch "\.(?:css|js|map)$">
