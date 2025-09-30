@@ -57,26 +57,71 @@ class Pomatio_Framework_Disk {
         $htaccess = WP_CONTENT_DIR . "/settings/.htaccess";
 
         if (!is_file($htaccess)) {
-            $htaccess_content = '<IfModule mod_authz_core.c>
+            $htaccess_content = <<<'HTACCESS'
+# Bloqueo por defecto
+<IfModule mod_authz_core.c>
     Require all denied
-    <FilesMatch "\.(?:css|js)$">
-        Require all granted
-    </FilesMatch>
 </IfModule>
-
-<IfModule !mod_authz_core.c>
+<IfModule mod_access_compat.c>
     Order deny,allow
     Deny from all
-    <FilesMatch "\.(?:css|js)$">
+</IfModule>
+
+# Permitir SOLO CSS/JS (y sourcemaps) y SOLO con GET/HEAD/OPTIONS
+<FilesMatch "\.(?:css|js|map)$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+        <LimitExcept GET HEAD OPTIONS>
+            Require all denied
+        </LimitExcept>
+    </IfModule>
+    <IfModule mod_access_compat.c>
         Order allow,deny
         Allow from all
+        <LimitExcept GET HEAD OPTIONS>
+            Deny from all
+        </LimitExcept>
+    </IfModule>
+</FilesMatch>
+
+# Nunca ejecutar nada server-side en este directorio (defensa en profundidad)
+Options -Indexes -ExecCGI
+
+# Desactivar PHP / CGI / scripts (forzar texto plano si alguien los alcanza)
+<FilesMatch "\.(?:php[0-9]?|phtml|phps|shtml|cgi|pl|py|jsp|asp)$">
+    ForceType text/plain
+    RemoveHandler .php .phtml .phps .shtml .cgi .pl .py .jsp .asp
+    RemoveType .php .phtml .phps .shtml .cgi .pl .py .jsp .asp
+</FilesMatch>
+
+# Bloquear dotfiles (.env, .git, etc.)
+<FilesMatch "^\.(.*)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule mod_access_compat.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Endurecer cabeceras para estáticos
+<IfModule mod_headers.c>
+    <FilesMatch "\.(?:css|js|map)$">
+        Header set X-Content-Type-Options "nosniff"
+        Header set Referrer-Policy "strict-origin-when-cross-origin"
+        Header set Cache-Control "public, max-age=2592000, immutable"
     </FilesMatch>
 </IfModule>
 
-<FilesMatch "\.(htaccess|htpasswd|ini|phps?|fla|psd|log|sh|zip|exe|pl|jsp|asp|htm|cgi|py|php|shtml)$">
-    ForceType text/plain
-</FilesMatch>
-';
+# (Opcional) Expiraciones para cache
+<IfModule mod_expires.c>
+    ExpiresActive On
+    <FilesMatch "\.(?:css|js|map)$">
+        ExpiresDefault "access plus 30 days"
+    </FilesMatch>
+</IfModule>
+HTACCESS;
             file_put_contents($htaccess, trim($htaccess_content));
         }
     }
