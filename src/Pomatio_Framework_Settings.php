@@ -174,6 +174,9 @@ class Pomatio_Framework_Settings {
         ?>
 
         <div id="<?= $page_slug ?>-settings-page" class="wrap">
+            
+            <h1></h1> <!-- WP core will move notices here -->
+
             <?php
 
             //(new self)->render_tabs($page_slug, $settings_file_path);
