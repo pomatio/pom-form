@@ -72,6 +72,23 @@ jQuery(function($) {
     });
   });
 
+  let $set_repeater_identifier = function($repeater) {
+    let $identifier_holder = $repeater.find('.title .repeater-identifier');
+
+    if (!$identifier_holder.length) {
+      return;
+    }
+
+    let $identifier = $repeater.find('input[name="repeater_identifier"]').val();
+
+    if ($identifier) {
+      $identifier_holder.html(' - ID: ' + $identifier);
+    }
+    else {
+      $identifier_holder.html('');
+    }
+  };
+
   let $update_repeater = function($wrapper) {
     let $repeater_elements = $wrapper.children('.repeater');
     let $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
@@ -82,6 +99,8 @@ jQuery(function($) {
     for (let $i = 0; $i < $repeater_elements.length; $i++) {
       let $is_default = $repeater_elements[$i].classList.contains('default');
       let $repeater_type = $is_default ? 'default' : 'new';
+
+      $set_repeater_identifier($($repeater_elements[$i]));
 
       let $repeater_fields = $repeater_elements[$i].querySelectorAll('input, select, textarea');
       let $obj = {};
@@ -384,6 +403,10 @@ jQuery(function($) {
     $('.repeater-wrapper .use-for-title').each(function(i, v) {
       $update_repeater_title($(this));
     });
+
+    $('.repeater-wrapper .repeater').each(function() {
+      $set_repeater_identifier($(this));
+    });
   };
   $append_to_title();
   $(document).ajaxComplete(function() {
@@ -467,6 +490,7 @@ jQuery(function($) {
      * Generate repeater new identifier.
      */
     $clone.find('input[name="repeater_identifier"]').val($generate_random_string(10, false));
+    $set_repeater_identifier($clone);
 
     /**
      * If the repeater has code fields replace their id's in order to render Codemirror with unique IDs.
