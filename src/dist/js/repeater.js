@@ -72,6 +72,29 @@ jQuery(function($) {
     });
   });
 
+  $(document).on('click touchstart', '.repeater-identifier', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const identifier = $(this).text().trim();
+
+    if (!identifier) {
+      return;
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(identifier);
+      return;
+    }
+
+    const $tempInput = $('<textarea>');
+    $tempInput.val(identifier);
+    $(this).append($tempInput);
+    $tempInput[0].select();
+    document.execCommand('copy');
+    $tempInput.remove();
+  });
+
   let $set_repeater_identifier = function($repeater) {
     let $identifier_holder = $repeater.find('.title .repeater-identifier');
 
