@@ -64,7 +64,7 @@ class Repeater {
 
                     <div class="repeater default closed">
                         <div class="title">
-                            <strong><?= $args['title'] ?></strong><span></span>
+                            <strong><?= $args['title'] ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $defaults_identifier ?></span>
                         </div>
                         <div class="repeater-fields">
                             <input type="hidden" name="repeater_identifier" value="<?= $defaults_identifier ?>">
@@ -126,10 +126,12 @@ class Repeater {
                         foreach ($repeater_elements as $repeater_item) {
                             ?>
 
+                            <?php $item_identifier = $repeater_item['repeater_identifier'] ?? $repeater_identifier; ?>
+
                             <div class="repeater <?= $repeater_type ?> closed">
-                                <div class="title"><strong><?= $args['title'] ?></strong><span></span></div>
+                                <div class="title"><strong><?= $args['title'] ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $item_identifier ?></span></div>
                                 <div class="repeater-fields">
-                                    <input type="hidden" name="repeater_identifier" value="<?= $repeater_item['repeater_identifier'] ?? $repeater_identifier ?>">
+                                    <input type="hidden" name="repeater_identifier" value="<?= $item_identifier ?>">
 
                                     <?php
 

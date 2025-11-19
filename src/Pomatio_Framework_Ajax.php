@@ -158,10 +158,12 @@ class Pomatio_Framework_Ajax {
 
         ?>
 
+        <?php $repeater_identifier = Pomatio_Framework_Helper::generate_random_string(10, false); ?>
+
         <div class="repeater new">
-            <div class="title"><strong><?= $config['title'] ?></strong><span></span></div>
+            <div class="title"><strong><?= $config['title'] ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $repeater_identifier ?></span></div>
             <div class="repeater-fields">
-                <input type="hidden" name="repeater_identifier" value="<?= Pomatio_Framework_Helper::generate_random_string(10, false) ?>">
+                <input type="hidden" name="repeater_identifier" value="<?= $repeater_identifier ?>">
 
                 <?php
 
@@ -216,7 +218,7 @@ class Pomatio_Framework_Ajax {
 
             <div class="repeater default closed">
                 <div class="title">
-                    <strong><?= $title ?></strong><span></span>
+                    <strong><?= $title ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $defaults_identifier ?></span>
                 </div>
                 <div class="repeater-fields">
                     <input type="hidden" name="repeater_identifier" value="<?= $defaults_identifier ?>">
