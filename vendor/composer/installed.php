@@ -3,7 +3,7 @@
         'name' => 'pom/form',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd25ab80e9b9262b92992106c26231771613d9a8d',
+        'reference' => '3970638cbed06dba4fe1c1c47036f1a7781b977d',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'pom/form' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd25ab80e9b9262b92992106c26231771613d9a8d',
+            'reference' => '3970638cbed06dba4fe1c1c47036f1a7781b977d',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
