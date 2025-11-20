@@ -13,17 +13,18 @@ module.exports = [
             compress: {
               drop_console: true,
               drop_debugger: true,
-              passes: 3
+              passes: 3,
             },
             format: {
-              comments: false
+              comments: false,
             },
             mangle: {
-              toplevel: true
-            }
+              toplevel: false,
+              keep_fnames: true,
+            },
           },
           extractComments: false,
-          parallel: true
+          parallel: true,
         })
       ]
     },
