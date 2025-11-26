@@ -508,6 +508,7 @@ The framework ships the following field types. Use this table to pick the right 
 | `time` | `<input type="time">`. | Supports step increments; sanitiser ensures valid time strings. |
 | `tinymce` | WordPress TinyMCE editor. | Pass `custom_attrs` such as `textarea_rows`, `teeny`, `quicktags`, `wpautop`, or `media_buttons` to control the toolbar. Sanitiser cleans output using the configured allowed HTML. |
 | `toggle` | Styled on/off switch built on a checkbox. | Provides automatic IDs, enqueues slider CSS, and sanitises to `yes`/`no`. |
+| `trbl` | Four-number control for top, right, bottom, and left values with an optional sync/lock toggle. | Pass `units` as an array; multiple entries render a unit dropdown per side, while a single entry renders a static badge. `sync` toggles the lock button and mirrors both numbers and units when active. |
 | `url` | `<input type="url">`. | Sanitises to absolute URLs, trims whitespace, and cooperates with dependency logic. |
 
 ## Helper classes
