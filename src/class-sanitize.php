@@ -230,6 +230,40 @@ if (!function_exists('sanitize_pom_form_range')) {
     }
 }
 
+if (!function_exists('sanitize_pom_form_trbl')) {
+    function sanitize_pom_form_trbl($value): array {
+        if (is_string($value)) {
+            $value = json_decode(stripslashes($value), true);
+        }
+
+        if (!is_array($value)) {
+            return [];
+        }
+
+        $sides = ['top', 'right', 'bottom', 'left'];
+        $sanitized = [
+            'sync' => (!empty($value['sync']) && $value['sync'] === 'yes') ? 'yes' : 'no'
+        ];
+
+        foreach ($sides as $side) {
+            $side_value = '';
+            $side_unit = '';
+
+            if (!empty($value[$side]) && is_array($value[$side])) {
+                $side_value = isset($value[$side]['value']) ? filter_var($value[$side]['value'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : '';
+                $side_unit = isset($value[$side]['unit']) ? sanitize_text_field($value[$side]['unit']) : '';
+            }
+
+            $sanitized[$side] = [
+                'value' => $side_value,
+                'unit'  => $side_unit,
+            ];
+        }
+
+        return $sanitized;
+    }
+}
+
 if (!function_exists('sanitize_pom_form_font')) {
     function sanitize_pom_form_font($value) {
         return sanitize_pom_form_repeater($value);

@@ -1,0 +1,63 @@
+.pomatio-trbl {
+    border: 1px solid #e2e2e2;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fff;
+}
+
+.pomatio-trbl__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.pomatio-trbl__header label {
+    margin: 0;
+}
+
+.pomatio-trbl__sync.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+}
+
+.pomatio-trbl__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 16px;
+}
+
+.pomatio-trbl__field-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.pomatio-trbl__field-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pomatio-trbl__value {
+    flex: 1;
+}
+
+.pomatio-trbl__unit-select {
+    min-width: 70px;
+}
+
+.pomatio-trbl__unit-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 10px;
+    background: #f0f0f0;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    font-weight: 600;
+}
