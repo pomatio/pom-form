@@ -39,9 +39,16 @@
         }
     };
 
-    $(document).ready(function () {
-        $('.pomatio-trbl').each(function () {
+    const initTrbl = ($context = $(document)) => {
+        $context.find('.pomatio-trbl').each(function () {
             const $wrapper = $(this);
+
+            if ($wrapper.data('trbl-initialized')) {
+                return;
+            }
+
+            $wrapper.data('trbl-initialized', true);
+
             const $syncButton = $wrapper.find('.pomatio-trbl__sync');
             const $state = $wrapper.find('.pomatio-trbl__sync-state');
 
@@ -74,5 +81,13 @@
                 $wrapper.find('.pomatio-trbl__unit-select').val(unit);
             });
         });
+    };
+
+    $(document).ready(function () {
+        initTrbl();
+    });
+
+    $(document).ajaxComplete(function () {
+        initTrbl();
     });
 })(jQuery);
