@@ -26,9 +26,12 @@
         $button.toggleClass('is-locked', locked);
         $button.toggleClass('is-unlocked', !locked);
         $button.attr('aria-pressed', locked ? 'true' : 'false');
-        $button.find('.dashicons')
-            .toggleClass('dashicons-lock', locked)
+        const $icon = $button.find('.dashicons');
+        $icon.toggleClass('dashicons-lock', locked)
             .toggleClass('dashicons-unlock', !locked);
+
+        const label = locked ? 'Values are locked' : 'Values are independent';
+        $button.attr('aria-label', label);
         $state.val(locked ? 'yes' : 'no');
 
         if (locked) {
