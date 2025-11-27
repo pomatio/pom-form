@@ -103,6 +103,10 @@ jQuery(function($) {
           if ($field.getAttribute('data-type') === 'trbl') {
             let $base_name = $field.getAttribute('data-base-name') || $field_name;
 
+            if ($base_name && $base_name.includes('[')) {
+              $base_name = $base_name.split('[')[0];
+            }
+
             if ($trbl_fields_handled.has($base_name)) {
               continue;
             }
