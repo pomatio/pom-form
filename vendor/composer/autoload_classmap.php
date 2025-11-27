@@ -42,6 +42,7 @@ return array(
     'PomatioFramework\\Fields\\Time' => $baseDir . '/src/Fields/Time.php',
     'PomatioFramework\\Fields\\Tinymce' => $baseDir . '/src/Fields/Tinymce.php',
     'PomatioFramework\\Fields\\Toggle' => $baseDir . '/src/Fields/Toggle.php',
+    'PomatioFramework\\Fields\\Trbl' => $baseDir . '/src/Fields/Trbl.php',
     'PomatioFramework\\Fields\\Url' => $baseDir . '/src/Fields/Url.php',
     'PomatioFramework\\Pomatio_Framework' => $baseDir . '/src/Pomatio_Framework.php',
     'PomatioFramework\\Pomatio_Framework_Ajax' => $baseDir . '/src/Pomatio_Framework_Ajax.php',

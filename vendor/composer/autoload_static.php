@@ -57,6 +57,7 @@ class ComposerStaticInit069df07d080afa9eb5a1557f64508fe7
         'PomatioFramework\\Fields\\Time' => __DIR__ . '/../..' . '/src/Fields/Time.php',
         'PomatioFramework\\Fields\\Tinymce' => __DIR__ . '/../..' . '/src/Fields/Tinymce.php',
         'PomatioFramework\\Fields\\Toggle' => __DIR__ . '/../..' . '/src/Fields/Toggle.php',
+        'PomatioFramework\\Fields\\Trbl' => __DIR__ . '/../..' . '/src/Fields/Trbl.php',
         'PomatioFramework\\Fields\\Url' => __DIR__ . '/../..' . '/src/Fields/Url.php',
         'PomatioFramework\\Pomatio_Framework' => __DIR__ . '/../..' . '/src/Pomatio_Framework.php',
         'PomatioFramework\\Pomatio_Framework_Ajax' => __DIR__ . '/../..' . '/src/Pomatio_Framework_Ajax.php',
