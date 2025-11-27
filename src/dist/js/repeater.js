@@ -29,6 +29,19 @@ jQuery(function($) {
           $dependentField = $scope.find(`[name="${fieldName}"]`);
         }
 
+        if (!$dependentField.length) {
+          $dependentField = $scope.find(`[name$="[${fieldName}]"]`);
+        }
+
+        if (!$dependentField.length) {
+          $dependentField = $scope.find(`[name$="[${fieldName}][]"]`);
+        }
+
+        if (!$dependentField.length) {
+          allConditionsMet = false;
+          break;
+        }
+
         let fieldValue = '';
 
         if ($dependentField.is(':radio')) {
