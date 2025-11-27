@@ -41,8 +41,9 @@ class Radio_Icons {
 
                     ?>
 
+                    <?php $radio_id = $unique_field_name . '-' . $radio_value; ?>
                     <label class="icon-wrapper">
-                        <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $unique_field_name ?>" data-base-name="<?= esc_attr($args['name']) ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio_icons"<?= $data_dependencies ?>>
+                        <input type="radio" id="<?= $radio_id ?>" name="<?= $unique_field_name ?>" data-base-name="<?= esc_attr($args['name']) ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio_icons"<?= $data_dependencies ?>>
                         <span class="label">
                             <span class="icon"><?= $icon ?></span>
                             <span class="description"><?= $radio_data['label'] ?></span>
