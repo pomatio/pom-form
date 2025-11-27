@@ -29,13 +29,8 @@ class Pomatio_Framework_Helper {
         $dependencies = !empty($args['dependency']) ? $args['dependency'] : [];
 
         if (!empty($dependencies) && is_array($dependencies)) {
-            // Encode the array into JSON format
             $jsonString = json_encode($dependencies, JSON_UNESCAPED_UNICODE | JSON_HEX_APOS);
-
-            // Replace double quotes with single quotes
-            $jsonDataAttribute = str_replace('"', "'", $jsonString);
-
-            $data_dependencies = ' data-dependencies="' . $jsonDataAttribute . '"';
+            $data_dependencies = ' data-dependencies="' . esc_attr($jsonString) . '"';
         }
 
         return $data_dependencies;

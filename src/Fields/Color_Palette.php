@@ -40,8 +40,9 @@ class Color_Palette {
 
                 ?>
 
-                <input type="radio" name="<?= $unique_field_name ?>" data-base-name="<?= esc_attr($args['name']) ?>" id="<?= $args['name'] . '_' . $i ?>" value="<?= $color_slug ?>" <?= $checked ?><?= $data_dependencies ?>>
-                <label style="background-color: <?= $color_data['hex'] ?? '#f3f3f3' ?>" for="<?= $args['name'] . '_' . $i ?>">
+                <?php $input_id = $unique_field_name . '_' . $i; ?>
+                <input type="radio" name="<?= $unique_field_name ?>" data-base-name="<?= esc_attr($args['name']) ?>" id="<?= $input_id ?>" value="<?= $color_slug ?>" <?= $checked ?><?= $data_dependencies ?>>
+                <label style="background-color: <?= $color_data['hex'] ?? '#f3f3f3' ?>" for="<?= $input_id ?>">
 
                     <?php
 
