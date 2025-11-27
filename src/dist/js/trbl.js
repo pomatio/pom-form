@@ -39,6 +39,18 @@
         }
     };
 
+    const hasMismatchedValues = ($wrapper) => {
+        const values = $wrapper.find('.pomatio-trbl__value').map((_, input) => $(input).val()).get();
+        const hasStoredValue = values.some((value) => value !== '' && value !== null && value !== undefined);
+
+        if (!hasStoredValue || !values.length) {
+            return false;
+        }
+
+        const reference = values[0];
+        return values.some((value) => value !== reference);
+    };
+
     const initTrbl = ($context = $(document)) => {
         $context.find('.pomatio-trbl').each(function () {
             const $wrapper = $(this);
@@ -53,7 +65,13 @@
             const $state = $wrapper.find('.pomatio-trbl__sync-state');
 
             if ($state.length) {
-                setLockState($wrapper, $state.val() === 'yes');
+                let locked = $state.val() === 'yes';
+
+                if (locked && hasMismatchedValues($wrapper)) {
+                    locked = false;
+                }
+
+                setLockState($wrapper, locked);
             }
 
             if ($syncButton.length) {
