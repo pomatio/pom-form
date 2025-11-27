@@ -150,7 +150,15 @@ class Repeater {
                                             }
                                             else {
                                                 if (is_array($repeater_item[$field['name']]['value'])) {
-                                                    $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
+                                                    $field_type = strtolower($field['type']);
+
+                                                    // Complex field types such as TRBL expect an array so values remain prefilled.
+                                                    if ($field_type === 'trbl') {
+                                                        $field['value'] = $repeater_item[$field['name']]['value'];
+                                                    }
+                                                    else {
+                                                        $field['value'] = htmlspecialchars(json_encode($repeater_item[$field['name']]['value']), ENT_QUOTES, 'UTF-8');
+                                                    }
                                                 }
                                                 else {
                                                     $field['value'] = html_entity_decode(htmlspecialchars($repeater_item[$field['name']]['value'], ENT_QUOTES, 'UTF-8'), ENT_HTML5);
