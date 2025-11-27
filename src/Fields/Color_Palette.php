@@ -2,6 +2,8 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Color_Palette {
 
     public static function render_field(array $args): void {
@@ -25,7 +27,10 @@ class Color_Palette {
             $value = $args['default'];
         }
 
-        echo '<div class="color-palette-wrapper">';
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $unique_field_name = $args['name'] . '_' . Pomatio_Framework_Helper::generate_random_string(6, false);
+
+        echo '<div class="color-palette-wrapper"' . $data_dependencies . ' data-base-name="' . esc_attr($args['name']) . '">';
 
         if (!empty($colors)) {
             $i = 0;
@@ -35,7 +40,7 @@ class Color_Palette {
 
                 ?>
 
-                <input type="radio" name="<?= $args['name'] ?>" id="<?= $args['name'] . '_' . $i ?>" value="<?= $color_slug ?>" <?= $checked ?>>
+                <input type="radio" name="<?= $unique_field_name ?>" data-base-name="<?= esc_attr($args['name']) ?>" id="<?= $args['name'] . '_' . $i ?>" value="<?= $color_slug ?>" <?= $checked ?><?= $data_dependencies ?>>
                 <label style="background-color: <?= $color_data['hex'] ?? '#f3f3f3' ?>" for="<?= $args['name'] . '_' . $i ?>">
 
                     <?php
