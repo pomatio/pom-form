@@ -4,10 +4,10 @@
     border-radius: 10px;
     box-shadow: 0 0 0 3px #ddd inset;
     box-sizing: border-box;
-    display: inline-block;
+    display: inline-block !important;
     height: 40px;
     position: relative;
-    width: 62px;
+    width: 62px !important;
 
     .icon {
       align-items: center;
