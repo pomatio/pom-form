@@ -70,7 +70,7 @@ class Trbl {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        echo '<input type="hidden" class="pomatio-trbl__sync-state" name="' . $args['name'] . '[sync]" value="' . ($sync_active ? 'yes' : 'no') . '">';
+        echo '<input type="hidden" class="pomatio-trbl__sync-state" name="' . $args['name'] . '[sync]" data-base-name="' . esc_attr($args['name']) . '" data-type="trbl" value="' . ($sync_active ? 'yes' : 'no') . '">';
 
         echo '<div class="pomatio-trbl__grid">';
 
@@ -100,17 +100,17 @@ class Trbl {
             echo '<div class="pomatio-trbl__field pomatio-trbl__field--' . $side_key . '">';
             echo '<div class="pomatio-trbl__field-label">' . $side_label . '</div>';
             echo '<div class="pomatio-trbl__field-controls">';
-            echo '<input aria-label="' . esc_attr($side_label) . '" type="number" name="' . $args['name'] . '[' . $side_key . '][value]" value="' . esc_attr($side_value) . '" class="form-control pomatio-trbl__value ' . ($args['class'] ?? '') . '" data-side="' . $side_key . '" data-type="trbl"' . $disabled . '>';
+            echo '<input aria-label="' . esc_attr($side_label) . '" type="number" name="' . $args['name'] . '[' . $side_key . '][value]" value="' . esc_attr($side_value) . '" class="form-control pomatio-trbl__value ' . ($args['class'] ?? '') . '" data-side="' . $side_key . '" data-type="trbl" data-base-name="' . esc_attr($args['name']) . '"' . $disabled . '>';
 
             if (count($units) > 1) {
-                echo '<select class="pomatio-trbl__unit-select" name="' . $args['name'] . '[' . $side_key . '][unit]"' . $disabled . '>';
+                echo '<select class="pomatio-trbl__unit-select" name="' . $args['name'] . '[' . $side_key . '][unit]" data-base-name="' . esc_attr($args['name']) . '" data-type="trbl"' . $disabled . '>';
                 foreach ($units as $unit) {
                     echo '<option value="' . esc_attr($unit) . '"' . selected($side_unit, $unit, false) . '>' . esc_html($unit) . '</option>';
                 }
                 echo '</select>';
             }
             else {
-                echo '<input type="hidden" name="' . $args['name'] . '[' . $side_key . '][unit]" value="' . esc_attr($side_unit) . '">';
+                echo '<input type="hidden" name="' . $args['name'] . '[' . $side_key . '][unit]" data-base-name="' . esc_attr($args['name']) . '" data-type="trbl" value="' . esc_attr($side_unit) . '">';
                 echo '<span class="pomatio-trbl__unit-badge">' . esc_html($side_unit) . '</span>';
             }
 
