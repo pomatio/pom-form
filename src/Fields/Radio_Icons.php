@@ -2,6 +2,8 @@
 
 namespace PomatioFramework\Fields;
 
+use PomatioFramework\Pomatio_Framework_Helper;
+
 class Radio_Icons {
 
     public static function render_field(array $args): void {
@@ -19,9 +21,12 @@ class Radio_Icons {
             $value = $args['default'];
         }
 
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $unique_field_name = $args['name'] . '_' . Pomatio_Framework_Helper::generate_random_string(6, false);
+
         ?>
 
-        <div class="pomatio-framework-radio-icons-wrapper">
+        <div class="pomatio-framework-radio-icons-wrapper"<?= $data_dependencies ?> data-base-name="<?= esc_attr($args['name']) ?>">
 
             <?php
 
@@ -37,7 +42,7 @@ class Radio_Icons {
                     ?>
 
                     <label class="icon-wrapper">
-                        <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $args['name'] ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio_icons">
+                        <input type="radio" id="<?= $args['name'] . '-' . $radio_value ?>" name="<?= $unique_field_name ?>" data-base-name="<?= esc_attr($args['name']) ?>" value="<?= $radio_value ?>" class="form-check-input form-control <?= $args['class'] ?? '' ?>" <?= $checked ?> data-type="radio_icons"<?= $data_dependencies ?>>
                         <span class="label">
                             <span class="icon"><?= $icon ?></span>
                             <span class="description"><?= $radio_data['label'] ?></span>
@@ -70,7 +75,7 @@ class Radio_Icons {
         echo '</div>';
 
         wp_enqueue_style('pomatio-framework-radio_icons', POM_FORM_SRC_URI . '/dist/css/radio-icons.min.css');
-        wp_enqueue_script('pomatio-framework-color-palette',  POM_FORM_SRC_URI . '/dist/js/radio_icons' . POMATIO_MIN . '.js', [], null, true);
+        wp_enqueue_script('pomatio-framework-radio_icons',  POM_FORM_SRC_URI . '/dist/js/radio_icons' . POMATIO_MIN . '.js', [], null, true);
     }
 
 }

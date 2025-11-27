@@ -18,8 +18,21 @@ jQuery(function($) {
         for (let condition of group) {
           let fieldName = condition.field;
           fieldName = fieldName.replace('field_', '');
-          const $dependentField = $repeaterWrapper.find(`[name="${fieldName}"]`);
-          const fieldValue = $dependentField.val();
+          const selector = `[data-base-name="${fieldName}"]`;
+          let $dependentField = $repeaterWrapper.find(selector);
+
+          if (!$dependentField.length) {
+            $dependentField = $repeaterWrapper.find(`[name="${fieldName}"]`);
+          }
+
+          let fieldValue = '';
+
+          if ($dependentField.is(':radio')) {
+            fieldValue = $dependentField.filter(':checked').val() || '';
+          }
+          else {
+            fieldValue = $dependentField.first().val();
+          }
 
           // If any condition fails, mark as false
           if (!condition.values.includes(fieldValue)) {
@@ -133,7 +146,7 @@ jQuery(function($) {
       // For each field inside the repeater element
       for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
         let $field = $repeater_fields[$i2];
-        let $field_name = $field.getAttribute('name');
+        let $field_name = $field.getAttribute('data-base-name') || $field.getAttribute('name');
         let $is_child_repeater_field = $($field).parents('.repeater-wrapper').length > 1;
 
         /**
@@ -148,6 +161,10 @@ jQuery(function($) {
           $obj[$field_name] = $field.value.trim();
         }
         else {
+          if ($field.type === 'radio' && !$field.checked) {
+            continue;
+          }
+
           let $field_value = $field.value.trim();
           if ($field.getAttribute('data-type') === 'checkbox' || $field.getAttribute('data-type') === 'toggle') {
             $field_value = $($field).is(':checked') ? 'yes' : 'no';
