@@ -36,7 +36,16 @@ class Trbl {
         $sync_enabled = !isset($args['sync']) || $args['sync'] !== false;
         $sync_active = $sync_enabled && ((isset($value['sync']) && $value['sync'] === 'yes') || (!isset($value['sync']) && (!empty($default['sync']) ? $default['sync'] === 'yes' : true)));
 
-        echo '<div class="form-group pomatio-trbl"' . $data_dependencies . '>';
+        if (!$sync_enabled) {
+            $sync_active = false;
+        }
+
+        $wrapper_classes = ['form-group', 'pomatio-trbl'];
+        if ($sync_active) {
+            $wrapper_classes[] = 'is-locked';
+        }
+
+        echo '<div class="' . implode(' ', $wrapper_classes) . '"' . $data_dependencies . '>';
 
         if (!empty($args['label'])) {
             echo '<div class="pomatio-trbl__header">';
@@ -85,7 +94,7 @@ class Trbl {
                 }
             }
 
-            echo '<div class="pomatio-trbl__field">';
+            echo '<div class="pomatio-trbl__field pomatio-trbl__field--' . $side_key . '">';
             echo '<div class="pomatio-trbl__field-label">' . $side_label . '</div>';
             echo '<div class="pomatio-trbl__field-controls">';
             echo '<input aria-label="' . esc_attr($side_label) . '" type="number" name="' . $args['name'] . '[' . $side_key . '][value]" value="' . esc_attr($side_value) . '" class="form-control pomatio-trbl__value ' . ($args['class'] ?? '') . '" data-side="' . $side_key . '" data-type="trbl"' . $disabled . '>';

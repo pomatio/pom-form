@@ -40,6 +40,11 @@
         $('.pomatio-trbl').each(function () {
             const $wrapper = $(this);
             const $syncButton = $wrapper.find('.pomatio-trbl__sync');
+            const $state = $wrapper.find('.pomatio-trbl__sync-state');
+
+            if ($state.length) {
+                setLockState($wrapper, $state.val() === 'yes');
+            }
 
             if ($syncButton.length) {
                 $syncButton.on('click', function () {

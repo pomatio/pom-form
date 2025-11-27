@@ -511,6 +511,27 @@ The framework ships the following field types. Use this table to pick the right 
 | `trbl` | Four-number control for top, right, bottom, and left values with an optional sync/lock toggle. | Pass `units` as an array; multiple entries render a unit dropdown per side, while a single entry renders a static badge. `sync` toggles the lock button and mirrors both numbers and units when active. |
 | `url` | `<input type="url">`. | Sanitises to absolute URLs, trims whitespace, and cooperates with dependency logic. |
 
+
+```php
+[
+    'type'        => 'Trbl',
+    'name'        => 'example_input',
+    'label'       => __('Spacing', 'pomatio-framework'),
+    'description' => __('Control top, right, bottom, and left values.', 'pomatio-framework'),
+    'default'     => [
+        'top'    => ['value' => 10, 'unit' => 'px'],
+        'right'  => ['value' => 10, 'unit' => 'px'],
+        'bottom' => ['value' => 10, 'unit' => 'px'],
+        'left'   => ['value' => 10, 'unit' => 'px'],
+        'sync'   => 'yes',
+    ],
+    'units'       => ['px', '%'], // Single entry renders a badge; multiple entries render a dropdown.
+    'sync'        => 'yes',         // Set to false to hide the lock button and keep sides independent.
+    'disabled'    => false,
+    'dependency'  => [],
+]
+```
+
 ## Helper classes
 
 Pomatio Framework exposes several helper classes so you can inspect configuration, generate dependency metadata, and manipulate files without digging into WordPress internals yourself.
