@@ -47,9 +47,12 @@ class Trbl {
 
         echo '<div class="' . implode(' ', $wrapper_classes) . '"' . $data_dependencies . '>';
 
-        if (!empty($args['label'])) {
+        if (!empty($args['label']) || $sync_enabled) {
             echo '<div class="pomatio-trbl__header">';
-            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+
+            if (!empty($args['label'])) {
+                echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+            }
 
             if ($sync_enabled) {
                 $sync_label = $sync_active ? __('Values are locked', 'pomatio-framework') : __('Values are independent', 'pomatio-framework');
