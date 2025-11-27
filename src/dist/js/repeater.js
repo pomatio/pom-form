@@ -80,6 +80,7 @@ jQuery(function($) {
       let $obj = {};
 
       let $font_input_val = {};
+      let $trbl_fields_handled = new Set();
 
       // For each field inside the repeater element
       for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
@@ -99,6 +100,39 @@ jQuery(function($) {
           $obj[$field_name] = $field.value.trim();
         }
         else {
+          if ($field.getAttribute('data-type') === 'trbl') {
+            let $base_name = $field.getAttribute('data-base-name') || $field_name;
+
+            if ($trbl_fields_handled.has($base_name)) {
+              continue;
+            }
+
+            $trbl_fields_handled.add($base_name);
+
+            const $trbl_wrapper = $($field).closest('.pomatio-trbl');
+            const $sides = ['top', 'right', 'bottom', 'left'];
+            const $trbl_value = {
+              'sync': $trbl_wrapper.find('.pomatio-trbl__sync-state').val() === 'yes' ? 'yes' : 'no',
+            };
+
+            for (const $side of $sides) {
+              const $side_value = $trbl_wrapper.find(`.pomatio-trbl__value[name$="[${$side}][value]"]`).first().val();
+              const $side_unit = $trbl_wrapper.find(`[name$="[${$side}][unit]"]`).first().val();
+
+              $trbl_value[$side] = {
+                'value': $side_value ? $side_value.trim() : '',
+                'unit': $side_unit || '',
+              };
+            }
+
+            $obj[$base_name] = {
+              'value': $trbl_value,
+              'type': 'trbl'
+            };
+
+            continue;
+          }
+
           if ($field.type === 'radio' && !$field.checked) {
             continue;
           }
