@@ -4,56 +4,57 @@
 
 jQuery(function($) {
   function handleFieldVisibility($field) {
-    if ($field.getAttribute('data-dependencies')) {
-      let json = $field.getAttribute('data-dependencies');
-      json = json.replaceAll('\'', '"');
+    if (!$field.getAttribute('data-dependencies')) {
+      return;
+    }
 
-      let dependencies = JSON.parse(json);
-      let $repeaterWrapper = $($field).closest('.repeater');
-      let groupConditionsMet = false;
+    let json = $field.getAttribute('data-dependencies');
+    json = json.replaceAll('\'', '"');
 
-      for (let group of dependencies) {
-        let allConditionsMet = true;
+    const dependencies = JSON.parse(json);
+    const $repeaterWrapper = $($field).closest('.repeater');
+    const $scope = $repeaterWrapper.length ? $repeaterWrapper : $(document);
+    let groupConditionsMet = false;
 
-        for (let condition of group) {
-          let fieldName = condition.field;
-          fieldName = fieldName.replace('field_', '');
-          const selector = `[data-base-name="${fieldName}"]`;
-          let $dependentField = $repeaterWrapper.find(selector);
+    for (let group of dependencies) {
+      let allConditionsMet = true;
 
-          if (!$dependentField.length) {
-            $dependentField = $repeaterWrapper.find(`[name="${fieldName}"]`);
-          }
+      for (let condition of group) {
+        let fieldName = condition.field;
+        fieldName = fieldName.replace('field_', '');
+        const selector = `[data-base-name="${fieldName}"]`;
+        let $dependentField = $scope.find(selector);
 
-          let fieldValue = '';
-
-          if ($dependentField.is(':radio')) {
-            fieldValue = $dependentField.filter(':checked').val() || '';
-          }
-          else {
-            fieldValue = $dependentField.first().val();
-          }
-
-          // If any condition fails, mark as false
-          if (!condition.values.includes(fieldValue)) {
-            allConditionsMet = false;
-            break;
-          }
+        if (!$dependentField.length) {
+          $dependentField = $scope.find(`[name="${fieldName}"]`);
         }
 
-        // If all conditions in the group are met, set groupConditionsMet to true
-        if (allConditionsMet) {
-          groupConditionsMet = true;
+        let fieldValue = '';
+
+        if ($dependentField.is(':radio')) {
+          fieldValue = $dependentField.filter(':checked').val() || '';
+        }
+        else {
+          fieldValue = $dependentField.first().val();
+        }
+
+        if (!condition.values.includes(fieldValue)) {
+          allConditionsMet = false;
           break;
         }
       }
 
-      if (groupConditionsMet) {
-        $($field).closest('.form-group').show();
+      if (allConditionsMet) {
+        groupConditionsMet = true;
+        break;
       }
-      else {
-        $($field).closest('.form-group').hide();
-      }
+    }
+
+    if (groupConditionsMet) {
+      $($field).closest('.form-group').show();
+    }
+    else {
+      $($field).closest('.form-group').hide();
     }
   }
 
@@ -61,11 +62,8 @@ jQuery(function($) {
    * Function to initialize the visibility handling for all fields
    */
   function initializeFieldVisibility() {
-    $('.repeater').each(function() {
-      let $repeater_fields = $(this).find('input, select, textarea');
-      $repeater_fields.each(function() {
-        handleFieldVisibility(this);
-      });
+    $('[data-dependencies]').each(function() {
+      handleFieldVisibility(this);
     });
   }
 
@@ -350,6 +348,15 @@ jQuery(function($) {
   $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
     const $this = $(this);
     $update_repeater($this.closest('.repeater-wrapper'));
+  });
+
+  /**
+   * Re-evaluate dependencies for non-repeater fields when related inputs change.
+   */
+  $(document).on('change input', 'input, textarea, select', function() {
+    if (!$(this).closest('.repeater-wrapper').length) {
+      initializeFieldVisibility();
+    }
   });
 
   // Fix for Icon Picker fields
