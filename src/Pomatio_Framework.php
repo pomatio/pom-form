@@ -42,6 +42,7 @@ class Pomatio_Framework {
     public function enqueue_scripts($hook): void {
         if (in_array($hook, self::$settings_page_hooks, true)) {
             wp_enqueue_style('pomatio-framework-settings', POM_FORM_SRC_URI . '/dist/css/admin.min.css');
+            wp_enqueue_script('pomatio-framework-dependencies', POM_FORM_SRC_URI . '/dist/js/dependencies' . POMATIO_MIN . '.js', ['jquery'], null, true);
         }
     }
 
