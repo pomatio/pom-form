@@ -75,7 +75,7 @@
 }
 
 .pomatio-trbl__unit-select {
-    min-width: 70px;
+    width: 70px !important;
 }
 
 .pomatio-trbl__unit-badge {

@@ -8,11 +8,11 @@
   .icon-wrapper {
     border: 1px solid #ccc;
     border-radius: 3px;
-    display: inline-block;
-    margin-bottom: 5px;
+    display: inline-block !important;
+    margin-bottom: 5px !important;
     position: relative;
     text-align: center;
-    width: 120px;
+    width: 120px !important;
 
     &:hover {
       background: #ddd;
