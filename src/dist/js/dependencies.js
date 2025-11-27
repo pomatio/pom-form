@@ -35,37 +35,110 @@ jQuery(function($) {
   }
 
   function findDependentField(fieldName, $scope) {
-    let selector = `[data-base-name="${fieldName}"]`;
-    let $dependentField = $scope.find(selector);
+    const selectors = [
+      `[data-base-name="${fieldName}"]:input`,
+      `[data-base-name="${fieldName}"]`,
+      `[name="${fieldName}"]`,
+      `[name$="[${fieldName}]"]`,
+      `[name$="[${fieldName}][]"]`,
+      `[name$="_${fieldName}"]`,
+    ];
 
-    if (!$dependentField.length) {
-      $dependentField = $scope.find(`[name="${fieldName}"]`);
+    for (const selector of selectors) {
+      let $dependentField = $scope.find(selector);
+
+      if (!$dependentField.length) {
+        continue;
+      }
+
+      if (!$dependentField.is(':input')) {
+        const $nestedInputs = $dependentField.find(':input');
+
+        if ($nestedInputs.length) {
+          return $nestedInputs;
+        }
+      }
+
+      return $dependentField;
     }
 
-    if (!$dependentField.length) {
-      $dependentField = $scope.find(`[name$="[${fieldName}]"]`);
+    return $();
+  }
+
+  function getFieldCurrentValue($dependentField) {
+    if (!$dependentField || !$dependentField.length) {
+      return '';
     }
 
-    if (!$dependentField.length) {
-      $dependentField = $scope.find(`[name$="[${fieldName}][]"]`);
+    const $inputs = $dependentField.is(':input') ? $dependentField : $dependentField.find(':input');
+
+    if (!$inputs.length) {
+      return '';
     }
 
-    return $dependentField;
+    const $radios = $inputs.filter(':radio');
+
+    if ($radios.length) {
+      const $checked = $radios.filter(':checked');
+
+      return $checked.length ? ($checked.val() || '') : '';
+    }
+
+    const $checkboxes = $inputs.filter(':checkbox');
+
+    if ($checkboxes.length) {
+      const $checked = $checkboxes.filter(':checked');
+
+      if (!$checked.length) {
+        return '';
+      }
+
+      if ($checkboxes.length === 1) {
+        return $checked.val() || 'yes';
+      }
+
+      return $checked.map((_, element) => $(element).val()).get();
+    }
+
+    const $selects = $inputs.filter('select');
+
+    if ($selects.length) {
+      const value = $selects.val();
+
+      return Array.isArray(value) ? value.map(String) : (value || '');
+    }
+
+    const value = $inputs.first().val();
+
+    return Array.isArray(value) ? value.map(String) : (value || '');
+  }
+
+  function isConditionMet(fieldValue, allowedValues) {
+    const normalizedAllowedValues = allowedValues.map(String);
+
+    if (Array.isArray(fieldValue)) {
+      return fieldValue.some((value) => normalizedAllowedValues.includes(String(value)));
+    }
+
+    return normalizedAllowedValues.includes(String(fieldValue));
   }
 
   function toggleFieldVisibility($field, shouldShow) {
     const $formGroup = $field.closest('.form-group');
     const $tableRow = $field.closest('tr');
+    const isInRepeater = $field.closest('.repeater-wrapper').length > 0;
 
     if (shouldShow) {
       $formGroup.show();
-      if ($tableRow.length) {
+
+      if (!isInRepeater && $tableRow.length) {
         $tableRow.show();
       }
     }
     else {
       $formGroup.hide();
-      if ($tableRow.length) {
+
+      if (!isInRepeater && $tableRow.length) {
         $tableRow.hide();
       }
     }
@@ -94,16 +167,9 @@ jQuery(function($) {
           break;
         }
 
-        let fieldValue = '';
+        const fieldValue = getFieldCurrentValue($dependentField);
 
-        if ($dependentField.is(':radio')) {
-          fieldValue = $dependentField.filter(':checked').val() || '';
-        }
-        else {
-          fieldValue = $dependentField.first().val();
-        }
-
-        if (!condition.values.includes(fieldValue)) {
+        if (!isConditionMet(fieldValue, condition.values)) {
           allConditionsMet = false;
           break;
         }
