@@ -3,82 +3,9 @@
  */
 
 jQuery(function($) {
-  function handleFieldVisibility($field) {
-    if (!$field.getAttribute('data-dependencies')) {
-      return;
-    }
-
-    let json = $field.getAttribute('data-dependencies');
-    json = json.replaceAll('\'', '"');
-
-    const dependencies = JSON.parse(json);
-    const $repeaterWrapper = $($field).closest('.repeater');
-    const $scope = $repeaterWrapper.length ? $repeaterWrapper : $(document);
-    let groupConditionsMet = false;
-
-    for (let group of dependencies) {
-      let allConditionsMet = true;
-
-      for (let condition of group) {
-        let fieldName = condition.field;
-        fieldName = fieldName.replace('field_', '');
-        const selector = `[data-base-name="${fieldName}"]`;
-        let $dependentField = $scope.find(selector);
-
-        if (!$dependentField.length) {
-          $dependentField = $scope.find(`[name="${fieldName}"]`);
-        }
-
-        if (!$dependentField.length) {
-          $dependentField = $scope.find(`[name$="[${fieldName}]"]`);
-        }
-
-        if (!$dependentField.length) {
-          $dependentField = $scope.find(`[name$="[${fieldName}][]"]`);
-        }
-
-        if (!$dependentField.length) {
-          allConditionsMet = false;
-          break;
-        }
-
-        let fieldValue = '';
-
-        if ($dependentField.is(':radio')) {
-          fieldValue = $dependentField.filter(':checked').val() || '';
-        }
-        else {
-          fieldValue = $dependentField.first().val();
-        }
-
-        if (!condition.values.includes(fieldValue)) {
-          allConditionsMet = false;
-          break;
-        }
-      }
-
-      if (allConditionsMet) {
-        groupConditionsMet = true;
-        break;
-      }
-    }
-
-    if (groupConditionsMet) {
-      $($field).closest('.form-group').show();
-    }
-    else {
-      $($field).closest('.form-group').hide();
-    }
-  }
-
-  /**
-   * Function to initialize the visibility handling for all fields
-   */
-  function initializeFieldVisibility() {
-    $('[data-dependencies]').each(function() {
-      handleFieldVisibility(this);
-    });
-  }
+  const dependencyUtils = window.pomatioDependencies || {};
+  const handleFieldVisibility = dependencyUtils.handleFieldVisibility || function() {};
+  const initializeFieldVisibility = dependencyUtils.initializeFieldVisibility || function() {};
 
   /**
    * Manage dependent fields on page load.
@@ -361,15 +288,6 @@ jQuery(function($) {
   $(document).on('change', '.repeater-wrapper input, .repeater-wrapper textarea, .repeater-wrapper select', function() {
     const $this = $(this);
     $update_repeater($this.closest('.repeater-wrapper'));
-  });
-
-  /**
-   * Re-evaluate dependencies for non-repeater fields when related inputs change.
-   */
-  $(document).on('change input', 'input, textarea, select', function() {
-    if (!$(this).closest('.repeater-wrapper').length) {
-      initializeFieldVisibility();
-    }
   });
 
   // Fix for Icon Picker fields

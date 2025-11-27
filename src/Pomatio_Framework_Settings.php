@@ -517,9 +517,11 @@ class Pomatio_Framework_Settings {
                             continue;
                         }
 
+                        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($field);
+
                         ?>
 
-                        <tr>
+                        <tr<?= $data_dependencies ?>>
                             <th scope="row">
                                 <label for="<?= $field['name'] ?? '' ?>">
                                     <?= $field['label'] ?? '' ?>
