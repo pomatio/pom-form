@@ -17,7 +17,7 @@ class Settings_Tools_Page {
     }
 
     public static function enqueue_assets(): void {
-        wp_register_style('pom-settings-tools', false, [], POM_THEME_VERSION ?? '1.0.0');
+        wp_register_style('pom-settings-tools', false, [], '1.0.0');
         wp_enqueue_style('pom-settings-tools');
 
         $css = '.pom-settings-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}'
