@@ -5,6 +5,9 @@ namespace PomatioFramework\ImportExport;
 use RuntimeException;
 
 class Settings_Tools_Page {
+    private const FLASH_OPTION = 'pom_settings_tools_flash_messages';
+    private static bool $bootstrapped = false;
+
     private string $page_slug;
     private Settings_Exporter $exporter;
     private Settings_Importer $importer;
@@ -17,7 +20,7 @@ class Settings_Tools_Page {
     }
 
     public static function enqueue_assets(): void {
-        wp_register_style('pom-settings-tools', false, [], null);
+        wp_register_style('pom-settings-tools', false, [], POM_THEME_VERSION ?? '1.0.0');
         wp_enqueue_style('pom-settings-tools');
 
         $css = '.pom-settings-tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}'
@@ -30,11 +33,35 @@ class Settings_Tools_Page {
         wp_add_inline_style('pom-settings-tools', $css);
     }
 
+    public static function bootstrap(string $page_slug): void {
+        if (self::$bootstrapped) {
+            return;
+        }
+
+        add_action('admin_init', function () use ($page_slug) {
+            if (empty($_POST['pom_settings_tools_action']) || $_POST['pom_settings_tools_action'] !== 'export_settings') {
+                return;
+            }
+
+            $posted_page = isset($_POST['pom_settings_tools_page']) ? sanitize_text_field(wp_unslash($_POST['pom_settings_tools_page'])) : '';
+
+            if ($posted_page !== $page_slug) {
+                return;
+            }
+
+            $instance = new self($page_slug);
+            $instance->handle_export(true);
+        });
+
+        self::$bootstrapped = true;
+    }
+
     public function render(): void {
         if (!current_user_can('edit_posts')) {
             wp_die(__('You do not have permission to access this page.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
         }
 
+        $this->messages = array_merge($this->messages, self::consume_flash_messages());
         $this->handle_actions();
 
         $available_settings = $this->exporter->get_available_settings();
@@ -54,10 +81,6 @@ class Settings_Tools_Page {
         if (!empty($_POST['pom_settings_tools_action'])) {
             $action = sanitize_text_field(wp_unslash($_POST['pom_settings_tools_action']));
 
-            if ($action === 'export_settings') {
-                $this->handle_export();
-            }
-
             if ($action === 'prepare_import') {
                 $this->handle_import_preview();
             }
@@ -68,16 +91,27 @@ class Settings_Tools_Page {
         }
     }
 
-    private function handle_export(): void {
+    private function handle_export(bool $stream_immediately = false): void {
         check_admin_referer('pom_settings_tools_export', 'pom_settings_tools_nonce');
 
         $selected = isset($_POST['settings']) ? array_map('sanitize_text_field', (array) wp_unslash($_POST['settings'])) : [];
 
         try {
             $result = $this->exporter->export($selected);
-            $this->stream_zip($result['path'], $result['name']);
+
+            if ($stream_immediately) {
+                $this->stream_zip($result['path'], $result['name']);
+                return;
+            }
+
+            $this->messages[] = ['type' => 'success', 'text' => __('Export completed.', 'pom')]; // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
         }
         catch (RuntimeException $exception) {
+            if ($stream_immediately) {
+                self::flash_message(['type' => 'error', 'text' => $exception->getMessage()]);
+                $this->redirect_back();
+            }
+
             $this->messages[] = ['type' => 'error', 'text' => $exception->getMessage()];
         }
     }
@@ -134,6 +168,7 @@ class Settings_Tools_Page {
         echo '<form method="post">';
         wp_nonce_field('pom_settings_tools_export', 'pom_settings_tools_nonce');
         echo '<input type="hidden" name="pom_settings_tools_action" value="export_settings" />';
+        echo '<input type="hidden" name="pom_settings_tools_page" value="' . esc_attr($this->page_slug) . '" />';
 
         if (empty($available_settings)) {
             echo '<p>' . esc_html__('No settings files were found in the settings directory.', 'pom') . '</p>'; // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
@@ -201,11 +236,38 @@ class Settings_Tools_Page {
             return;
         }
 
+        if (ob_get_length()) {
+            ob_end_clean();
+        }
+
+        nocache_headers();
         header('Content-Type: application/zip');
         header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
         header('Content-Length: ' . (string) filesize($file_path));
         readfile($file_path);
         unlink($file_path);
+        exit;
+    }
+
+    private static function flash_message(array $message): void {
+        set_transient(self::FLASH_OPTION, $message, MINUTE_IN_SECONDS);
+    }
+
+    private static function consume_flash_messages(): array {
+        $message = get_transient(self::FLASH_OPTION);
+
+        if (!empty($message)) {
+            delete_transient(self::FLASH_OPTION);
+            return [$message];
+        }
+
+        return [];
+    }
+
+    private function redirect_back(): void {
+        $referer = wp_get_referer();
+        $fallback = admin_url('options-general.php?page=' . $this->page_slug);
+        wp_safe_redirect($referer ?: $fallback);
         exit;
     }
 }
