@@ -48,6 +48,7 @@ class Pomatio_Framework_Save {
 
                     $field_definition = (new self)->get_field_definition($settings_file_path, $dir, $name);
                     $field_definition = is_array($field_definition) ? $field_definition : [];
+                    $normalized_setting_name = $field_definition['name'] ?? $setting_name;
                     $type = $field_definition['type'] ?? (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $type = strtolower($type);
                     $sanitize_function_name = "sanitize_pom_form_$type";
@@ -58,18 +59,18 @@ class Pomatio_Framework_Save {
                         $sanitized_value = $sanitize_function_name($value, ['name' => $name], $page_slug);
 
                         if ($save_target['storage'] === 'default') {
-                            unset($fields_metadata[$setting_name]);
-                            $data[$setting_name] = $sanitized_value;
+                            unset($fields_metadata[$normalized_setting_name]);
+                            $data[$normalized_setting_name] = $sanitized_value;
                         }
                         else {
-                            (new self)->persist_external_value($setting_name, $sanitized_value, $save_target, $fields_metadata, $field_definition);
+                            (new self)->persist_external_value($normalized_setting_name, $sanitized_value, $save_target, $fields_metadata, $field_definition);
                         }
                     }
                     elseif ($type === 'code_html' || $type === 'code_css' || $type === 'code_js' || $type === 'code_json' || $type === 'tinymce') {
                         $extension = $type === 'tinymce' ? 'html' : str_replace('code_', '', $type);
                         if ($save_target['storage'] === 'default') {
-                            unset($fields_metadata[$setting_name]);
-                            $data[$setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
+                            unset($fields_metadata[$normalized_setting_name]);
+                            $data[$normalized_setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
                         }
                         else {
                             $sanitized_value = stripslashes($value);
@@ -77,11 +78,11 @@ class Pomatio_Framework_Save {
                                 $sanitized_value = $sanitize_function_name($sanitized_value);
                             }
 
-                            (new self)->persist_external_value($setting_name, $sanitized_value, $save_target, $fields_metadata, $field_definition);
+                            (new self)->persist_external_value($normalized_setting_name, $sanitized_value, $save_target, $fields_metadata, $field_definition);
                         }
 
                         if ($translatable && $extension === 'html') {
-                            $translatables[$setting_name] = [
+                            $translatables[$normalized_setting_name] = [
                                 'filename' => $dir,
                                 'multiline' => true,
                                 'type' => $type
@@ -92,16 +93,16 @@ class Pomatio_Framework_Save {
                         $sanitized = $sanitize_function_name($value);
 
                         if ($save_target['storage'] === 'default') {
-                            unset($fields_metadata[$setting_name]);
-                            $data[$setting_name] = $sanitized;
+                            unset($fields_metadata[$normalized_setting_name]);
+                            $data[$normalized_setting_name] = $sanitized;
                         }
                         else {
-                            (new self)->persist_external_value($setting_name, $sanitized, $save_target, $fields_metadata, $field_definition);
+                            (new self)->persist_external_value($normalized_setting_name, $sanitized, $save_target, $fields_metadata, $field_definition);
                         }
 
                         if ($translatable && ($type === 'text' || $type === 'url' || $type === 'textarea' || $type === 'tinymce')) {
                             $multiline = $type === 'textarea' || $type === 'tinymce';
-                            $translatables[$setting_name] = [
+                            $translatables[$normalized_setting_name] = [
                                 'filename' => $dir,
                                 'multiline' => $multiline,
                                 'type' => $type
@@ -191,12 +192,18 @@ class Pomatio_Framework_Save {
         $field_key = str_replace(["{$setting_name}_", '[]'], '', $field_name);
         $field_key = preg_replace('/\[.*$/', '', $field_key);
 
+        $maybe_base_field_key = preg_replace('/_[a-zA-Z0-9]{6}$/', '', $field_key);
+
         foreach ($fields as $field) {
             if (!isset($field['name'])) {
                 continue;
             }
 
             if ($field['name'] === $field_key) {
+                return $field;
+            }
+
+            if ($maybe_base_field_key !== $field_key && $field['name'] === $maybe_base_field_key) {
                 return $field;
             }
         }
