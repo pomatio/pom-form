@@ -426,16 +426,28 @@ if (!function_exists('sanitize_pom_form_url')) {
             return '#' . sanitize_title($value);
         }
 
+        if ($value === '') {
+            return '';
+        }
+
+        // Allow relative paths but reject special keywords that would otherwise
+        // be coerced into fake hosts such as "http://self".
         if (strpos($value, '/') === 0) {
             return esc_url_raw($value);
         }
 
-        $sanitized = esc_url_raw($value);
+        $sanitized = sanitize_url($value);
 
         if ($sanitized === '') {
             return '';
         }
 
-        return wp_http_validate_url($sanitized) ? $sanitized : '';
+        $host = wp_parse_url($sanitized, PHP_URL_HOST);
+
+        if (!empty($host) && in_array(strtolower($host), ['self'], true)) {
+            return '';
+        }
+
+        return $sanitized;
     }
 }
