@@ -426,6 +426,16 @@ if (!function_exists('sanitize_pom_form_url')) {
             return '#' . sanitize_title($value);
         }
 
-        return sanitize_url($value);
+        if (strpos($value, '/') === 0) {
+            return esc_url_raw($value);
+        }
+
+        $sanitized = esc_url_raw($value);
+
+        if ($sanitized === '') {
+            return '';
+        }
+
+        return wp_http_validate_url($sanitized) ? $sanitized : '';
     }
 }
