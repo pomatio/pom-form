@@ -420,30 +420,44 @@ if (!function_exists('sanitize_pom_form_tinymce')) {
 
 if (!function_exists('sanitize_pom_form_url')) {
     function sanitize_pom_form_url($value): string {
-        $value = trim($value);
+        // Normalize to string and trim
+        $value = trim((string) $value);
 
-        if (strpos($value, '#') === 0) {
-            return '#' . sanitize_title($value);
-        }
-
+        // Empty: nothing to save
         if ($value === '') {
             return '';
         }
 
-        // Allow relative paths but reject special keywords that would otherwise
-        // be coerced into fake hosts such as "http://self".
+        // Anchor links: "#section"
+        if (strpos($value, '#') === 0) {
+            // Remove the leading "#" before sanitizing the slug
+            $anchor = substr($value, 1);
+
+            return '#' . sanitize_title($anchor);
+        }
+
+        // Relative paths starting with "/": "/contact", "/folder/page"
         if (strpos($value, '/') === 0) {
             return esc_url_raw($value);
         }
 
-        $sanitized = sanitize_url($value);
+        // If there's no scheme ("http://", "https://", "mailto:", "tel:", etc.),
+        // assume "https://" for convenience ("example.com" -> "https://example.com").
+        if (!preg_match('~^[a-z][a-z0-9+.\-]*://~i', $value)) {
+            $value = 'https://' . $value;
+        }
+
+        // Sanitize URL using WordPress' standard function
+        // Add any other protocols you want to support here (e.g. "ftp").
+        $sanitized = esc_url_raw($value, ['http', 'https', 'mailto', 'tel']);
 
         if ($sanitized === '') {
+            // Invalid or disallowed URL
             return '';
         }
 
+        // Extra safety: reject hosts like "self"
         $host = wp_parse_url($sanitized, PHP_URL_HOST);
-
         if (!empty($host) && in_array(strtolower($host), ['self'], true)) {
             return '';
         }
