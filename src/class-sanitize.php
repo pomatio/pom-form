@@ -420,6 +420,7 @@ if (!function_exists('sanitize_pom_form_tinymce')) {
 
 if (!function_exists('sanitize_pom_form_url')) {
     function sanitize_pom_form_url($value): string {
+        error_log(print_r($value, true));
         return $value;
     }
 }
