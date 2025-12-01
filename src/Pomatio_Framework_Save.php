@@ -192,7 +192,13 @@ class Pomatio_Framework_Save {
         $field_key = str_replace(["{$setting_name}_", '[]'], '', $field_name);
         $field_key = preg_replace('/\[.*$/', '', $field_key);
 
-        $maybe_base_field_key = preg_replace('/_[a-zA-Z0-9]{6}$/', '', $field_key);
+        $maybe_base_field_key = $field_key;
+        $has_random_suffix = false;
+
+        if (preg_match('/_[A-Za-z0-9]{6}$/', $field_key)) {
+            $maybe_base_field_key = preg_replace('/_[A-Za-z0-9]{6}$/', '', $field_key);
+            $has_random_suffix = true;
+        }
 
         foreach ($fields as $field) {
             if (!isset($field['name'])) {
@@ -202,9 +208,17 @@ class Pomatio_Framework_Save {
             if ($field['name'] === $field_key) {
                 return $field;
             }
+        }
 
-            if ($maybe_base_field_key !== $field_key && $field['name'] === $maybe_base_field_key) {
-                return $field;
+        if ($has_random_suffix && $maybe_base_field_key !== $field_key) {
+            foreach ($fields as $field) {
+                if (!isset($field['name'])) {
+                    continue;
+                }
+
+                if ($field['name'] === $maybe_base_field_key) {
+                    return $field;
+                }
             }
         }
 
