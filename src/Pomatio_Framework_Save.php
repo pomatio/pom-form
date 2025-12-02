@@ -45,19 +45,18 @@ class Pomatio_Framework_Save {
 
                     $setting_name = str_replace(["{$dir}_", '[]'], '', $name);
                     $setting_name = preg_replace('/\[.*$/', '', $setting_name);
+                    if (strpos($name, "{$dir}_") === 0) {
+                        $setting_name = substr($name, strlen("{$dir}_"));
+                    } else {
+                        $setting_name = $name;
+                    }
+                    $setting_name = str_replace('[]', '', $setting_name);
+                    $setting_name = preg_replace('/\[.*$/', '', $setting_name);
 
                     $field_definition = (new self)->get_field_definition($settings_file_path, $dir, $name);
-                    $has_field_definition = is_array($field_definition);
-                    $normalized_setting_name = $has_field_definition && isset($field_definition['name']) ? $field_definition['name'] : $setting_name;
+                    $field_definition = is_array($field_definition) ? $field_definition : [];
+                    $normalized_setting_name = $field_definition['name'] ?? $setting_name;
 
-                    if (
-                        !$has_field_definition &&
-                        preg_match('/_[A-Za-z0-9]{6}$/', $normalized_setting_name)
-                    ) {
-                        $normalized_setting_name = preg_replace('/_[A-Za-z0-9]{6}$/', '', $normalized_setting_name);
-                    }
-
-                    $field_definition = $has_field_definition ? $field_definition : [];
                     $type = $field_definition['type'] ?? (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $type = strtolower($type);
                     $sanitize_function_name = "sanitize_pom_form_$type";
@@ -198,7 +197,13 @@ class Pomatio_Framework_Save {
         $settings_dir = $this->resolve_settings_dir($settings_array);
 
         $fields = Pomatio_Framework_Settings::read_fields($settings_dir, $setting_name);
-        $field_key = str_replace(["{$setting_name}_", '[]'], '', $field_name);
+        if (strpos($field_name, "{$setting_name}_") === 0) {
+            $field_key = substr($field_name, strlen("{$setting_name}_"));
+        } else {
+            $field_key = $field_name;
+        }
+
+        $field_key = str_replace('[]', '', $field_key);
         $field_key = preg_replace('/\[.*$/', '', $field_key);
 
         $maybe_base_field_key = $field_key;
