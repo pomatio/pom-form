@@ -47,14 +47,17 @@ class Pomatio_Framework_Save {
                     $setting_name = preg_replace('/\[.*$/', '', $setting_name);
 
                     $field_definition = (new self)->get_field_definition($settings_file_path, $dir, $name);
-                    $field_definition = is_array($field_definition) ? $field_definition : [];
-                    $normalized_setting_name = $field_definition['name'] ?? $setting_name;
+                    $has_field_definition = is_array($field_definition);
+                    $normalized_setting_name = $has_field_definition && isset($field_definition['name']) ? $field_definition['name'] : $setting_name;
+
                     if (
-                        $field_definition === null &&
+                        !$has_field_definition &&
                         preg_match('/_[A-Za-z0-9]{6}$/', $normalized_setting_name)
                     ) {
                         $normalized_setting_name = preg_replace('/_[A-Za-z0-9]{6}$/', '', $normalized_setting_name);
                     }
+
+                    $field_definition = $has_field_definition ? $field_definition : [];
                     $type = $field_definition['type'] ?? (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $type = strtolower($type);
                     $sanitize_function_name = "sanitize_pom_form_$type";
