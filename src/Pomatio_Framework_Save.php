@@ -166,7 +166,8 @@ class Pomatio_Framework_Save {
          * 1 = Enabled
          * 0 = Disabled
          */
-        $settings_array = array_filter((array)Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array'));
+        $settings_array = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        $settings_array = is_array($settings_array) ? array_filter($settings_array) : [];
         $settings_array[$setting] = isset($data['enabled']) && $data['enabled'] === 'yes' ? '1' : '0';
 
         $settings_content = (new Pomatio_Framework_Disk)->generate_file_content($settings_array, "Enabled settings array file.");

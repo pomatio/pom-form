@@ -264,7 +264,13 @@ HTACCESS;
         $path = $settings_path . $filename;
 
         if (file_exists($path)) {
-            return $return === 'array' ? include $path : file_get_contents($path);
+            $content = $return === 'array' ? include $path : file_get_contents($path);
+
+            if ($return === 'array') {
+                return is_array($content) ? $content : [];
+            }
+
+            return $content;
         }
 
         return $return === 'array' ? [] : '';

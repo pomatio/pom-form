@@ -108,6 +108,7 @@ class Pomatio_Framework_Settings {
         }
         else {
             $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+            $enabled_settings = is_array($enabled_settings) ? $enabled_settings : [];
         }
 
         return isset($enabled_settings[$setting_name]) && $enabled_settings[$setting_name] === '1';
@@ -116,7 +117,8 @@ class Pomatio_Framework_Settings {
     public static function get_effective_enabled_settings(string $page_slug, array $settings_array): array {
         Pomatio_Framework_Disk::create_settings_dir($page_slug);
 
-        $enabled_settings = (array)Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        $enabled_settings = is_array($enabled_settings) ? $enabled_settings : [];
         $definitions = self::flatten_settings_definitions($settings_array);
         $needs_write = false;
 
