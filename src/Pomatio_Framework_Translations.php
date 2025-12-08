@@ -33,8 +33,9 @@ class Pomatio_Framework_Translations {
         if (!empty($strings) && is_array($strings)) {
             foreach ($strings as $name => $data) {
                 $string = Pomatio_Framework_Settings::get_setting_value($this->settings_dir, $data['filename'], $name, $data['type']);
+                $type = strtolower($data['type']);
 
-                if (strtolower($data['type']) === 'code_html' && file_exists($string)) {
+                if (in_array($type, ['code_html', 'tinymce'], true) && file_exists($string)) {
                     $string = file_get_contents($string);
                 }
 
