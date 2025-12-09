@@ -36,7 +36,7 @@ class Image_Picker {
 
                 ?>
             </div>
-            <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $value ?>">
+            <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="image_picker">
             <span class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></span>
         </div>
 
@@ -48,6 +48,7 @@ class Image_Picker {
 
         echo '</div>';
 
+        wp_enqueue_media();
         wp_enqueue_style('pomatio-framework-image_picker', POM_FORM_SRC_URI . '/dist/css/image-picker.min.css');
         wp_enqueue_script('pomatio-framework-image_picker',  POM_FORM_SRC_URI . '/dist/js/image_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
