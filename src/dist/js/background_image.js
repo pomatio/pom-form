@@ -1,228 +1,261 @@
 jQuery(function($) {
+  const nameSelector = function(name, element = '') {
+    return `${element}[name="${name}"], ${element}[name="${name.replace(/_/g, '-')}"]`;
+  };
+
+  const selectors = {
+    backgroundImage: nameSelector('background-image', 'input'),
+    horizontalAlignment: nameSelector('horizontal_alignment', 'input'),
+    verticalAlignment: nameSelector('vertical_alignment', 'input'),
+    customHorizontalNumber: nameSelector('custom_horizontal_alignment_number', 'input'),
+    customHorizontalUnit: nameSelector('custom_horizontal_alignment_unit', 'select'),
+    customVerticalNumber: nameSelector('custom_vertical_alignment_number', 'input'),
+    customVerticalUnit: nameSelector('custom_vertical_alignment_unit', 'select'),
+    backgroundRepeat: nameSelector('background-repeat', 'select'),
+    backgroundAttachment: nameSelector('background-attachment', 'select'),
+    backgroundSize: nameSelector('background-size', 'input'),
+    customBackgroundWidthNumber: nameSelector('custom_background_size_width_number', 'input'),
+    customBackgroundWidthUnit: nameSelector('custom_background_size_width_unit', 'select'),
+    customBackgroundHeightNumber: nameSelector('custom_background_size_height_number', 'input'),
+    customBackgroundHeightUnit: nameSelector('custom_background_size_height_unit', 'select'),
+  };
+
+  const parseJson = function(value) {
+    try {
+      const parsed = JSON.parse(value);
+      return $.isPlainObject(parsed) ? parsed : {};
+    } catch (e) {
+      return {};
+    }
+  };
+
+  const getHiddenValue = function($wrapper) {
+    const rawValue = $wrapper.find('input[type="hidden"]').val();
+    if (!rawValue || rawValue === '[]') {
+      return {};
+    }
+
+    return parseJson(rawValue);
+  };
+
+  const getAlignmentValue = function($wrapper, axis) {
+    const isHorizontal = axis === 'horizontal';
+    const radioSelector = isHorizontal ? selectors.horizontalAlignment : selectors.verticalAlignment;
+    const numberSelector = isHorizontal ? selectors.customHorizontalNumber : selectors.customVerticalNumber;
+    const unitSelector = isHorizontal ? selectors.customHorizontalUnit : selectors.customVerticalUnit;
+
+    const selected = $wrapper.find(radioSelector).filter(':checked').val();
+
+    if (selected === 'custom') {
+      const number = $wrapper.find(numberSelector).val();
+      const unit = $wrapper.find(unitSelector).val();
+
+      if (`${number}`.length) {
+        return `${number}${unit}`;
+      }
+    }
+
+    return selected || '';
+  };
+
+  const getBackgroundSizeValue = function($wrapper) {
+    const selected = $wrapper.find(selectors.backgroundSize).filter(':checked').val();
+
+    if (selected === 'custom') {
+      const widthNumber = $wrapper.find(selectors.customBackgroundWidthNumber).val();
+      const widthUnit = $wrapper.find(selectors.customBackgroundWidthUnit).val();
+      const heightNumber = $wrapper.find(selectors.customBackgroundHeightNumber).val();
+      const heightUnit = $wrapper.find(selectors.customBackgroundHeightUnit).val();
+
+      if (`${widthNumber}`.length && `${heightNumber}`.length) {
+        return `${widthNumber}${widthUnit} ${heightNumber}${heightUnit}`;
+      }
+    }
+
+    return selected || '';
+  };
+
+  const setHiddenValue = function($element, object = {}) {
+    const $wrapper = $element.closest('.background-image-wrapper');
+    const savedValue = getHiddenValue($wrapper);
+    let data = $.isPlainObject(savedValue) ? savedValue : {};
+
+    data = $.extend(data, object);
+
+    const horizontal = getAlignmentValue($wrapper, 'horizontal') || data.horizontal_alignment || 'center';
+    const vertical = getAlignmentValue($wrapper, 'vertical') || data.vertical_alignment || 'center';
+    const backgroundSize = object['background-size'] !== undefined ? object['background-size'] : (getBackgroundSizeValue($wrapper) || data['background-size']);
+
+    data.horizontal_alignment = horizontal;
+    data.vertical_alignment = vertical;
+
+    if (backgroundSize) {
+      data['background-size'] = backgroundSize;
+    }
+
+    data['background-position'] = `${horizontal} ${vertical}`;
+
+    $wrapper.find('input[type="hidden"]').val(JSON.stringify(data));
+  };
+
+  const toggleCustomWrappers = function($wrapper) {
+    const horizontalSelected = $wrapper.find(selectors.horizontalAlignment).filter(':checked').val();
+    const verticalSelected = $wrapper.find(selectors.verticalAlignment).filter(':checked').val();
+    const backgroundSizeSelected = $wrapper.find(selectors.backgroundSize).filter(':checked').val();
+
+    $wrapper.find('.custom-horizontal_alignment-wrapper')[horizontalSelected === 'custom' ? 'show' : 'hide']();
+    $wrapper.find('.custom-vertical_alignment-wrapper')[verticalSelected === 'custom' ? 'show' : 'hide']();
+    $wrapper.find('.custom-background-size-wrapper')[backgroundSizeSelected === 'custom' ? 'show' : 'hide']();
+  };
+
   // Load stored data
   $('.background-image-wrapper').each(function() {
-    let $this = $(this);
-    
-    let $value = $this.find('input[type="hidden"]').val();
-    if ($value) {
-      $value = JSON.parse($value);
-      
-      $.each($value, function(key, fvalue) {
-        let $field = $(`[name="${key}"]`);
+    const $wrapper = $(this);
+
+    const storedValue = $wrapper.find('input[type="hidden"]').val();
+    if (storedValue) {
+      const parsedValue = parseJson(storedValue);
+
+      $.each(parsedValue, function(key, fvalue) {
+        const selector = nameSelector(key);
+        const $field = $wrapper.find(selector);
+
+        if (!$field.length) {
+          return;
+        }
+
         if ($field.is(':radio') && (key === 'horizontal_alignment' || key === 'vertical_alignment')) {
           if (fvalue === 'left' || fvalue === 'center' || fvalue === 'right' || fvalue === 'bottom' || fvalue === 'top') {
-            $this.find(`[name="${key}"][value="${fvalue}"]`).prop('checked', true);
+            $field.filter(`[value="${fvalue}"]`).prop('checked', true);
           }
           else {
-            let $number = fvalue.match(/\d+/);
-            let $unit = fvalue.replace($number, '');
-            
-            $this.find(`[name="${key}"][value="custom"]`).prop('checked', true);
-            $this.find(`.custom-${key}-wrapper`).show();
-            $this.find(`[name="custom_${key}_number"]`).val($number[0]);
-            $this.find(`[name="custom_${key}_unit"] option[value="${$unit}"]`).prop('selected', true);
+            const numberMatch = `${fvalue}`.match(/[\d.]+/);
+            const number = Array.isArray(numberMatch) ? numberMatch[0] : '';
+            const unit = `${fvalue}`.replace(number, '');
+
+            $field.filter('[value="custom"]').prop('checked', true);
+            $wrapper.find(`.custom-${key}-wrapper`).show();
+            $wrapper.find(nameSelector(`custom_${key}_number`)).val(number);
+            $wrapper.find(nameSelector(`custom_${key}_unit`)).val(unit);
           }
         }
         else if ($field.is(':radio') && key === 'background-size') {
           if (fvalue !== 'auto' && fvalue !== 'cover' && fvalue !== 'contain') {
-            $this.find(`[name="${key}"][value="custom"]`).prop('checked', true);
-            $this.find(`.custom-background-size-wrapper`).show();
-            
-            let $values = fvalue.split(' ');
-            if ($values.length === 2) {
-              let $width_number = $values[0].match(/\d+/);
-              let $width_unit = $values[0].replace($width_number, '');
-              
-              $this.find(`[name="custom_background_size_width_number"]`).val($width_number);
-              $this.find(`[name="custom_background_size_width_unit"] option[value="${$width_unit}"]`).prop('selected', true);
-              
-              let $height_number = $values[1].match(/\d+/);
-              let $height_unit = $values[1].replace($height_number, '');
-              $this.find(`[name="custom_background_size_height_number"]`).val($height_number);
-              $this.find(`[name="custom_background_size_height_unit"] option[value="${$height_unit}"]`).prop('selected', true);
-              
-              $this.find('.custom-background-size-wrapper').show();
+            $field.filter('[value="custom"]').prop('checked', true);
+            $wrapper.find('.custom-background-size-wrapper').show();
+
+            const values = `${fvalue}`.split(' ');
+            if (values.length === 2) {
+              const widthNumber = values[0].match(/[\d.]+/);
+              const widthUnit = `${values[0]}`.replace(widthNumber, '');
+
+              $wrapper.find(selectors.customBackgroundWidthNumber).val(Array.isArray(widthNumber) ? widthNumber[0] : '');
+              $wrapper.find(selectors.customBackgroundWidthUnit).val(widthUnit);
+
+              const heightNumber = values[1].match(/[\d.]+/);
+              const heightUnit = `${values[1]}`.replace(heightNumber, '');
+              $wrapper.find(selectors.customBackgroundHeightNumber).val(Array.isArray(heightNumber) ? heightNumber[0] : '');
+              $wrapper.find(selectors.customBackgroundHeightUnit).val(heightUnit);
+
+              $wrapper.find('.custom-background-size-wrapper').show();
             }
-            
+
           }
           else {
-            $this.find(`[name="${key}"][value="${fvalue}"]`).prop('checked', true);
+            $field.filter(`[value="${fvalue}"]`).prop('checked', true);
           }
         }
         else {
-          $this.closest('.background-image-wrapper').find(`[name="${key}"]`).val(fvalue);
+          $field.val(fvalue);
         }
       });
     }
+
+    toggleCustomWrappers($wrapper);
+    setHiddenValue($wrapper.find('input[type="hidden"]'));
   });
-  
-  $(document).on('change', 'input[name="background-image"]', function() {
-    let $this = $(this);
-    let $value = {};
-    
-    $value['background-image'] = $this.val();
-    $set_hidden_value($this, $value);
+
+  $(document).on('change', selectors.backgroundImage, function() {
+    const $this = $(this);
+    const value = {};
+
+    value['background-image'] = $this.val();
+    setHiddenValue($this, value);
   });
-  
-  $(document).on('click', 'input[name="horizontal_alignment"]', function() {
-    let $this = $(this);
-    
-    if ($this.val() === 'custom') {
-      $this.closest('.horizontal-alignment').find('.custom-horizontal_alignment-wrapper').show();
-    }
-    else {
-      $this.closest('.horizontal-alignment').find('.custom-horizontal_alignment-wrapper').hide();
-    }
+
+  $(document).on('click', selectors.horizontalAlignment, function() {
+    const $wrapper = $(this).closest('.background-image-wrapper');
+
+    toggleCustomWrappers($wrapper);
   });
-  
-  $(document).on('click', 'input[name="vertical_alignment"]', function() {
-    let $this = $(this);
-    
-    if ($this.val() === 'custom') {
-      $this.closest('.vertical-alignment').find('.custom-vertical_alignment-wrapper').show();
-    }
-    else {
-      $this.closest('.vertical-alignment').find('.custom-vertical_alignment-wrapper').hide();
-    }
+
+  $(document).on('click', selectors.verticalAlignment, function() {
+    const $wrapper = $(this).closest('.background-image-wrapper');
+
+    toggleCustomWrappers($wrapper);
   });
-  
-  $(document).on('click', 'input[name="background-size"]', function() {
-    let $this = $(this);
-    
-    if ($this.val() === 'custom') {
-      $this.closest('.background-size-wrapper').find('.custom-background-size-wrapper').show();
-    }
-    else {
-      $this.closest('.background-size-wrapper').find('.custom-background-size-wrapper').hide();
-    }
+
+  $(document).on('click', selectors.backgroundSize, function() {
+    const $wrapper = $(this).closest('.background-image-wrapper');
+
+    toggleCustomWrappers($wrapper);
   });
-  
-  let $get_hidden_value = function($element) {
-    let $val = $element.closest('.background-image-wrapper').find('input[type="hidden"]').val();
-    
-    if ($val === '[]') {
-      $val = {};
-    }
-    
-    return $val;
-  };
-  
-  let $set_hidden_value = function($element, $object) {
-    let $saved_value = $get_hidden_value($element);
-    let $data = {};
-    
-    if ($saved_value.length) {
-      $data = JSON.parse($saved_value);
-    }
-    
-    $.extend($data, $object);
-    
-    // Merge horizontal aligment and vertical alignment
-    $data['background-position'] = `${$data.horizontal_alignment} ${$data.vertical_alignment}`;
-    
-    let $value = JSON.stringify($data);
-    $element.closest('.background-image-wrapper').find('input[type="hidden"]').val($value);
-  };
-  
+
   // Horizontal alignment
-  $(document).on('change keyup', 'input[name="horizontal_alignment"], input[name="custom_horizontal_alignment_number"], select[name="custom_horizontal_alignment_unit"]', function() {
-    let $this = $(this);
-    let $value = {};
-    let $alignment = $this.closest('.horizontal-alignment').find('input[name="horizontal_alignment"]:checked').val();
-    
-    if ($alignment === 'custom') {
-      let $number = $this.closest('.horizontal-alignment').find('input[name="custom_horizontal_alignment_number"]').val();
-      let $unit = $this.closest('.horizontal-alignment').find('select[name="custom_horizontal_alignment_unit"]').val();
-      
-      $value.horizontal_alignment = `${$number}${$unit}`;
-    }
-    else {
-      $value.horizontal_alignment = $this.val();
-    }
-    
-    $set_hidden_value($this, $value);
+  $(document).on('change keyup', `${selectors.horizontalAlignment}, ${selectors.customHorizontalNumber}, ${selectors.customHorizontalUnit}`, function() {
+    const $this = $(this);
+    const $wrapper = $this.closest('.background-image-wrapper');
+    const value = {};
+
+    value.horizontal_alignment = getAlignmentValue($wrapper, 'horizontal');
+
+    toggleCustomWrappers($wrapper);
+    setHiddenValue($this, value);
   });
-  
+
   // Vertical alignment
-  $(document).on('change keyup', 'input[name="vertical_alignment"], input[name="custom_vertical_alignment_number"], select[name="custom_vertical_alignment_unit"]', function() {
-    let $this = $(this);
-    let $value = {};
-    let $alignment = $this.closest('.vertical-alignment').find('input[name="vertical_alignment"]:checked').val();
-    
-    if ($alignment === 'custom') {
-      let $number = $this.closest('.vertical-alignment').find('input[name="custom_vertical_alignment_number"]').val();
-      let $unit = $this.closest('.vertical-alignment').find('select[name="custom_vertical_alignment_unit"]').val();
-      
-      $value.vertical_alignment = `${$number}${$unit}`;
-    }
-    else {
-      $value.vertical_alignment = $this.val();
-    }
-    
-    $set_hidden_value($this, $value);
+  $(document).on('change keyup', `${selectors.verticalAlignment}, ${selectors.customVerticalNumber}, ${selectors.customVerticalUnit}`, function() {
+    const $this = $(this);
+    const $wrapper = $this.closest('.background-image-wrapper');
+    const value = {};
+
+    value.vertical_alignment = getAlignmentValue($wrapper, 'vertical');
+
+    toggleCustomWrappers($wrapper);
+    setHiddenValue($this, value);
   });
-  
+
   $(document).on('click', '.restore-radio-icon', function() {
-    let $this = $(this);
-    let $horizontal_alignment = $this.closest('.horizontal-alignment').find('input[name="horizontal_alignment"]:checked').val();
-    let $vertical_alignment = $this.closest('.vertical-alignment').find('input[name="vertical_alignment"]:checked').val();
-    let $background_size = $this.closest('.background-size-wrapper').find('input[name="background-size"]:checked').val();
-    
-    if ($horizontal_alignment === 'custom') {
-      $this.closest('.horizontal-alignment').find('.custom-horizontal_alignment-wrapper').show();
-    }
-    else {
-      $this.closest('.horizontal-alignment').find('.custom-horizontal_alignment-wrapper').hide();
-    }
-    
-    if ($vertical_alignment === 'custom') {
-      $this.closest('.vertical-alignment').find('.custom-vertical_alignment-wrapper').show();
-    }
-    else {
-      $this.closest('.vertical-alignment').find('.custom-vertical_alignment-wrapper').hide();
-    }
-    
-    if ($background_size === 'custom') {
-      $this.closest('.background-size-wrapper').find('.custom-background-size-wrapper').show();
-    }
-    else {
-      $this.closest('.background-size-wrapper').find('.custom-background-size-wrapper').hide();
-    }
+    const $wrapper = $(this).closest('.background-image-wrapper');
+
+    toggleCustomWrappers($wrapper);
+    setHiddenValue($(this));
   });
-  
-  $(document).on('change', 'select[name="background-repeat"]', function() {
-    let $this = $(this);
-    let $value = {};
-    
-    $value['background-repeat'] = $this.val();
-    $set_hidden_value($this, $value);
+
+  $(document).on('change', selectors.backgroundRepeat, function() {
+    const $this = $(this);
+    const value = {};
+
+    value['background-repeat'] = $this.val();
+    setHiddenValue($this, value);
   });
-  
-  $(document).on('change', 'select[name="background-attachment"]', function() {
-    let $this = $(this);
-    let $value = {};
-    
-    $value['background-attachment'] = $this.val();
-    $set_hidden_value($this, $value);
+
+  $(document).on('change', selectors.backgroundAttachment, function() {
+    const $this = $(this);
+    const value = {};
+
+    value['background-attachment'] = $this.val();
+    setHiddenValue($this, value);
   });
-  
-  $(document).on('change keyup', 'input[name="background-size"], input[name="custom_background_size_width_number"], select[name="custom_background_size_width_unit"], input[name="custom_background_size_height_number"], select[name="custom_background_size_height_unit"]', function() {
-    let $this = $(this);
-    let $value = {};
-    let $size = $this.closest('.background-size-wrapper').find('input[name="background-size"]:checked').val();
-    
-    if ($size === 'custom') {
-      let $width_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_width_number"]').val();
-      let $width_unit = $this.closest('.background-size-wrapper').find('select[name="custom_background_size_width_unit"]').val();
-      let $height_number = $this.closest('.background-size-wrapper').find('input[name="custom_background_size_height_number"]').val();
-      let $height_unit = $this.closest('.background-size-wrapper').find('select[name="custom_background_size_height_unit"]').val();
-      
-      $value['background-size'] = `${$width_number}${$width_unit} ${$height_number}${$height_unit}`;
-    }
-    else {
-      $value['background-size'] = $this.val();
-    }
-    
-    $set_hidden_value($this, $value);
+
+  $(document).on('change keyup', `${selectors.backgroundSize}, ${selectors.customBackgroundWidthNumber}, ${selectors.customBackgroundWidthUnit}, ${selectors.customBackgroundHeightNumber}, ${selectors.customBackgroundHeightUnit}`, function() {
+    const $this = $(this);
+    const $wrapper = $this.closest('.background-image-wrapper');
+    const value = {};
+
+    value['background-size'] = getBackgroundSizeValue($wrapper) || $this.val();
+
+    toggleCustomWrappers($wrapper);
+    setHiddenValue($this, value);
   });
 });
