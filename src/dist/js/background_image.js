@@ -1,6 +1,7 @@
 jQuery(function($) {
   const nameSelector = function(name, element = '') {
-    return `${element}[name="${name}"], ${element}[name="${name.replace(/_/g, '-')}"]`;
+    const base = name.replace(/_/g, '-');
+    return `${element}[data-base-name="${name}"], ${element}[name="${name}"], ${element}[name="${base}"]`;
   };
 
   const selectors = {
