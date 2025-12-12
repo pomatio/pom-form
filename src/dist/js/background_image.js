@@ -112,6 +112,7 @@ jQuery(function($) {
   // Load stored data
   $('.background-image-wrapper').each(function() {
     const $wrapper = $(this);
+    let shouldTriggerBackgroundImageChange = false;
 
     const storedValue = $wrapper.find('input[type="hidden"]').val();
     if (storedValue) {
@@ -168,12 +169,24 @@ jQuery(function($) {
         }
         else {
           $field.val(fvalue);
+
+          if (key === 'background-image') {
+            shouldTriggerBackgroundImageChange = true;
+          }
         }
       });
     }
 
     toggleCustomWrappers($wrapper);
     setHiddenValue($wrapper.find('input[type="hidden"]'));
+
+    if (shouldTriggerBackgroundImageChange) {
+      const $backgroundImageField = $wrapper.find(selectors.backgroundImage);
+
+      if ($backgroundImageField.length) {
+        $backgroundImageField.trigger('change');
+      }
+    }
   });
 
   $(document).on('change', selectors.backgroundImage, function() {
