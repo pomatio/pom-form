@@ -491,7 +491,8 @@ The framework ships the following field types. Use this table to pick the right 
 | `gallery` | WordPress media modal gallery selector. | Returns comma-separated attachment IDs, allows reordering, and sanitises IDs to digits and commas. |
 | `hidden` | Hidden metadata field. | Useful for storing configuration without UI; sanitiser strips unexpected content. |
 | `icon_picker` | SVG and icon font selector. | Lists available icon libraries, supports search, and sanitises selected icon URLs. |
-| `image_picker` | WordPress media modal image selector. | Stores attachment IDs or URLs, supports custom button text, and sanitises to valid URLs/IDs. |
+| `image_picker` | WordPress media modal image selector. | Stores image URLs, supports custom button text, and sanitises to valid URLs. |
+| `image_picker_id` | WordPress media modal image selector that stores attachment IDs. | Keeps a hidden ID input, renders previews from the attachment URL, and sanitises to numeric IDs. |
 | `number` | `<input type="number">`. | Provides placeholder support, respects dependencies, and sanitises the submission to numeric characters. |
 | `password` | `<input type="password">`. | Displays saved values when provided, honours dependency metadata, and sanitises submissions using `sanitize_text_field()`. |
 | `quantity` | Numeric input with plus/minus controls. | JavaScript increments/decrements values, while the sanitiser normalises numeric output. |
@@ -708,4 +709,3 @@ By mirroring the input type you ensure the runtime value has been filtered by th
 - Review the JavaScript assets enqueued from `assets/js` to customise behaviours such as repeater drag-and-drop or Select2 initialisation.
 
 ![Placeholder – resources collage](screenshots/resources-placeholder.png)
-
