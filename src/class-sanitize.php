@@ -194,6 +194,13 @@ if (!function_exists('sanitize_pom_form_image_picker')) {
     }
 }
 
+if (!function_exists('sanitize_pom_form_image_picker_id')) {
+    function sanitize_pom_form_image_picker_id($value): string {
+        $sanitized = absint($value);
+        return $sanitized ? (string) $sanitized : '';
+    }
+}
+
 if (!function_exists('sanitize_pom_form_number')) {
     function sanitize_pom_form_number($value) {
         return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT);

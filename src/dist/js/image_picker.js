@@ -14,12 +14,26 @@ jQuery(function($) {
     }
   };
 
+  const getPreviewUrl = function($wrapper, $input) {
+    if ($input.attr('type') === 'url') {
+      return $input.val();
+    }
+
+    const previewUrl = $wrapper.data('previewUrl');
+    return typeof previewUrl === 'string' ? previewUrl : '';
+  };
+
   const renderPreviewFromInput = function($input) {
-    renderPreview($input.closest('.pomatio-framework-image-wrapper'), $input.val());
+    const $wrapper = $input.closest('.pomatio-framework-image-wrapper');
+    renderPreview($wrapper, getPreviewUrl($wrapper, $input));
   };
 
   $('.pomatio-framework-image-wrapper').each(function() {
-    renderPreview($(this), $(this).find('input[type="url"]').val());
+    const $wrapper = $(this);
+    const $input = $wrapper.find('input[data-type="image_picker"]').first();
+    if ($input.length) {
+      renderPreview($wrapper, getPreviewUrl($wrapper, $input));
+    }
   });
 
   let $media_modal;
@@ -27,6 +41,10 @@ jQuery(function($) {
 
   $(document).on('click', '.open-image-picker', function(e) {
     e.preventDefault();
+
+    if (!$(this).closest('.pomatio-framework-image-wrapper').find('input[data-type="image_picker"]').length) {
+      return;
+    }
 
     $clicked_button = $(this);
 
@@ -49,21 +67,34 @@ jQuery(function($) {
     $media_modal.on('select', function() {
       let $attachment = $media_modal.state().get('selection').first().toJSON();
 
-      $clicked_button.closest('.pomatio-framework-image-wrapper').find('input[type="url"]').val($attachment.url).trigger('change');
+      const $wrapper = $clicked_button.closest('.pomatio-framework-image-wrapper');
+      const $input = $wrapper.find('input[data-type="image_picker"]');
+
+      if ($input.attr('type') === 'url') {
+        $input.val($attachment.url).trigger('change');
+        return;
+      }
+
+      $wrapper.data('previewUrl', $attachment.url);
+      $wrapper.attr('data-preview-url', $attachment.url);
+      $input.val($attachment.id).trigger('change');
     });
 
     // Open the uploader dialog
     $media_modal.open();
   });
 
-  $(document).on('input change', '.pomatio-framework-image-wrapper input[type="url"]', function() {
+  $(document).on('input change', '.pomatio-framework-image-wrapper input[data-type="image_picker"]', function() {
     renderPreviewFromInput($(this));
   });
 
   $(document).on('click', '.pomatio-framework-image-wrapper .remove-selected-image', function(e) {
     e.preventDefault();
 
-    $(this).closest('.pomatio-framework-image-wrapper').find('input[type="url"]').val('').trigger('change');
+    const $wrapper = $(this).closest('.pomatio-framework-image-wrapper');
+    $wrapper.data('previewUrl', '');
+    $wrapper.removeAttr('data-preview-url');
+    $wrapper.find('input[data-type="image_picker"]').val('').trigger('change');
   });
 
 });
