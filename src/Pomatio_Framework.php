@@ -133,6 +133,22 @@ class Pomatio_Framework {
                 }
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Font_Picker') {
+                    $mime_types = array_values(Pomatio_Framework_Helper::get_allowed_font_types());
+                    $mime_types = array_merge(
+                        $mime_types,
+                        [
+                            'application/x-font-otf',
+                            'application/x-font-ttf',
+                            'application/x-font-woff',
+                            'application/font-woff',
+                            'application/font-woff2',
+                            'application/font-sfnt',
+                            'application/x-font-opentype',
+                            'application/x-font-truetype',
+                        ]
+                    );
+                    $mime_types = array_values(array_unique($mime_types));
+
                     wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker.min.css');
                     wp_enqueue_script('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/js/font_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
                     wp_localize_script(
@@ -141,6 +157,7 @@ class Pomatio_Framework {
                         [
                             'title' => __('Choose Font', 'pomatio-framework'),
                             'button' => __('Choose Font', 'pomatio-framework'),
+                            'mime_types' => $mime_types,
                         ]
                     );
                 }

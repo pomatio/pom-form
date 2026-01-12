@@ -10,19 +10,18 @@ class Font {
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+            echo '<label for="' . esc_attr($args['id']) . '">' . esc_html($args['label']) . '</label>';
         }
 
         if (!empty($args['description']) && $args['description_position'] === 'below_label') {
-            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+            echo '<small class="description form-text text-muted">' . wp_kses_post($args['description']) . '</small>';
         }
 
-        // font weight y font style y las variantes
         echo (new Pomatio_Framework())::add_field([
             'type' => 'repeater',
             'title' => __('Fonts', 'pomatio-framework'),
-            'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
-            'placeholder' => 'Lorem Ipsum',
+            'description' => __('Add font families and their variants.', 'pomatio-framework'),
+            'placeholder' => __('Font family', 'pomatio-framework'),
             'name' => $args['name'],
             'value' => $args['value'],
             'limit' => 5,
@@ -31,7 +30,7 @@ class Font {
                     'type' => 'Text',
                     'used_for_title' => true,
                     'label' => __('Font name', 'pomatio-framework'),
-                    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                    'description' => __('Used as the font-family name.', 'pomatio-framework'),
                     'name' => 'font_name',
                     'class' => 'regular-text',
                     'value' => '',
@@ -39,7 +38,7 @@ class Font {
                 [
                     'type' => 'Select',
                     'label' => __('Font fallback', 'pomatio-framework'),
-                    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                    'description' => __('Fallback stack used when the custom font is unavailable.', 'pomatio-framework'),
                     'name' => 'font_fallback',
                     'options' => [
                         'sans_serif' => 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
@@ -51,8 +50,8 @@ class Font {
                     'type' => 'repeater',
                     'label' => __('Font variants', 'pomatio-framework'),
                     'title' => __('Font variant', 'pomatio-framework'),
-                    'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
-                    'placeholder' => 'Lorem Ipsum',
+                    'description' => __('Add variants with weight, style, and files.', 'pomatio-framework'),
+                    'placeholder' => __('Variant', 'pomatio-framework'),
                     'name' => 'font_variant',
                     'limit' => 18,
                     'fields' => [
@@ -60,7 +59,7 @@ class Font {
                             'type' => 'Text',
                             'used_for_title' => true,
                             'label' => __('Variant name', 'pomatio-framework'),
-                            'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                            'description' => __('Label for this variant (e.g., Regular 400).', 'pomatio-framework'),
                             'name' => 'variant_name',
                             'class' => 'regular-text',
                             'value' => '',
@@ -68,7 +67,7 @@ class Font {
                         [
                             'type' => 'Select',
                             'label' => __('Font weight', 'pomatio-framework'),
-                            'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                            'description' => __('CSS font-weight for this variant.', 'pomatio-framework'),
                             'name' => 'font_weight',
                             'options' => [
                                 'lighter' => __('100, lighter', 'pomatio-framework'),
@@ -82,7 +81,7 @@ class Font {
                         [
                             'type' => 'Select',
                             'label' => __('Font style', 'pomatio-framework'),
-                            'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                            'description' => __('CSS font-style for this variant.', 'pomatio-framework'),
                             'name' => 'font_style',
                             'options' => [
                                 'normal' => __('Normal', 'pomatio-framework'),
@@ -92,8 +91,8 @@ class Font {
                         ],
                         [
                             'type' => 'Font_Picker',
-                            'label' => __('Font variant', 'pomatio-framework'),
-                            'description' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+                            'label' => __('Font files', 'pomatio-framework'),
+                            'description' => __('Select font files for this variant.', 'pomatio-framework'),
                             'name' => 'font_variants',
                         ],
                     ]
@@ -102,7 +101,7 @@ class Font {
         ]);
 
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
-            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+            echo '<small class="description form-text text-muted">' . wp_kses_post($args['description']) . '</small>';
         }
 
         echo '</div>';

@@ -13,6 +13,10 @@ jQuery(function($) {
       return;
     }
     
+    const mimeTypes = Array.isArray(pom_form_font_picker.mime_types) && pom_form_font_picker.mime_types.length
+      ? pom_form_font_picker.mime_types
+      : ['application/vnd.ms-fontobject', 'font/otf', 'font/woff', 'font/woff2', 'font/ttf'];
+
     // Extend the wp.media object
     $media_modal = wp.media.frames.file_frame = wp.media({
       title: pom_form_font_picker.title,
@@ -21,7 +25,7 @@ jQuery(function($) {
       },
       multiple: false,
       library: {
-        type: 'font'
+        type: mimeTypes
       }
     });
     

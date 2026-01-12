@@ -15,16 +15,48 @@ class Pomatio_Framework_Disk {
         add_filter('upload_mimes', [$this, 'add_allowed_font_mimes_to_upload_types']);
     }
 
+    private function get_uploaded_file_name(): string {
+        if (!empty($_FILES) && is_array($_FILES)) {
+            foreach ($_FILES as $file) {
+                if (!is_array($file) || empty($file['name'])) {
+                    continue;
+                }
+
+                $name = is_array($file['name']) ? reset($file['name']) : $file['name'];
+
+                if (is_string($name) && $name !== '') {
+                    return $name;
+                }
+            }
+        }
+
+        if (isset($_POST['name']) && is_string($_POST['name']) && $_POST['name'] !== '') {
+            return $_POST['name'];
+        }
+
+        return '';
+    }
+
     public function set_fonts_upload_dir($path) {
-        if (!isset($_POST['name']) || is_array($_POST['name'])) {
+        if (!empty($path['error'])) {
             return $path;
         }
 
-        $extension = substr(strrchr($_POST['name'], '.'), 1);
+        $file_name = $this->get_uploaded_file_name();
+
+        if ($file_name === '') {
+            return $path;
+        }
+
+        $extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+        if ($extension === '') {
+            return $path;
+        }
 
         $font_extensions = array_keys(Pomatio_Framework_Helper::get_allowed_font_types());
 
-        if (!empty($path['error']) || !in_array($extension, $font_extensions, true)) {
+        if (!in_array($extension, $font_extensions, true)) {
             return $path;
         }
 
