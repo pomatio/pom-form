@@ -19,6 +19,10 @@ class Pomatio_Framework_Disk {
     }
 
     public function filter_media_library_attachment_query(array $args): array {
+        if ($this->is_upload_library_request()) {
+            return $args;
+        }
+
         if (!empty($args['pom_form_font_picker'])) {
             return $args;
         }
@@ -27,6 +31,10 @@ class Pomatio_Framework_Disk {
     }
 
     public function filter_rest_attachment_query(array $args, $request): array {
+        if ($this->is_upload_library_request()) {
+            return $args;
+        }
+
         $allow_fonts = false;
 
         if (is_object($request) && method_exists($request, 'get_param')) {
@@ -48,6 +56,10 @@ class Pomatio_Framework_Disk {
         global $pagenow;
 
         if ($pagenow !== 'upload.php') {
+            return;
+        }
+
+        if ($this->is_upload_library_request()) {
             return;
         }
 
@@ -94,6 +106,24 @@ class Pomatio_Framework_Disk {
                 'type' => 'CHAR',
             ],
         ];
+    }
+
+    private function is_upload_library_request(): bool {
+        if (!is_admin()) {
+            return false;
+        }
+
+        global $pagenow;
+        if ($pagenow === 'upload.php') {
+            return true;
+        }
+
+        $referer = wp_get_referer();
+        if (!is_string($referer) || $referer === '') {
+            return false;
+        }
+
+        return strpos($referer, 'upload.php') !== false;
     }
 
     private function get_uploaded_file_name(): string {
