@@ -16,6 +16,7 @@ class Pomatio_Framework_Disk {
         add_filter('ajax_query_attachments_args', [$this, 'filter_media_library_attachment_query']);
         add_filter('rest_attachment_query', [$this, 'filter_rest_attachment_query'], 10, 2);
         add_action('pre_get_posts', [$this, 'filter_media_library_list_query']);
+        add_filter('posts_where', [$this, 'filter_media_library_guid_constraint'], 10, 2);
     }
 
     public function filter_media_library_attachment_query(array $args): array {
@@ -57,13 +58,7 @@ class Pomatio_Framework_Disk {
     }
 
     private function add_font_directory_exclusion_to_args(array $args): array {
-        $meta_query = $args['meta_query'] ?? [];
-        if (!is_array($meta_query)) {
-            $meta_query = [];
-        }
-
-        $meta_query[] = $this->get_font_directory_exclusion_meta_query();
-        $args['meta_query'] = $meta_query;
+        $args['pom_form_font_filter'] = 'exclude';
 
         return $args;
     }
@@ -73,48 +68,49 @@ class Pomatio_Framework_Disk {
             return;
         }
 
-        $meta_query = $query->get('meta_query');
-        if (!is_array($meta_query)) {
-            $meta_query = [];
-        }
-
-        $meta_query[] = $this->get_font_directory_exclusion_meta_query();
-        $query->set('meta_query', $meta_query);
+        $query->set('pom_form_font_filter', 'exclude');
     }
 
     private function add_font_directory_inclusion_to_args(array $args): array {
-        $meta_query = $args['meta_query'] ?? [];
-        if (!is_array($meta_query)) {
-            $meta_query = [];
-        }
-
-        $meta_query[] = $this->get_font_directory_inclusion_meta_query();
-        $args['meta_query'] = $meta_query;
+        $args['pom_form_font_filter'] = 'include';
 
         return $args;
     }
 
-    private function get_font_directory_exclusion_meta_query(): array {
-        return [
-            'relation' => 'OR',
-            [
-                'key' => '_wp_attached_file',
-                'compare' => 'NOT EXISTS',
-            ],
-            [
-                'key' => '_wp_attached_file',
-                'value' => 'fonts/',
-                'compare' => 'NOT LIKE',
-            ],
-        ];
-    }
+    public function filter_media_library_guid_constraint(string $where, $query): string {
+        if (!is_admin() || !is_a($query, 'WP_Query')) {
+            return $where;
+        }
 
-    private function get_font_directory_inclusion_meta_query(): array {
-        return [
-            'key' => '_wp_attached_file',
-            'value' => 'fonts/',
-            'compare' => 'LIKE',
-        ];
+        $filter = $query->get('pom_form_font_filter');
+        if ($filter !== 'include' && $filter !== 'exclude') {
+            return $where;
+        }
+
+        $post_type = $query->get('post_type');
+        if (!is_string($post_type) && !is_array($post_type)) {
+            return $where;
+        }
+
+        if (is_string($post_type) && $post_type !== 'attachment') {
+            return $where;
+        }
+
+        if (is_array($post_type) && !in_array('attachment', $post_type, true)) {
+            return $where;
+        }
+
+        global $wpdb;
+        $like = '%' . $wpdb->esc_like('/fonts/') . '%';
+
+        if ($filter === 'include') {
+            $where .= $wpdb->prepare(" AND {$wpdb->posts}.guid LIKE %s", $like);
+        }
+        else {
+            $where .= $wpdb->prepare(" AND {$wpdb->posts}.guid NOT LIKE %s", $like);
+        }
+
+        return $where;
     }
 
     private function remove_mime_type_filters(array $args): array {
