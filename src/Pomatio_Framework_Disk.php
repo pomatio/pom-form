@@ -118,12 +118,26 @@ class Pomatio_Framework_Disk {
             return true;
         }
 
-        $referer = wp_get_referer();
-        if (!is_string($referer) || $referer === '') {
-            return false;
+        $referer = '';
+        if (isset($_REQUEST['_wp_http_referer']) && is_string($_REQUEST['_wp_http_referer'])) {
+            $referer = wp_unslash($_REQUEST['_wp_http_referer']);
+        }
+        else {
+            $referer = wp_get_referer();
         }
 
-        return strpos($referer, 'upload.php') !== false;
+        if (is_string($referer) && $referer !== '' && strpos($referer, 'upload.php') !== false) {
+            return true;
+        }
+
+        if (isset($_REQUEST['query']) && is_array($_REQUEST['query'])) {
+            $context = $_REQUEST['query']['context'] ?? '';
+            if ($context === 'upload') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function get_uploaded_file_name(): string {
