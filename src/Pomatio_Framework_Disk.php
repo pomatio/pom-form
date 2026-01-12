@@ -77,6 +77,12 @@ class Pomatio_Framework_Disk {
         }
 
         $filter = $query->get('pom_form_font_filter');
+        if (!$filter && isset($query->query['pom_form_font_filter'])) {
+            $filter = $query->query['pom_form_font_filter'];
+        }
+        if (!$filter && $this->is_font_picker_request()) {
+            $filter = 'include';
+        }
         if ($filter !== 'include' && $filter !== 'exclude') {
             return $where;
         }
@@ -86,7 +92,7 @@ class Pomatio_Framework_Disk {
             return $where;
         }
 
-        if (is_string($post_type) && $post_type !== 'attachment') {
+        if (is_string($post_type) && $post_type !== '' && $post_type !== 'attachment') {
             return $where;
         }
 
