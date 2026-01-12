@@ -46,10 +46,11 @@ class Repeater {
         $repeater_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
 
         $limit = isset($args['limit']) ? ' data-limit="' . (int)$args['limit'] . '"' : '';
+        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
 
         ?>
 
-        <div class="repeater-wrapper<?= $sortable ?>"<?= $limit ?>>
+        <div class="repeater-wrapper<?= $sortable ?>"<?= $limit ?><?= $data_dependencies ?>>
 
             <?php
 

@@ -549,13 +549,27 @@ Pomatio Framework exposes several helper classes so you can inspect configuratio
 - **Automatic directories** – `create_settings_dir()` provisions `wp-content/settings/pomatio-framework/<site>/<slug>/` (including `.htaccess`) the first time a page saves values, making the storage multisite-aware.
 - **File serialization** – `generate_file_content()` turns an array into a PHP file with metadata headers, while `save_to_file()` writes arbitrary content such as code editor values and returns the saved path.
 - **Reading and cleanup** – `read_file()` and `delete_file()` provide convenient access to stored configuration and let you remove generated assets when a module is disabled.
-- **Font and signature support** – The constructor hooks into `upload_dir`/`upload_mimes` so custom fonts are stored under `/fonts`, and the signature helpers persist base64 canvases under a locked-down directory.
+- **Font and signature support** – The constructor hooks into `upload_dir`/`upload_mimes` so custom fonts are stored under `/fonts`, only attachments stored under `/uploads/fonts/` are hidden from the standard Media Library (the Pomatio font picker modal can still browse them), and the signature helpers persist base64 canvases under a locked-down directory.
 
 ### `Pomatio_Framework_Settings`
 
 - **Navigation helpers** – `get_current_tab()` and `get_current_subsection()` inspect the current request (or default to the first entries) so you can render context-aware navigation or run callbacks only on the active screen.
 - **Field metadata** – `read_fields()` loads the `fields.php` definition for a given setting, `get_effective_enabled_settings()` merges stored flags with auto-enabled tweaks, and `is_setting_enabled()` checks whether a module is active.
 - **Value retrieval** – `get_setting_value()` reads the saved PHP file and optionally re-sanitises the value using the field type, which is perfect for use in templates or business logic.
+- **Font face generation** – When you pass `font` as the type, each repeater item includes a `font_face` entry with the generated `@font-face` CSS (variable fonts emit a single block; normal fonts emit one per variant). You can also post-process existing arrays with `Pomatio_Framework_Settings::add_font_face_to_fonts()`.
+
+```php
+$fonts = Pomatio_Framework_Settings::get_setting_value(
+    'pom-theme-options',
+    'custom_fonts',
+    'font_families',
+    'font'
+);
+
+foreach ($fonts['new'] ?? [] as $font) {
+    echo $font['font_face']['value'];
+}
+```
 
 Leverage these helpers together with the automatic save routine to keep your own code focused on business logic rather than boilerplate persistence.
 

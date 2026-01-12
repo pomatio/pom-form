@@ -13,6 +13,87 @@ class Pomatio_Framework_Disk {
          */
         add_filter('upload_dir', [$this, 'set_fonts_upload_dir']);
         add_filter('upload_mimes', [$this, 'add_allowed_font_mimes_to_upload_types']);
+        add_filter('ajax_query_attachments_args', [$this, 'filter_media_library_attachment_query']);
+        add_filter('rest_attachment_query', [$this, 'filter_rest_attachment_query'], 10, 2);
+        add_action('pre_get_posts', [$this, 'filter_media_library_list_query']);
+    }
+
+    public function filter_media_library_attachment_query(array $args): array {
+        if (!empty($args['pom_form_font_picker'])) {
+            return $args;
+        }
+
+        return $this->add_font_directory_exclusion_to_args($args);
+    }
+
+    public function filter_rest_attachment_query(array $args, $request): array {
+        $allow_fonts = false;
+
+        if (is_object($request) && method_exists($request, 'get_param')) {
+            $allow_fonts = (bool)$request->get_param('pom_form_font_picker');
+        }
+
+        if ($allow_fonts) {
+            return $args;
+        }
+
+        return $this->add_font_directory_exclusion_to_args($args);
+    }
+
+    public function filter_media_library_list_query($query): void {
+        if (!is_admin() || !$query->is_main_query()) {
+            return;
+        }
+
+        global $pagenow;
+
+        if ($pagenow !== 'upload.php') {
+            return;
+        }
+
+        $this->add_font_directory_exclusion_to_query($query);
+    }
+
+    private function add_font_directory_exclusion_to_args(array $args): array {
+        $meta_query = $args['meta_query'] ?? [];
+        if (!is_array($meta_query)) {
+            $meta_query = [];
+        }
+
+        $meta_query[] = $this->get_font_directory_exclusion_meta_query();
+        $args['meta_query'] = $meta_query;
+
+        return $args;
+    }
+
+    private function add_font_directory_exclusion_to_query($query): void {
+        if (!is_a($query, 'WP_Query')) {
+            return;
+        }
+
+        $meta_query = $query->get('meta_query');
+        if (!is_array($meta_query)) {
+            $meta_query = [];
+        }
+
+        $meta_query[] = $this->get_font_directory_exclusion_meta_query();
+        $query->set('meta_query', $meta_query);
+    }
+
+    private function get_font_directory_exclusion_meta_query(): array {
+        return [
+            'relation' => 'OR',
+            [
+                'key' => '_wp_attached_file',
+                'compare' => 'NOT EXISTS',
+            ],
+            [
+                'key' => '_wp_attached_file',
+                'value' => '^fonts/',
+                'compare' => 'NOT REGEXP',
+                'type' => 'CHAR',
+            ],
+        ];
     }
 
     private function get_uploaded_file_name(): string {

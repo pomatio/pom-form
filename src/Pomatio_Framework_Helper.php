@@ -358,10 +358,8 @@ class Pomatio_Framework_Helper {
      */
     public static function get_allowed_font_types(): array {
         return [
-            'eot' => 'application/vnd.ms-fontobject',
-            'otf' => 'font/otf',
-            'woff' => 'font/woff',
             'woff2' => 'font/woff2',
+            'woff' => 'font/woff',
             'ttf' => 'font/ttf',
         ];
     }

@@ -37,6 +37,17 @@ class Font {
                 ],
                 [
                     'type' => 'Select',
+                    'label' => __('Font type', 'pomatio-framework'),
+                    'description' => __('Choose normal or variable font files.', 'pomatio-framework'),
+                    'name' => 'font_type',
+                    'options' => [
+                        'normal' => __('Normal', 'pomatio-framework'),
+                        'variable' => __('Variable', 'pomatio-framework'),
+                    ],
+                    'default' => 'normal',
+                ],
+                [
+                    'type' => 'Select',
                     'label' => __('Font fallback', 'pomatio-framework'),
                     'description' => __('Fallback stack used when the custom font is unavailable.', 'pomatio-framework'),
                     'name' => 'font_fallback',
@@ -54,6 +65,14 @@ class Font {
                     'placeholder' => __('Variant', 'pomatio-framework'),
                     'name' => 'font_variant',
                     'limit' => 18,
+                    'dependency' => [
+                        [
+                            [
+                                'field' => 'font_type',
+                                'values' => ['normal'],
+                            ],
+                        ],
+                    ],
                     'fields' => [
                         [
                             'type' => 'Text',
@@ -96,7 +115,96 @@ class Font {
                             'name' => 'font_variants',
                         ],
                     ]
-                ]
+                ],
+                [
+                    'type' => 'Font_Picker',
+                    'label' => __('Variable font files', 'pomatio-framework'),
+                    'description' => __('Upload WOFF2 and WOFF files for the variable font.', 'pomatio-framework'),
+                    'name' => 'font_variable_files',
+                    'allowed_extensions' => ['woff2', 'woff'],
+                    'dependency' => [
+                        [
+                            [
+                                'field' => 'font_type',
+                                'values' => ['variable'],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'Text',
+                    'label' => __('Font weight range', 'pomatio-framework'),
+                    'description' => __('Use two values, e.g. "100 900".', 'pomatio-framework'),
+                    'placeholder' => '100 900',
+                    'name' => 'font_variable_weight_range',
+                    'class' => 'regular-text',
+                    'dependency' => [
+                        [
+                            [
+                                'field' => 'font_type',
+                                'values' => ['variable'],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'Text',
+                    'label' => __('Font stretch range', 'pomatio-framework'),
+                    'description' => __('Use two percentages, e.g. "75% 125%".', 'pomatio-framework'),
+                    'placeholder' => '75% 125%',
+                    'name' => 'font_variable_stretch_range',
+                    'class' => 'regular-text',
+                    'dependency' => [
+                        [
+                            [
+                                'field' => 'font_type',
+                                'values' => ['variable'],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'Select',
+                    'label' => __('Font style', 'pomatio-framework'),
+                    'description' => __('CSS font-style for this variable font.', 'pomatio-framework'),
+                    'name' => 'font_variable_style',
+                    'options' => [
+                        'normal' => __('Normal', 'pomatio-framework'),
+                        'italic' => __('Italic', 'pomatio-framework'),
+                        'oblique' => __('Oblique', 'pomatio-framework'),
+                    ],
+                    'default' => 'normal',
+                    'dependency' => [
+                        [
+                            [
+                                'field' => 'font_type',
+                                'values' => ['variable'],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'Select',
+                    'label' => __('Font display', 'pomatio-framework'),
+                    'description' => __('Controls font loading behavior.', 'pomatio-framework'),
+                    'name' => 'font_variable_display',
+                    'options' => [
+                        'auto' => __('Auto', 'pomatio-framework'),
+                        'block' => __('Block', 'pomatio-framework'),
+                        'swap' => __('Swap', 'pomatio-framework'),
+                        'fallback' => __('Fallback', 'pomatio-framework'),
+                        'optional' => __('Optional', 'pomatio-framework'),
+                    ],
+                    'default' => 'swap',
+                    'dependency' => [
+                        [
+                            [
+                                'field' => 'font_type',
+                                'values' => ['variable'],
+                            ],
+                        ],
+                    ],
+                ],
             ]
         ]);
 

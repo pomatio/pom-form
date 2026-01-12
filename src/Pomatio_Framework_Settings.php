@@ -73,7 +73,215 @@ class Pomatio_Framework_Settings {
             }
         }
 
+        if ($type === 'font' && is_array($value)) {
+            $value = self::add_font_face_to_fonts($value);
+        }
+
         return $value;
+    }
+
+    /**
+     * Append a computed @font-face block to each font repeater item.
+     *
+     * @param array $fonts
+     *
+     * @return array
+     */
+    public static function add_font_face_to_fonts(array $fonts): array {
+        foreach ($fonts as $repeater_type => $repeater_elements) {
+            if (!is_array($repeater_elements)) {
+                continue;
+            }
+
+            foreach ($repeater_elements as $index => $repeater_item) {
+                if (!is_array($repeater_item)) {
+                    continue;
+                }
+
+                $fonts[$repeater_type][$index]['font_face'] = [
+                    'value' => self::build_font_face_css($repeater_item),
+                    'type' => 'font_face',
+                ];
+            }
+        }
+
+        return $fonts;
+    }
+
+    private static function build_font_face_css(array $font_item): string {
+        $font_family = self::get_font_field_value($font_item, 'font_name', '');
+        $font_family = trim((string)$font_family);
+
+        if ($font_family === '') {
+            return '';
+        }
+
+        $font_family = str_replace('"', '\"', $font_family);
+        $font_type = strtolower((string)self::get_font_field_value($font_item, 'font_type', 'normal'));
+
+        if ($font_type === 'variable') {
+            return self::build_variable_font_face($font_item, $font_family);
+        }
+
+        return self::build_static_font_faces($font_item, $font_family);
+    }
+
+    private static function build_variable_font_face(array $font_item, string $font_family): string {
+        $files = self::get_font_field_value($font_item, 'font_variable_files', []);
+        $files = is_array($files) ? $files : [];
+        $src_parts = self::build_font_src_parts($files, ['woff2', 'woff'], [
+            'woff2' => 'woff2',
+            'woff' => 'woff',
+        ]);
+
+        if (empty($src_parts)) {
+            return '';
+        }
+
+        $weight_range = trim((string)self::get_font_field_value($font_item, 'font_variable_weight_range', ''));
+        if ($weight_range === '') {
+            $weight_range = '100 900';
+        }
+
+        $stretch_range = trim((string)self::get_font_field_value($font_item, 'font_variable_stretch_range', ''));
+        $font_style = trim((string)self::get_font_field_value($font_item, 'font_variable_style', 'normal'));
+        $font_display = trim((string)self::get_font_field_value($font_item, 'font_variable_display', 'swap'));
+
+        if ($font_style === '') {
+            $font_style = 'normal';
+        }
+
+        if ($font_display === '') {
+            $font_display = 'swap';
+        }
+
+        $properties = [
+            'font-weight' => $weight_range,
+        ];
+
+        if ($stretch_range !== '') {
+            $properties['font-stretch'] = $stretch_range;
+        }
+
+        $properties['font-style'] = $font_style;
+        $properties['font-display'] = $font_display;
+
+        return self::build_font_face_block($font_family, $src_parts, $properties);
+    }
+
+    private static function build_static_font_faces(array $font_item, string $font_family): string {
+        $variants = self::get_font_field_value($font_item, 'font_variant', []);
+        $variants = is_array($variants) ? $variants : [];
+        $blocks = [];
+
+        foreach ($variants as $variant_group) {
+            if (!is_array($variant_group)) {
+                continue;
+            }
+
+            foreach ($variant_group as $variant) {
+                if (!is_array($variant)) {
+                    continue;
+                }
+
+                $files = $variant['font_variants']['value'] ?? [];
+                $files = is_array($files) ? $files : [];
+
+                $src_parts = self::build_font_src_parts($files, ['woff2', 'woff', 'ttf'], [
+                    'woff2' => 'woff2',
+                    'woff' => 'woff',
+                    'ttf' => 'truetype',
+                ]);
+
+                if (empty($src_parts)) {
+                    continue;
+                }
+
+                $weight = trim((string)self::get_font_field_value($variant, 'font_weight', '400'));
+                $style = trim((string)self::get_font_field_value($variant, 'font_style', 'normal'));
+
+                if ($weight === '') {
+                    $weight = '400';
+                }
+
+                if ($style === '') {
+                    $style = 'normal';
+                }
+
+                $blocks[] = self::build_font_face_block($font_family, $src_parts, [
+                    'font-weight' => $weight,
+                    'font-style' => $style,
+                    'font-display' => 'swap',
+                ]);
+            }
+        }
+
+        $blocks = array_filter($blocks);
+
+        if (empty($blocks)) {
+            return '';
+        }
+
+        return implode("\n", $blocks);
+    }
+
+    private static function build_font_face_block(string $font_family, array $src_parts, array $properties): string {
+        if (empty($src_parts)) {
+            return '';
+        }
+
+        $lines = [
+            '@font-face {',
+            '  font-family: "' . $font_family . '";',
+            '  src:',
+            '    ' . implode(",\n    ", $src_parts) . ';',
+        ];
+
+        foreach ($properties as $property => $value) {
+            if ($value === '' || $value === null) {
+                continue;
+            }
+
+            $lines[] = '  ' . $property . ': ' . $value . ';';
+        }
+
+        $lines[] = '}';
+
+        return implode("\n", $lines);
+    }
+
+    private static function build_font_src_parts(array $files, array $order, array $format_map): array {
+        $src_parts = [];
+
+        foreach ($order as $extension) {
+            if (empty($files[$extension])) {
+                continue;
+            }
+
+            $url = trim((string)$files[$extension]);
+            if ($url === '') {
+                continue;
+            }
+
+            $format = $format_map[$extension] ?? $extension;
+            $src_parts[] = 'url("' . $url . '") format("' . $format . '")';
+        }
+
+        return $src_parts;
+    }
+
+    private static function get_font_field_value(array $font_item, string $field_name, $default = '') {
+        if (!isset($font_item[$field_name]) || !is_array($font_item[$field_name])) {
+            return $default;
+        }
+
+        if (!array_key_exists('value', $font_item[$field_name])) {
+            return $default;
+        }
+
+        $value = $font_item[$field_name]['value'];
+
+        return ($value === '' || $value === null) ? $default : $value;
     }
 
     private static function get_field_storage_metadata(string $page_slug, string $setting_name, string $field_name): array {

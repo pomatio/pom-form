@@ -137,13 +137,10 @@ class Pomatio_Framework {
                     $mime_types = array_merge(
                         $mime_types,
                         [
-                            'application/x-font-otf',
                             'application/x-font-ttf',
                             'application/x-font-woff',
                             'application/font-woff',
                             'application/font-woff2',
-                            'application/font-sfnt',
-                            'application/x-font-opentype',
                             'application/x-font-truetype',
                         ]
                     );
