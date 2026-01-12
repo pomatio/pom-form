@@ -20,7 +20,7 @@ class Pomatio_Framework_Disk {
     }
 
     public function filter_media_library_attachment_query(array $args): array {
-        if (!empty($args['pom_form_font_picker'])) {
+        if ($this->is_font_picker_request()) {
             $args = $this->remove_mime_type_filters($args);
             return $this->add_font_directory_inclusion_to_args($args);
         }
@@ -29,13 +29,7 @@ class Pomatio_Framework_Disk {
     }
 
     public function filter_rest_attachment_query(array $args, $request): array {
-        $allow_fonts = false;
-
-        if (is_object($request) && method_exists($request, 'get_param')) {
-            $allow_fonts = (bool)$request->get_param('pom_form_font_picker');
-        }
-
-        if ($allow_fonts) {
+        if ($this->is_font_picker_request($request)) {
             $args = $this->remove_mime_type_filters($args);
             return $this->add_font_directory_inclusion_to_args($args);
         }
@@ -78,7 +72,7 @@ class Pomatio_Framework_Disk {
     }
 
     public function filter_media_library_guid_constraint(string $where, $query): string {
-        if (!is_admin() || !is_a($query, 'WP_Query')) {
+        if (!is_a($query, 'WP_Query')) {
             return $where;
         }
 
@@ -117,6 +111,41 @@ class Pomatio_Framework_Disk {
         unset($args['post_mime_type'], $args['post_mime_type__in'], $args['post_mime_type__not_in']);
 
         return $args;
+    }
+
+    private function is_font_picker_request($request = null): bool {
+        $value = null;
+
+        if (is_object($request) && method_exists($request, 'get_param')) {
+            $value = $request->get_param('pom_form_font_picker');
+        }
+
+        if ($value === null && isset($_REQUEST['pom_form_font_picker'])) {
+            $value = $_REQUEST['pom_form_font_picker'];
+        }
+
+        if ($value === null && isset($_REQUEST['query'])) {
+            $query = $_REQUEST['query'];
+            if (is_string($query)) {
+                $decoded = json_decode($query, true);
+                if (is_array($decoded) && array_key_exists('pom_form_font_picker', $decoded)) {
+                    $value = $decoded['pom_form_font_picker'];
+                }
+            }
+            elseif (is_array($query) && array_key_exists('pom_form_font_picker', $query)) {
+                $value = $query['pom_form_font_picker'];
+            }
+        }
+
+        if ($value === null) {
+            return false;
+        }
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 
     private function get_uploaded_file_name(): string {
