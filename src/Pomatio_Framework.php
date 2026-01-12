@@ -146,6 +146,7 @@ class Pomatio_Framework {
                     );
                     $mime_types = array_values(array_unique($mime_types));
 
+                    wp_enqueue_media();
                     wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker.min.css');
                     wp_enqueue_script('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/js/font_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
                     wp_localize_script(
