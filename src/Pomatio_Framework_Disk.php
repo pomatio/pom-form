@@ -19,22 +19,15 @@ class Pomatio_Framework_Disk {
     }
 
     public function filter_media_library_attachment_query(array $args): array {
-        if ($this->is_upload_library_request()) {
-            return $args;
-        }
-
         if (!empty($args['pom_form_font_picker'])) {
-            return $args;
+            $args = $this->remove_mime_type_filters($args);
+            return $this->add_font_directory_inclusion_to_args($args);
         }
 
         return $this->add_font_directory_exclusion_to_args($args);
     }
 
     public function filter_rest_attachment_query(array $args, $request): array {
-        if ($this->is_upload_library_request()) {
-            return $args;
-        }
-
         $allow_fonts = false;
 
         if (is_object($request) && method_exists($request, 'get_param')) {
@@ -42,7 +35,8 @@ class Pomatio_Framework_Disk {
         }
 
         if ($allow_fonts) {
-            return $args;
+            $args = $this->remove_mime_type_filters($args);
+            return $this->add_font_directory_inclusion_to_args($args);
         }
 
         return $this->add_font_directory_exclusion_to_args($args);
@@ -56,10 +50,6 @@ class Pomatio_Framework_Disk {
         global $pagenow;
 
         if ($pagenow !== 'upload.php') {
-            return;
-        }
-
-        if ($this->is_upload_library_request()) {
             return;
         }
 
@@ -92,6 +82,18 @@ class Pomatio_Framework_Disk {
         $query->set('meta_query', $meta_query);
     }
 
+    private function add_font_directory_inclusion_to_args(array $args): array {
+        $meta_query = $args['meta_query'] ?? [];
+        if (!is_array($meta_query)) {
+            $meta_query = [];
+        }
+
+        $meta_query[] = $this->get_font_directory_inclusion_meta_query();
+        $args['meta_query'] = $meta_query;
+
+        return $args;
+    }
+
     private function get_font_directory_exclusion_meta_query(): array {
         return [
             'relation' => 'OR',
@@ -101,43 +103,24 @@ class Pomatio_Framework_Disk {
             ],
             [
                 'key' => '_wp_attached_file',
-                'value' => '^fonts/',
-                'compare' => 'NOT REGEXP',
-                'type' => 'CHAR',
+                'value' => 'fonts/',
+                'compare' => 'NOT LIKE',
             ],
         ];
     }
 
-    private function is_upload_library_request(): bool {
-        if (!is_admin()) {
-            return false;
-        }
+    private function get_font_directory_inclusion_meta_query(): array {
+        return [
+            'key' => '_wp_attached_file',
+            'value' => 'fonts/',
+            'compare' => 'LIKE',
+        ];
+    }
 
-        global $pagenow;
-        if ($pagenow === 'upload.php') {
-            return true;
-        }
+    private function remove_mime_type_filters(array $args): array {
+        unset($args['post_mime_type'], $args['post_mime_type__in'], $args['post_mime_type__not_in']);
 
-        $referer = '';
-        if (isset($_REQUEST['_wp_http_referer']) && is_string($_REQUEST['_wp_http_referer'])) {
-            $referer = wp_unslash($_REQUEST['_wp_http_referer']);
-        }
-        else {
-            $referer = wp_get_referer();
-        }
-
-        if (is_string($referer) && $referer !== '' && strpos($referer, 'upload.php') !== false) {
-            return true;
-        }
-
-        if (isset($_REQUEST['query']) && is_array($_REQUEST['query'])) {
-            $context = $_REQUEST['query']['context'] ?? '';
-            if ($context === 'upload') {
-                return true;
-            }
-        }
-
-        return false;
+        return $args;
     }
 
     private function get_uploaded_file_name(): string {
