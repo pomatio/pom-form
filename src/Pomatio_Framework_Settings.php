@@ -390,6 +390,7 @@ class Pomatio_Framework_Settings {
             <?php
 
             //(new self)->render_tabs($page_slug, $settings_file_path);
+            do_action('pomatio_framework_before_render_content', $page_slug, $settings_file_path);
             (new self)->render_content($page_slug, $settings_file_path);
 
             ?>
