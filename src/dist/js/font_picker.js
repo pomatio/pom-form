@@ -60,8 +60,7 @@ jQuery(function($) {
         },
         multiple: false,
         library: {
-          type: mimeTypes,
-          pom_form_font_picker: true
+          type: mimeTypes
         }
       });
 

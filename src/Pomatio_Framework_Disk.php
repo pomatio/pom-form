@@ -120,6 +120,19 @@ class Pomatio_Framework_Disk {
     }
 
     private function is_font_picker_request($request = null): bool {
+        $allowed_font_mimes = array_values(Pomatio_Framework_Helper::get_allowed_font_types());
+        $allowed_font_mimes = array_merge(
+            $allowed_font_mimes,
+            [
+                'application/font-woff2',
+                'application/x-font-woff',
+                'application/font-woff',
+                'application/x-font-ttf',
+                'application/x-font-truetype',
+            ]
+        );
+        $allowed_font_mimes = array_values(array_unique($allowed_font_mimes));
+
         $value = null;
 
         if (is_object($request) && method_exists($request, 'get_param')) {
@@ -143,15 +156,59 @@ class Pomatio_Framework_Disk {
             }
         }
 
-        if ($value === null) {
+        if ($value !== null) {
+            if (is_bool($value)) {
+                return $value;
+            }
+
+            $is_font_picker = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if ($is_font_picker === true) {
+                return true;
+            }
+        }
+
+        $post_mime_type = null;
+
+        if (is_object($request) && method_exists($request, 'get_param')) {
+            $post_mime_type = $request->get_param('post_mime_type');
+            if ($post_mime_type === null) {
+                $query = $request->get_param('query');
+                if (is_array($query) && array_key_exists('post_mime_type', $query)) {
+                    $post_mime_type = $query['post_mime_type'];
+                }
+            }
+        }
+
+        if ($post_mime_type === null && isset($_REQUEST['post_mime_type'])) {
+            $post_mime_type = $_REQUEST['post_mime_type'];
+        }
+
+        if ($post_mime_type === null && isset($_REQUEST['query'])) {
+            $query = $_REQUEST['query'];
+            if (is_string($query)) {
+                $decoded = json_decode($query, true);
+                if (is_array($decoded) && array_key_exists('post_mime_type', $decoded)) {
+                    $post_mime_type = $decoded['post_mime_type'];
+                }
+            }
+            elseif (is_array($query) && array_key_exists('post_mime_type', $query)) {
+                $post_mime_type = $query['post_mime_type'];
+            }
+        }
+
+        if ($post_mime_type === null) {
             return false;
         }
 
-        if (is_bool($value)) {
-            return $value;
+        if (is_string($post_mime_type)) {
+            $post_mime_type = array_filter(array_map('trim', explode(',', $post_mime_type)));
         }
 
-        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        if (!is_array($post_mime_type)) {
+            return false;
+        }
+
+        return count(array_intersect($allowed_font_mimes, $post_mime_type)) > 0;
     }
 
     private function get_uploaded_file_name(): string {
