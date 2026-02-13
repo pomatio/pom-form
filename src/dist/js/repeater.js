@@ -63,9 +63,41 @@ jQuery(function($) {
     }
   };
 
+  let $decode_repeater_value = function($value) {
+    if (typeof $value !== 'string' || $value.trim() === '') {
+      return {};
+    }
+
+    try {
+      let $decoded = JSON.parse($value);
+      return $decoded && typeof $decoded === 'object' ? $decoded : {};
+    }
+    catch (error) {
+      return {};
+    }
+  };
+
+  let $preserve_nested_repeaters = function($source_item, $target_item) {
+    if (!$source_item || typeof $source_item !== 'object') {
+      return;
+    }
+
+    Object.keys($source_item).forEach(function($key) {
+      if (Object.prototype.hasOwnProperty.call($target_item, $key)) {
+        return;
+      }
+
+      let $field_value = $source_item[$key];
+      if ($field_value && typeof $field_value === 'object' && $field_value.type === 'repeater') {
+        $target_item[$key] = $field_value;
+      }
+    });
+  };
+
   let $update_repeater = function($wrapper) {
     let $repeater_elements = $wrapper.children('.repeater');
     let $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
+    let $existing_value = $decode_repeater_value($wrapper.children('.repeater-value').val());
 
     let $value = {};
 
@@ -151,14 +183,17 @@ jQuery(function($) {
           }
 
           if ($field.getAttribute('data-type') === 'font_picker') {
-            let $font_type = $field_name.match(/\[(.*)\]/)[1];
-            $field_name = $field_name.split('[')[0];
+            let $font_type_match = $field_name.match(/\[([^\]]+)\]$/);
+            if ($font_type_match) {
+              let $font_type = $font_type_match[1];
+              $field_name = $field_name.split('[')[0];
 
-            if (!$font_input_val.hasOwnProperty($font_type)) {
-              $font_input_val[$font_type] = $field_value;
+              if (!$font_input_val.hasOwnProperty($font_type)) {
+                $font_input_val[$font_type] = $field_value;
+              }
+
+              $field_value = $font_input_val;
             }
-
-            $field_value = $font_input_val;
           }
 
           $obj[$field_name] = {
@@ -171,6 +206,30 @@ jQuery(function($) {
          * Manage dependent fields.
          */
         handleFieldVisibility($field);
+      }
+
+      if (!$is_child_repeater) {
+        $($repeater_elements[$i]).find('.repeater-wrapper').each(function() {
+          if ($(this).closest('.repeater')[0] !== $repeater_elements[$i]) {
+            return;
+          }
+
+          const $child_value_input = $(this).children('.repeater-value').last();
+          const $child_repeater_name = $child_value_input.attr('name');
+
+          if (!$child_repeater_name) {
+            return;
+          }
+
+          $obj[$child_repeater_name] = {
+            'value': $decode_repeater_value($child_value_input.val()),
+            'type': 'repeater'
+          };
+        });
+      }
+
+      if (!$is_child_repeater && Array.isArray($existing_value[$repeater_type])) {
+        $preserve_nested_repeaters($existing_value[$repeater_type][$i], $obj);
       }
 
       /**
@@ -190,24 +249,27 @@ jQuery(function($) {
        * Appends the content of possible child repeaters to the parent repeater.
        */
       if ($is_child_repeater) {
-        const $parent_index = $wrapper.closest('.repeater').index();
+        const $parent_repeater_item = $wrapper.closest('.repeater');
+        const $parent_index = $parent_repeater_item.index();
         const $child_repeater_name = $wrapper.find('.repeater-value').attr('name');
+        if (!$child_repeater_name) {
+          continue;
+        }
+
         const $parent_repeater = $wrapper.parents('.repeater-wrapper').last();
-        const $parent_repeater_type = $parent_repeater.find('.repeater').hasClass('new') ? 'new' : 'default';
-        let $parent_value = $parent_repeater.find('.repeater-value').last().val();
+        const $parent_repeater_type = $parent_repeater_item.hasClass('default') ? 'default' : 'new';
+        let $parent_value = $decode_repeater_value($parent_repeater.find('.repeater-value').last().val());
 
-        $parent_value = JSON.parse($parent_value);
-
-        if (!$parent_value.hasOwnProperty($parent_repeater_type)) {
+        if (!Array.isArray($parent_value[$parent_repeater_type])) {
           $parent_value[$parent_repeater_type] = [];
         }
 
-        if (!$parent_value[$parent_repeater_type].hasOwnProperty($parent_index)) {
-          $parent_value[$parent_repeater_type][$parent_index] = [];
-        }
-
-        if (!$parent_value[$parent_repeater_type][$parent_index].hasOwnProperty($child_repeater_name)) {
-          $parent_value[$parent_repeater_type][$parent_index][$child_repeater_name] = [];
+        if (
+          !Object.prototype.hasOwnProperty.call($parent_value[$parent_repeater_type], $parent_index) ||
+          !$parent_value[$parent_repeater_type][$parent_index] ||
+          typeof $parent_value[$parent_repeater_type][$parent_index] !== 'object'
+        ) {
+          $parent_value[$parent_repeater_type][$parent_index] = {};
         }
 
         $parent_value[$parent_repeater_type][$parent_index][$child_repeater_name] = {

@@ -2,6 +2,32 @@ jQuery(function($) {
   let $media_modal;
   let $clicked_button;
   const mediaFrames = {};
+
+  const applySelectedFont = function(frame) {
+    const $selection = frame.state().get('selection');
+    if (!$selection || typeof $selection.first !== 'function') {
+      return;
+    }
+
+    const $selected_item = $selection.first();
+    if (!$selected_item) {
+      return;
+    }
+
+    const $attachment = $selected_item.toJSON();
+    if (!$attachment || !$attachment.url || !$clicked_button || !$clicked_button.length) {
+      return;
+    }
+
+    const $input = $clicked_button.closest('.font-variant').find('input[type="url"]').first();
+    if (!$input.length) {
+      return;
+    }
+
+    $input.val($attachment.url);
+    frame.close();
+    $input.trigger('change');
+  };
   
   $(document).on('click', '.open-font-picker', function(e) {
     e.preventDefault();
@@ -27,8 +53,7 @@ jQuery(function($) {
     const mimeTypesKey = JSON.stringify(mimeTypes);
 
     if (!mediaFrames[mimeTypesKey]) {
-      // Extend the wp.media object
-      mediaFrames[mimeTypesKey] = wp.media.frames.file_frame = wp.media({
+      mediaFrames[mimeTypesKey] = wp.media({
         title: pom_form_font_picker.title,
         button: {
           text: pom_form_font_picker.button
@@ -39,12 +64,12 @@ jQuery(function($) {
           pom_form_font_picker: true
         }
       });
-      
-      // When a file is selected, grab the URL and set it as the field's value
+
       mediaFrames[mimeTypesKey].on('select', function() {
-        let $attachment = mediaFrames[mimeTypesKey].state().get('selection').first().toJSON();
-        $clicked_button.closest('.font-variant').find('input[type="url"]').val($attachment.url);
-        $clicked_button.closest('.font-variant').find('input[type="url"]').trigger('change');
+        applySelectedFont(mediaFrames[mimeTypesKey]);
+      });
+      mediaFrames[mimeTypesKey].on('insert', function() {
+        applySelectedFont(mediaFrames[mimeTypesKey]);
       });
     }
 
