@@ -113,6 +113,7 @@ jQuery(function($) {
 
       let $font_input_val = {};
       let $trbl_fields_handled = new Set();
+      let $checkbox_groups_handled = new Set();
 
       // For each field inside the repeater element
       for (let $i2 = 0; $i2 < $repeater_fields.length; $i2++) {
@@ -125,6 +126,10 @@ jQuery(function($) {
          * inner repeater fields in main repeater.
          */
         if ($field_name === 'config' || (!$is_child_repeater && $is_child_repeater_field)) {
+          continue;
+        }
+
+        if ($field.type === 'hidden' && $field.disabled) {
           continue;
         }
 
@@ -164,6 +169,32 @@ jQuery(function($) {
             $obj[$base_name] = {
               'value': $trbl_value,
               'type': 'trbl'
+            };
+
+            continue;
+          }
+
+          if ($field.getAttribute('data-type') === 'checkbox' && $field.type === 'checkbox' && $field_name && $field_name.endsWith('[]')) {
+            let $base_name = ($field.getAttribute('data-base-name') || $field_name).replace(/\[\]$/, '');
+
+            if ($checkbox_groups_handled.has($base_name)) {
+              continue;
+            }
+
+            $checkbox_groups_handled.add($base_name);
+
+            let $checked_values = Array.from($repeater_elements[$i].querySelectorAll('input[type="checkbox"][data-type="checkbox"]'))
+              .filter(function($checkbox) {
+                let $checkbox_name = $checkbox.getAttribute('data-base-name') || $checkbox.getAttribute('name') || '';
+                return $checkbox_name.replace(/\[\]$/, '') === $base_name && $checkbox.checked;
+              })
+              .map(function($checkbox) {
+                return $checkbox.value.trim();
+              });
+
+            $obj[$base_name] = {
+              'value': $checked_values,
+              'type': 'checkbox'
             };
 
             continue;

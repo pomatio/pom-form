@@ -153,8 +153,8 @@ class Repeater {
                                                 if (is_array($repeater_item[$field['name']]['value'])) {
                                                     $field_type = strtolower($field['type']);
 
-                                                    // Complex field types such as TRBL expect an array so values remain prefilled.
-                                                    if ($field_type === 'trbl') {
+                                                    // Complex field types such as TRBL and multi-checkbox fields expect arrays to remain prefilled.
+                                                    if ($field_type === 'trbl' || $field_type === 'checkbox') {
                                                         $field['value'] = $repeater_item[$field['name']]['value'];
                                                     }
                                                     else {
