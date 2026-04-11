@@ -360,7 +360,7 @@ HTACCESS;
         $path = trailingslashit($uploads_array['basedir']) . $multisite_path . 'signatures/';
 
         if (!is_dir($path)) {
-            if (!mkdir($path, 0755, true) && !is_dir($path)) {
+            if (!wp_mkdir_p($path) && !is_dir($path)) {
                 return false;
             }
 
