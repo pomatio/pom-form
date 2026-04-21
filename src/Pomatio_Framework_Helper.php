@@ -37,6 +37,38 @@ class Pomatio_Framework_Helper {
     }
 
     /**
+     * Determine whether a field should be persisted between requests.
+     *
+     * Why: some fields only expose transient admin UI state, such as the
+     * current tab used by dependency rules, and should not be read from or
+     * written to the generated settings payload.
+     *
+     * @param array $field Field definition array.
+     * @return bool
+     */
+    public static function field_should_persist(array $field): bool {
+        if (!array_key_exists('persist', $field)) {
+            return true;
+        }
+
+        $persist = $field['persist'];
+
+        if (is_bool($persist)) {
+            return $persist;
+        }
+
+        if (is_numeric($persist)) {
+            return (int) $persist !== 0;
+        }
+
+        if (is_string($persist)) {
+            return !in_array(strtolower(trim($persist)), ['0', 'false', 'no', 'off'], true);
+        }
+
+        return (bool) $persist;
+    }
+
+    /**
      * Convert an associative array into valid HTML attributes
      */
     public static function convert_array_to_html_attributes($field_args): string {

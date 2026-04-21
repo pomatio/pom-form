@@ -745,8 +745,9 @@ class Pomatio_Framework_Settings {
                                 unset($field['label'], $field['description']);
 
                                 $original_field_name = $field['name'];
-                                $value = self::get_setting_value($page_slug, $setting_key, $original_field_name);
-                                $storage_metadata = self::get_field_storage_metadata($page_slug, $setting_key, $original_field_name);
+                                $field_should_persist = Pomatio_Framework_Helper::field_should_persist($field);
+                                $value = $field_should_persist ? self::get_setting_value($page_slug, $setting_key, $original_field_name) : ($field['value'] ?? '');
+                                $storage_metadata = $field_should_persist ? self::get_field_storage_metadata($page_slug, $setting_key, $original_field_name) : [];
                                 $field['name'] = $setting_key . '_' . $original_field_name;
 
                                 if ($field['type'] === 'checkbox' && isset($field['value']) && $field['value'] === true) {
@@ -755,7 +756,7 @@ class Pomatio_Framework_Settings {
                                 elseif ($field['type'] === 'code_html' || $field['type'] === 'code_css' || $field['type'] === 'code_js') {
                                     $source_value = $value;
 
-                                    if (empty($storage_metadata)) {
+                                    if ($field_should_persist && empty($storage_metadata)) {
                                         $source_value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
                                     }
 

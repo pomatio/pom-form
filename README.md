@@ -339,9 +339,10 @@ Every field is declared as a PHP array and rendered by `Pomatio_Framework::add_f
 | `class`, `id` | Custom classes/IDs appended to the generated markup after being sanitised, handy for styling or JavaScript hooks. |
 | `disabled` | Pass `true` to render a disabled input without losing the value on save—useful for templates or repeater defaults. |
 | `dependency` | Define conditional logic that is serialised into a `data-dependencies` attribute so JavaScript can hide or show the field based on other values. |
+| `persist` | Optional boolean that defaults to `true`. Set it to `false` for request-scoped UI state that should render but must never be read from or written to saved settings. |
 | `save_as` | Optional string that re-routes persistence to a theme mod or WordPress option. See below for the supported values. |
 
-Because each field posts back under its `name`, the save handler can detect the field type, run the corresponding sanitizer from `class-sanitize.php`, and persist a clean value to disk.
+Because each field posts back under its `name`, the save handler can detect the field type, run the corresponding sanitizer from `class-sanitize.php`, and persist a clean value to disk. When `persist` is set to `false`, the framework skips both the save step and the saved-value hydration step, making the field suitable for transient dependency markers such as “currently selected tab”.
 
 ### External storage with `save_as`
 

@@ -57,6 +57,11 @@ class Pomatio_Framework_Save {
                     $field_definition = is_array($field_definition) ? $field_definition : [];
                     $normalized_setting_name = $field_definition['name'] ?? $setting_name;
 
+                    if (!Pomatio_Framework_Helper::field_should_persist($field_definition)) {
+                        unset($fields_metadata[$normalized_setting_name]);
+                        continue;
+                    }
+
                     $type = $field_definition['type'] ?? (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $type = strtolower($type);
                     $sanitize_function_name = "sanitize_pom_form_$type";
