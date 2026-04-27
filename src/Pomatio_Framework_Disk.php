@@ -350,8 +350,59 @@ Options -Indexes -ExecCGI
     </FilesMatch>
 </IfModule>
 HTACCESS;
-            file_put_contents($htaccess, trim($htaccess_content));
+            self::write_file($htaccess, trim($htaccess_content));
         }
+    }
+
+    public static function write_file(string $path, string $content, int $flags = 0) {
+        $written = file_put_contents($path, $content, $flags);
+
+        if (false !== $written) {
+            self::apply_file_permissions($path);
+        }
+
+        return $written;
+    }
+
+    public static function apply_file_permissions(string $path): void {
+        self::apply_permissions($path, false);
+    }
+
+    public static function apply_directory_permissions(string $path): void {
+        self::apply_permissions(rtrim($path, '/\\'), true);
+    }
+
+    private static function apply_permissions(string $path, bool $is_dir): void {
+        if ($path === '' || !file_exists($path)) {
+            return;
+        }
+
+        $permissions = self::resolve_permissions($path, $is_dir);
+
+        if (null === $permissions) {
+            return;
+        }
+
+        chmod($path, $permissions);
+    }
+
+    private static function resolve_permissions(string $path, bool $is_dir): ?int {
+        if ($is_dir && defined('FS_CHMOD_DIR')) {
+            return FS_CHMOD_DIR;
+        }
+
+        if (!$is_dir && defined('FS_CHMOD_FILE')) {
+            return FS_CHMOD_FILE;
+        }
+
+        $reference_path = dirname($path);
+        $stats = @stat($reference_path);
+
+        if (is_array($stats) && isset($stats['mode'])) {
+            return $stats['mode'] & ($is_dir ? 0007777 : 0000666);
+        }
+
+        return $is_dir ? 0755 : 0644;
     }
 
     public function save_signature_image($data) {
@@ -364,14 +415,20 @@ HTACCESS;
                 return false;
             }
 
+            self::apply_directory_permissions($path);
             $htaccessContent = "deny from all";
             $htaccessPath = $path . '/.htaccess';
-            file_put_contents($htaccessPath, $htaccessContent);
+            self::write_file($htaccessPath, $htaccessContent);
         }
 
         $filename = Pomatio_Framework_Helper::generate_random_string(20, false) . '.png';
         $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
-        $saved = file_put_contents($path . $filename, $data);
+
+        if ($data === false) {
+            return false;
+        }
+
+        $saved = self::write_file($path . $filename, $data);
 
         return $saved ? $path . $filename : false;
     }
@@ -421,15 +478,17 @@ HTACCESS;
                 Pomatio_Framework_Helper::write_log('Error creating tweaks settings dir.');
             }
             else {
-                (new self)->create_enabled_settings_file();
+                self::apply_directory_permissions($settings_path);
+                (new self)->create_enabled_settings_file($settings_dir);
                 (new self)->create_htaccess_file();
                 Pomatio_Framework_Helper::write_log('Created tweaks settings dir.');
             }
         }
     }
 
-    private function create_enabled_settings_file(): void {
-        $this->generate_file_content([], 'File responsible for saving active settings info.');
+    private function create_enabled_settings_file(string $settings_dir): void {
+        $settings_content = $this->generate_file_content([], 'File responsible for saving active settings info.');
+        self::write_file($this->get_settings_path($settings_dir) . 'enabled_settings.php', $settings_content, LOCK_EX);
     }
 
     /**
@@ -479,7 +538,7 @@ HTACCESS;
 
         $settings_path = (new self)->get_settings_path($settings_dir);
 
-        file_put_contents($settings_path . $file_name . '.' . $file_extension, $content, LOCK_EX);
+        self::write_file($settings_path . $file_name . '.' . $file_extension, $content, LOCK_EX);
 
         return $settings_path . $file_name . '.' . $file_extension;
     }

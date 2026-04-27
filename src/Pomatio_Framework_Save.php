@@ -152,7 +152,7 @@ class Pomatio_Framework_Save {
 
         ksort($fields_save_as_map);
         $fields_metadata_content = (new Pomatio_Framework_Disk)->generate_file_content($fields_save_as_map, 'External storage map for Pomatio settings.');
-        file_put_contents($settings_path . 'fields_save_as.php', $fields_metadata_content, LOCK_EX);
+        Pomatio_Framework_Disk::write_file($settings_path . 'fields_save_as.php', $fields_metadata_content, LOCK_EX);
 
         if (function_exists('opcache_invalidate')) {
             opcache_invalidate("{$settings_path}fields_save_as.php", true);
@@ -177,7 +177,7 @@ class Pomatio_Framework_Save {
 
         $settings_content = (new Pomatio_Framework_Disk)->generate_file_content($settings_array, "Enabled settings array file.");
         $settings_path = (new Pomatio_Framework_Disk())->get_settings_path($page_slug);
-        file_put_contents($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
+        Pomatio_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
 
         // Don't save enabled/disabled option in tweak settings file.
         unset($data['enabled']);
@@ -189,7 +189,7 @@ class Pomatio_Framework_Save {
          */
         if ($settings_array[$setting] === '1' && count($data) > 0) {
             $setting_file_content = (new Pomatio_Framework_Disk)->generate_file_content($data, "Settings file for $setting.");
-            file_put_contents($settings_path . "$setting.php", $setting_file_content, LOCK_EX);
+            Pomatio_Framework_Disk::write_file($settings_path . "$setting.php", $setting_file_content, LOCK_EX);
         }
     }
 

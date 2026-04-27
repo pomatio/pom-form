@@ -346,7 +346,7 @@ class Pomatio_Framework_Settings {
             $settings_path = $disk->get_settings_path($page_slug);
             $settings_content = $disk->generate_file_content($enabled_settings, 'Enabled settings array file.');
 
-            file_put_contents($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
+            Pomatio_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
 
             if (function_exists('opcache_invalidate')) {
                 opcache_invalidate($settings_path . 'enabled_settings.php', true);

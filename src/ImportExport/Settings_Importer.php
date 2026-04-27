@@ -120,7 +120,7 @@ class Settings_Importer {
             $file_content = $disk->generate_file_content($settings_array, 'Imported settings file.');
             $destination_file = $this->base_path . $manifest_entry['file'];
 
-            file_put_contents($destination_file, $file_content, LOCK_EX);
+            Pomatio_Framework_Disk::write_file($destination_file, $file_content, LOCK_EX);
 
             if (function_exists('opcache_invalidate')) {
                 @opcache_invalidate($destination_file, true); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
@@ -222,6 +222,7 @@ class Settings_Importer {
             }
 
             wp_mkdir_p(dirname($destination_file));
+            Pomatio_Framework_Disk::apply_directory_permissions(dirname($destination_file));
 
             $contents = file_get_contents($source_file);
 
@@ -231,7 +232,7 @@ class Settings_Importer {
 
             $contents = Domain_Replacer::replace_in_string($contents, $source_domain, $destination_domain);
 
-            file_put_contents($destination_file, $contents, LOCK_EX);
+            Pomatio_Framework_Disk::write_file($destination_file, $contents, LOCK_EX);
             $copied_assets[$clean_relative] = true;
         }
     }

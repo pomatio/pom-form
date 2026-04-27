@@ -48,7 +48,7 @@ if (defined('WP_CLI') && WP_CLI) {
             $settings_content = $disk_instance->generate_file_content($settings_array, "Enabled settings array file.");
             $settings_path = $disk_instance->get_settings_path($assoc_args['settings_dir']);
 
-            if (false === file_put_contents($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX)) {
+            if (false === Pomatio_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX)) {
                 WP_CLI::error("Failed to write to settings file: " . $settings_path . 'enabled_settings.php');
             }
 
