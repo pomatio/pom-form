@@ -22,6 +22,7 @@ class Pomatio_Framework {
             Pomatio_Framework_Ajax::class => 'Pomatio_Framework_Ajax.php',
             Pomatio_Framework_Save::class => 'Pomatio_Framework_Save.php',
             Pomatio_Framework_Translations::class => 'Pomatio_Framework_Translations.php',
+            Pomatio_Framework_Merge_Tags::class => 'Pomatio_Framework_Merge_Tags.php',
         ];
 
         foreach ($classes as $class => $file) {
