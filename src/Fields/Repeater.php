@@ -51,6 +51,10 @@ class Repeater {
         ?>
 
         <div class="repeater-wrapper<?= $sortable ?>"<?= $limit ?><?= $data_dependencies ?>>
+            <div class="repeater-bulk-actions">
+                <button type="button" class="button button-secondary open-all-repeaters"><?php _e('Open all', 'pomatio-framework') ?></button>
+                <button type="button" class="button button-secondary close-all-repeaters"><?php _e('Close all', 'pomatio-framework') ?></button>
+            </div>
 
             <?php
 

@@ -12,15 +12,44 @@ jQuery(function($) {
    */
   initializeFieldVisibility();
 
+  let $refresh_code_editors = function($scope) {
+    const $editors = $scope && $scope.length ? $scope.find('.CodeMirror') : $('.CodeMirror');
+
+    $editors.each(function(i, el) {
+      if (el.CodeMirror) {
+        el.CodeMirror.refresh();
+      }
+    });
+  };
+
   /**
    * Toggle the repeater
    */
   $(document).on('click', '.repeater .title', function() {
-    $(this).closest('.repeater').toggleClass('closed');
+    const $repeater = $(this).closest('.repeater');
 
-    $('.CodeMirror').each(function(i, el) {
-      el.CodeMirror.refresh();
-    });
+    $repeater.toggleClass('closed');
+    $refresh_code_editors($repeater);
+  });
+
+  /**
+   * Toggle all direct repeater items in a wrapper.
+   */
+  $(document).on('click', '.open-all-repeaters, .close-all-repeaters', function(e) {
+    e.preventDefault();
+
+    const $this = $(this);
+    const $wrapper = $this.closest('.repeater-wrapper');
+    const $repeaters = $wrapper.children('.repeater');
+
+    if ($this.hasClass('open-all-repeaters')) {
+      $repeaters.removeClass('closed');
+    }
+    else {
+      $repeaters.addClass('closed');
+    }
+
+    $refresh_code_editors($wrapper);
   });
 
   $(document).on('click touchstart', '.repeater-identifier', function(event) {
@@ -281,7 +310,7 @@ jQuery(function($) {
        */
       if ($is_child_repeater) {
         const $parent_repeater_item = $wrapper.closest('.repeater');
-        const $parent_index = $parent_repeater_item.index();
+        const $parent_index = $parent_repeater_item.parent().children('.repeater').index($parent_repeater_item);
         const $child_repeater_name = $wrapper.find('.repeater-value').attr('name');
         if (!$child_repeater_name) {
           continue;
@@ -393,14 +422,15 @@ jQuery(function($) {
     const $is_child_repeater = $wrapper.parents('.repeater-wrapper').length > 0;
 
     if (!$is_child_repeater) {
-      const $repeater_index = $this.closest('.repeater').index();
+      const $repeater = $this.closest('.repeater');
+      const $repeater_index = $wrapper.children('.repeater').index($repeater);
       let $repeater_value = $wrapper.find('.repeater-value').last().val();
 
       $repeater_value = JSON.parse($repeater_value);
       $repeater_value[$repeater_type].splice($repeater_index, 1);
 
       $wrapper.find('.repeater-value').last().val(JSON.stringify($repeater_value));
-      $this.closest('.repeater').remove();
+      $repeater.remove();
 
       $update_repeater($wrapper);
 
@@ -457,6 +487,7 @@ jQuery(function($) {
    */
   if (typeof $.fn.sortable !== 'undefined') {
     $('.repeater-wrapper.sortable').sortable({
+      items: '> .repeater',
       update: function(event, ui) {
         $update_repeater($(this));
       }
@@ -564,7 +595,7 @@ jQuery(function($) {
     let $spinner = $this.closest('.repeater-wrapper').find('.repeater-spinner');
     $spinner.show();
 
-    $wrapper.find('.repeater.default').remove();
+    $wrapper.children('.repeater.default').remove();
 
     $.ajax({
       url: ajaxurl,
@@ -576,7 +607,14 @@ jQuery(function($) {
         title: $this.attr('data-title')
       },
       success: function($response) {
-        $this.closest('.repeater-wrapper').prepend($response);
+        let $bulk_actions = $wrapper.children('.repeater-bulk-actions').first();
+        if ($bulk_actions.length) {
+          $bulk_actions.after($response);
+        }
+        else {
+          $wrapper.prepend($response);
+        }
+
         $spinner.hide();
 
         $update_repeater($wrapper);
