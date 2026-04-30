@@ -7,6 +7,7 @@ module.exports = {
   entry: {
     'admin': './src/dist/css/admin.scss',
     'background-image': './src/dist/css/background-image.scss',
+    'code': './src/dist/css/code.scss',
     'color-palette': './src/dist/css/color-palette.scss',
     'font-picker': './src/dist/css/font-picker.scss',
     'gallery': './src/dist/css/gallery.scss',

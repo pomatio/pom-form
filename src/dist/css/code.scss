@@ -1,0 +1,16 @@
+textarea[class*="pomatio-framework-code-editor-"] + .CodeMirror {
+  box-sizing: border-box;
+  contain: inline-size;
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+
+  .CodeMirror-scroll,
+  .CodeMirror-hscrollbar {
+    max-width: 100%;
+  }
+
+  .CodeMirror-scroll {
+    overflow-x: auto !important;
+  }
+}
