@@ -69,6 +69,40 @@ class Pomatio_Framework_Helper {
     }
 
     /**
+     * Sanitize one or more CSS class names while preserving class separators.
+     *
+     * Why: WordPress sanitize_html_class() accepts a single class token. Passing
+     * a full class list to it removes spaces and merges valid classes together.
+     *
+     * @param mixed $classes Class string or array of class strings.
+     */
+    public static function sanitize_html_classes($classes): string {
+        if (empty($classes)) {
+            return '';
+        }
+
+        $tokens = is_array($classes) ? $classes : preg_split('/\s+/', (string) $classes);
+        if (!is_array($tokens)) {
+            return '';
+        }
+
+        $sanitized = [];
+        foreach ($tokens as $token) {
+            $token = trim((string) $token);
+            if ($token === '') {
+                continue;
+            }
+
+            $class = sanitize_html_class($token);
+            if ($class !== '') {
+                $sanitized[] = $class;
+            }
+        }
+
+        return implode(' ', array_unique($sanitized));
+    }
+
+    /**
      * Convert an associative array into valid HTML attributes
      */
     public static function convert_array_to_html_attributes($field_args): string {

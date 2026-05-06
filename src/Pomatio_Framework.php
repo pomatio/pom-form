@@ -67,7 +67,7 @@ class Pomatio_Framework {
         $field_args['name'] = isset($field_args['name']) ? sanitize_title($field_args['name']) : '';
         $field_args['id'] = $field_args['id'] ?? $field_args['name'];
         $field_args['value'] = $field_args['value'] ?? '';
-        $field_args['class'] = isset($field_args['class']) ? sanitize_html_class($field_args['class']) : '';
+        $field_args['class'] = isset($field_args['class']) ? Pomatio_Framework_Helper::sanitize_html_classes($field_args['class']) : '';
         $field_args['description_position'] = $field_args['description_position'] ?? 'under_field';
         $field_args['options'] = $field_args['options'] ?? [];
         $field_args['prefix'] = $field_args['prefix'] ?? '';
