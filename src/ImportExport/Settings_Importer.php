@@ -120,6 +120,11 @@ class Settings_Importer {
             $file_content = $disk->generate_file_content($settings_array, 'Imported settings file.');
             $destination_file = $this->base_path . $manifest_entry['file'];
 
+            if (!Settings_Transfer_Helper::is_path_inside_directory($destination_file, $this->base_path)) {
+                $notices[] = sprintf(__('Skipping unsafe settings file: %s', 'pom'), esc_html($file_name)); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+                continue;
+            }
+
             POM_Framework_Disk::write_file($destination_file, $file_content, LOCK_EX);
 
             if (function_exists('opcache_invalidate')) {
@@ -166,6 +171,7 @@ class Settings_Importer {
         }
 
         $manifest = json_decode((string) file_get_contents($manifest_path), true);
+        $manifest = is_array($manifest) ? $this->sanitize_manifest($manifest) : null;
 
         if (!is_array($manifest) || empty($manifest['settings'])) {
             Settings_Transfer_Helper::delete_directory($extract_dir);
@@ -184,7 +190,7 @@ class Settings_Importer {
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $entry_name = $zip->getNameIndex($i);
 
-            if ($entry_name === false || strpos($entry_name, '..') !== false || str_starts_with($entry_name, '/')) {
+            if ($entry_name === false || Settings_Transfer_Helper::sanitize_relative_path($entry_name) === null) {
                 throw new RuntimeException(__('The uploaded ZIP file contains invalid paths.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
             }
         }
@@ -201,14 +207,28 @@ class Settings_Importer {
     }
 
     private function get_preview_path(array $preview, string $relative_path): string {
-        $clean_relative = ltrim(Settings_Transfer_Helper::normalize_path($relative_path), '/');
+        $clean_relative = Settings_Transfer_Helper::sanitize_relative_path($relative_path);
 
-        return Settings_Transfer_Helper::ensure_trailing_slash($preview['extract_path']) . $clean_relative;
+        if ($clean_relative === null) {
+            return '';
+        }
+
+        $path = Settings_Transfer_Helper::ensure_trailing_slash($preview['extract_path']) . $clean_relative;
+
+        if (!Settings_Transfer_Helper::is_path_inside_directory($path, $preview['extract_path'])) {
+            return '';
+        }
+
+        return $path;
     }
 
     private function copy_assets(array $preview, array $assets, string $source_domain, string $destination_domain, array &$copied_assets): void {
         foreach ($assets as $asset_relative) {
-            $clean_relative = ltrim(Settings_Transfer_Helper::normalize_path($asset_relative), '/');
+            $clean_relative = Settings_Transfer_Helper::sanitize_relative_path((string) $asset_relative);
+
+            if ($clean_relative === null) {
+                continue;
+            }
 
             if (isset($copied_assets[$clean_relative])) {
                 continue;
@@ -217,7 +237,7 @@ class Settings_Importer {
             $source_file = $this->get_preview_path($preview, 'assets/' . $clean_relative);
             $destination_file = $this->base_path . $clean_relative;
 
-            if (!is_file($source_file)) {
+            if (!is_file($source_file) || !Settings_Transfer_Helper::is_path_inside_directory($destination_file, $this->base_path)) {
                 continue;
             }
 
@@ -235,6 +255,57 @@ class Settings_Importer {
             POM_Framework_Disk::write_file($destination_file, $contents, LOCK_EX);
             $copied_assets[$clean_relative] = true;
         }
+    }
+
+    private function sanitize_manifest(array $manifest): ?array {
+        if (empty($manifest['settings']) || !is_array($manifest['settings'])) {
+            return null;
+        }
+
+        $sanitized_settings = [];
+
+        foreach ($manifest['settings'] as $entry) {
+            if (!is_array($entry)) {
+                return null;
+            }
+
+            $file = isset($entry['file']) ? sanitize_file_name((string) $entry['file']) : '';
+            $json = isset($entry['json']) ? Settings_Transfer_Helper::sanitize_relative_path((string) $entry['json']) : null;
+
+            if ($file === '' || $file !== ($entry['file'] ?? '') || !str_ends_with($file, '.php')) {
+                return null;
+            }
+
+            if ($json === null || !str_starts_with($json, 'settings/') || !str_ends_with($json, '.json')) {
+                return null;
+            }
+
+            $assets = [];
+            foreach (($entry['assets'] ?? []) as $asset) {
+                $clean_asset = Settings_Transfer_Helper::sanitize_relative_path((string) $asset);
+
+                if ($clean_asset === null || !preg_match('/\.(html?|css|js)$/i', $clean_asset)) {
+                    return null;
+                }
+
+                $assets[] = $clean_asset;
+            }
+
+            $sanitized_settings[] = [
+                'file' => $file,
+                'label' => isset($entry['label']) ? sanitize_text_field((string) $entry['label']) : Settings_Transfer_Helper::humanize_setting_label($file),
+                'json' => $json,
+                'assets' => array_values(array_unique($assets)),
+            ];
+        }
+
+        $manifest['settings'] = $sanitized_settings;
+        $manifest['page_slug'] = isset($manifest['page_slug']) ? sanitize_key((string) $manifest['page_slug']) : '';
+        $manifest['source_domain'] = Domain_Replacer::normalize_domain((string) ($manifest['source_domain'] ?? ''));
+        $manifest['source_base_path'] = isset($manifest['source_base_path']) ? Settings_Transfer_Helper::normalize_path((string) $manifest['source_base_path']) : '';
+        $manifest['generated_at'] = isset($manifest['generated_at']) ? sanitize_text_field((string) $manifest['generated_at']) : '';
+
+        return $manifest;
     }
 
     private function remove_preview_artifacts(array $preview): void {

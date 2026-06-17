@@ -85,7 +85,11 @@ class POM_Framework {
      * @return string
      */
     public static function add_field(array $args): string {
-        $type = ucfirst($args['type']);
+        $type = self::resolve_field_type((string) ($args['type'] ?? 'text'));
+
+        if ($type === '') {
+            return '';
+        }
 
         if (!file_exists($filename = POM_Framework_Helper::get_path() . "/Fields/$type.php")) {
             return '';
@@ -165,6 +169,30 @@ class POM_Framework {
         }
 
         return ob_get_clean();
+    }
+
+    private static function resolve_field_type(string $type): string {
+        $type = trim($type);
+
+        if ($type === '' || !preg_match('/^[A-Za-z][A-Za-z0-9_]*$/', $type)) {
+            return '';
+        }
+
+        static $field_types = null;
+
+        if ($field_types === null) {
+            $field_types = [];
+            $files = glob(POM_Framework_Helper::get_path() . '/Fields/*.php');
+
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    $field_type = pathinfo($file, PATHINFO_FILENAME);
+                    $field_types[strtolower($field_type)] = $field_type;
+                }
+            }
+        }
+
+        return $field_types[strtolower($type)] ?? ucfirst($type);
     }
 
 }

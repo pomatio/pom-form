@@ -85,10 +85,10 @@ jQuery(function($) {
     let $identifier = $repeater.find('input[name="repeater_identifier"]').val();
 
     if ($identifier) {
-      $identifier_holder.html(' - ID: ' + $identifier);
+      $identifier_holder.text(' - ID: ' + $identifier);
     }
     else {
-      $identifier_holder.html('');
+      $identifier_holder.text('');
     }
   };
 
@@ -377,6 +377,7 @@ jQuery(function($) {
       type: 'POST',
       data: {
         action: 'pom_framework_get_repeater_item_html',
+        nonce: pom_framework_repeater.nonce,
         config: $config,
         items: $item_count
       },
@@ -525,10 +526,10 @@ jQuery(function($) {
     let $value = $get_repeater_title_value($element);
 
     if ($value) {
-      $title_holder.html(' - ' + $value);
+      $title_holder.text(' - ' + $value);
     }
     else {
-      $title_holder.html('');
+      $title_holder.text('');
     }
   };
 
@@ -602,6 +603,7 @@ jQuery(function($) {
       type: 'POST',
       data: {
         action: 'pom_framework_restore_repeater_defaults',
+        nonce: pom_framework_repeater.nonce,
         defaults: $this.attr('data-defaults'),
         fields: $this.attr('data-fields'),
         title: $this.attr('data-title')

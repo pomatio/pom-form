@@ -9,6 +9,7 @@ namespace POMFramework\Fields;
 
 use POMFramework\POM_Framework_Helper;
 use POMFramework\POM_Framework;
+use POMFramework\POM_Framework_Ajax;
 
 class Repeater {
 
@@ -16,11 +17,11 @@ class Repeater {
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label>';
+            echo '<label for="' . esc_attr($args['id']) . '">' . wp_kses_post($args['label']) . '</label>';
         }
 
         if (!empty($args['description']) && $args['description_position'] === 'below_label') {
-            echo '<small class="description">' . $args['description'] . '</small>';
+            echo '<small class="description">' . wp_kses_post($args['description']) . '</small>';
         }
 
         $repeater_config = [
@@ -36,7 +37,7 @@ class Repeater {
             $repeater_config['cloneable'] = $args['cloneable'];
         }
 
-        $repeater_config = base64_encode(json_encode($repeater_config));
+        $repeater_config = base64_encode((string) wp_json_encode($repeater_config));
 
         //$json = json_decode(htmlspecialchars_decode($args['value']), true);
         $json = $args['value'];
@@ -52,8 +53,8 @@ class Repeater {
 
         <div class="repeater-wrapper<?= $sortable ?>"<?= $limit ?><?= $data_dependencies ?>>
             <div class="repeater-bulk-actions">
-                <button type="button" class="button button-secondary open-all-repeaters"><?php _e('Open all', 'pom-framework') ?></button>
-                <button type="button" class="button button-secondary close-all-repeaters"><?php _e('Close all', 'pom-framework') ?></button>
+                <button type="button" class="button button-secondary open-all-repeaters"><?php esc_html_e('Open all', 'pom-framework') ?></button>
+                <button type="button" class="button button-secondary close-all-repeaters"><?php esc_html_e('Close all', 'pom-framework') ?></button>
             </div>
 
             <?php
@@ -63,17 +64,17 @@ class Repeater {
                 $defaults_identifier = POM_Framework_Helper::generate_random_string(10, false);
 
                 foreach ($args['defaults'] as $default) {
-                    $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');
+                    $default_json = (string) wp_json_encode($default);
 
                     ?>
 
                     <div class="repeater default closed">
                         <div class="title">
-                            <strong><?= $args['title'] ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $defaults_identifier ?></span>
-                        </div>
-                        <div class="repeater-fields">
-                            <input type="hidden" name="repeater_identifier" value="<?= $defaults_identifier ?>">
-                            <input type="hidden" name="default_values" value="<?= $default_json ?>">
+	                            <strong><?= wp_kses_post($args['title']) ?></strong><span></span><span class="repeater-identifier"> - ID: <?= esc_html($defaults_identifier) ?></span>
+	                        </div>
+	                        <div class="repeater-fields">
+	                            <input type="hidden" name="repeater_identifier" value="<?= esc_attr($defaults_identifier) ?>">
+	                            <input type="hidden" name="default_values" value="<?= esc_attr($default_json) ?>">
 
                             <?php
 
@@ -86,14 +87,14 @@ class Repeater {
                             ?>
 
                             <div class="repeater-action-row">
-                                <span class="restore-default"><?php _e('Restore default', 'pom-framework') ?></span>
+	                                <span class="restore-default"><?php esc_html_e('Restore default', 'pom-framework') ?></span>
 
                                 <?php
 
                                 if (isset($args['cloneable']) && $args['cloneable'] === true) {
                                     ?>
 
-                                    <span class="clone-repeater"><?php _e('Clone', 'pom-framework') ?></span>
+	                                    <span class="clone-repeater"><?php esc_html_e('Clone', 'pom-framework') ?></span>
 
                                     <?php
                                 }
@@ -101,7 +102,7 @@ class Repeater {
                                 if (isset($default['can_be_removed']) && $default['can_be_removed']) {
                                     ?>
 
-                                    <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
+	                            <span class="delete"><?php esc_html_e('Delete', 'pom-framework') ?></span>
 
                                     <?php
                                 }
@@ -133,17 +134,17 @@ class Repeater {
 
                             <?php $item_identifier = $repeater_item['repeater_identifier'] ?? $repeater_identifier; ?>
 
-                            <div class="repeater <?= $repeater_type ?> closed">
-                                <div class="title"><strong><?= $args['title'] ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $item_identifier ?></span></div>
-                                <div class="repeater-fields">
-                                    <input type="hidden" name="repeater_identifier" value="<?= $item_identifier ?>">
+	                            <div class="repeater <?= esc_attr(sanitize_html_class($repeater_type)) ?> closed">
+	                                <div class="title"><strong><?= wp_kses_post($args['title']) ?></strong><span></span><span class="repeater-identifier"> - ID: <?= esc_html($item_identifier) ?></span></div>
+	                                <div class="repeater-fields">
+	                                    <input type="hidden" name="repeater_identifier" value="<?= esc_attr($item_identifier) ?>">
 
                                     <?php
 
                                     if ($repeater_type === 'default') {
                                         ?>
 
-                                        <input type="hidden" name="default_values" value="<?= htmlspecialchars(json_encode($repeater_item['default_values']), ENT_QUOTES, 'UTF-8') ?? '' ?>">
+	                                        <input type="hidden" name="default_values" value="<?= esc_attr((string) wp_json_encode($repeater_item['default_values'])) ?>">
 
                                         <?php
                                     }
@@ -183,7 +184,7 @@ class Repeater {
                                     if ($repeater_type === 'default' && !empty($repeater_item['default_values'])) {
                                         ?>
 
-                                        <span class="restore-default"><?php _e('Restore default', 'pom-framework') ?></span>
+	                                        <span class="restore-default"><?php esc_html_e('Restore default', 'pom-framework') ?></span>
 
                                         <?php
                                     }
@@ -191,7 +192,7 @@ class Repeater {
                                     if (isset($args['cloneable']) && $args['cloneable'] === true) {
                                         ?>
 
-                                        <span class="clone-repeater"><?php _e('Clone', 'pom-framework') ?></span>
+	                                        <span class="clone-repeater"><?php esc_html_e('Clone', 'pom-framework') ?></span>
 
                                         <?php
                                     }
@@ -199,14 +200,14 @@ class Repeater {
                                     if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
                                         ?>
 
-                                        <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
+	                                        <span class="delete"><?php esc_html_e('Delete', 'pom-framework') ?></span>
 
                                         <?php
                                     }
                                     elseif ($repeater_type === 'new') {
                                         ?>
 
-                                        <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
+	                                        <span class="delete"><?php esc_html_e('Delete', 'pom-framework') ?></span>
 
                                         <?php
                                     }
@@ -226,8 +227,8 @@ class Repeater {
             if (!isset($args['disable_new']) || $args['disable_new'] !== true) {
                 ?>
 
-                <button class="button add-new-repeater-item"><?php _e('Add new', 'pom-framework') ?></button>
-                <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
+	                <button class="button add-new-repeater-item"><?php esc_html_e('Add new', 'pom-framework') ?></button>
+	                <img class="repeater-spinner" src="<?= esc_url(admin_url('images/loading.gif')) ?>" alt="Spinner">
 
                 <?php
             }
@@ -235,14 +236,14 @@ class Repeater {
             if (!empty($args['defaults'])) {
                 ?>
 
-                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pom-framework') ?></button>
+	                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= esc_attr($args['title']) ?>" data-fields="<?= esc_attr(base64_encode((string) wp_json_encode($args['fields']))) ?>" data-defaults="<?= esc_attr(base64_encode((string) wp_json_encode($args['defaults']))) ?>"><?php esc_html_e('Restore defaults', 'pom-framework') ?></button>
 
                 <?php
             }
 
             ?>
 
-            <input type="hidden" name="config" value="<?= $repeater_config ?>">
+	            <input type="hidden" name="config" value="<?= esc_attr($repeater_config) ?>">
 
             <?php
 
@@ -284,13 +285,13 @@ class Repeater {
 
             ?>
 
-            <input type="hidden" name="<?= $args['name'] ?>" value="<?= htmlspecialchars(json_encode($args['value']), ENT_QUOTES, 'UTF-8') ?>" class="repeater-value" data-type="repeater">
+	            <input type="hidden" name="<?= esc_attr($args['name']) ?>" value="<?= esc_attr((string) wp_json_encode($args['value'])) ?>" class="repeater-value" data-type="repeater">
         </div>
 
         <?php
 
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
-            echo '<small class="description">' . $args['description'] . '</small>';
+            echo '<small class="description">' . wp_kses_post($args['description']) . '</small>';
         }
 
         echo '</div>';
@@ -311,6 +312,7 @@ class Repeater {
                 'limit' => __('Element limit reached', 'pom-framework'),
                 'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pom-framework'),
                 'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pom-framework'),
+                'nonce' => wp_create_nonce(POM_Framework_Ajax::AJAX_NONCE_ACTION),
             ]
         );
     }

@@ -336,6 +336,10 @@ if (!function_exists('sanitize_pom_framework_repeater')) {
                             $sanitize_function_name = "sanitize_pom_framework_{$arr_value['type']}";
                             $field_name = str_replace('[]', '', $arr_key);
 
+                            if (!function_exists($sanitize_function_name)) {
+                                continue;
+                            }
+
                             if (isset($array_settings['name']) && ($arr_value['type'] === 'code_html' || $arr_value['type'] === 'code_css' || $arr_value['type'] === 'code_js' || $arr_value['type'] === 'code_json')) {
                                 $file_name = "{$array_settings['name']}_{$repeater_identifier}_$field_name";
                                 $sanitized_array[$type][$index][$field_name]['value'] = POM_Framework_Disk::save_to_file($file_name, $arr_value['value'], str_replace('code_', '', $arr_value['type']), $settings_dir);

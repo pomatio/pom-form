@@ -13,6 +13,30 @@ class Settings_Transfer_Helper {
         return rtrim($path, '/') . '/';
     }
 
+    public static function sanitize_relative_path(string $path): ?string {
+        $normalized = self::normalize_path($path);
+
+        if (
+            $normalized === '' ||
+            str_starts_with($normalized, '/') ||
+            str_contains($normalized, "\0") ||
+            str_contains($normalized, '..') ||
+            str_contains($normalized, '://') ||
+            preg_match('/^[A-Za-z]:/', $normalized)
+        ) {
+            return null;
+        }
+
+        return ltrim($normalized, '/');
+    }
+
+    public static function is_path_inside_directory(string $path, string $directory): bool {
+        $normalized_directory = self::ensure_trailing_slash(self::normalize_path($directory));
+        $normalized_path = self::normalize_path($path);
+
+        return $normalized_path === rtrim($normalized_directory, '/') || strpos($normalized_path, $normalized_directory) === 0;
+    }
+
     public static function detect_domain_from_file(string $file_path): string {
         if (!is_readable($file_path)) {
             return '';

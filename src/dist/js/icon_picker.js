@@ -30,6 +30,17 @@ jQuery(function($) {
     $input[0].dispatchEvent(new Event('change', { bubbles: true }));
   };
 
+  const setLoadingContent = function($target) {
+    $target.empty().append($('<span>', {
+      class: 'centered-text',
+      text: pom_framework_icon_picker.loading
+    }));
+  };
+
+  const setModalTitle = function($target, title) {
+    $target.empty().append($('<h1>').text(title || ''));
+  };
+
   refreshIconPickers($(document));
 
   $(document).ajaxComplete(function() {
@@ -84,11 +95,11 @@ jQuery(function($) {
     close: function() {
       // Set defaults to all libraries on modal close.
       $('#pom-framework-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
-      $('#pom-framework-icons-modal .media-frame-content').empty().append('<span class="centered-text">' + pom_framework_icon_picker.loading + '</span>');
+      setLoadingContent($('#pom-framework-icons-modal .media-frame-content'));
 
       $('.pom-framework-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
       let $title = $('.pom-framework-icons-modal [data-slug="all"]').attr('data-label');
-      $('#pom-framework-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
+      setModalTitle($('#pom-framework-icons-modal .media-frame-title'), $title);
     },
     create: function() {
       $('.pom-framework-icons-modal .ui-dialog-titlebar').css('display', 'none');
@@ -96,7 +107,7 @@ jQuery(function($) {
       // Set defaults to all libraries on modal creation.
       $('.pom-framework-icons-modal .media-menu [data-slug="all"]').addClass('active').attr('aria-selected', 'true');
       let $title = $('.pom-framework-icons-modal [data-slug="all"]').attr('data-label');
-      $('#pom-framework-icons-modal .media-frame-title').empty().append('<h1>' + $title + '</h1>');
+      setModalTitle($('#pom-framework-icons-modal .media-frame-title'), $title);
     }
   });
 
@@ -111,6 +122,7 @@ jQuery(function($) {
       method: 'POST',
       data: {
         action: 'pom_framework_get_icon_library_icons',
+        nonce: pom_framework_icon_picker.nonce,
         library: 'all'
       },
       success: function($response) {
@@ -132,20 +144,21 @@ jQuery(function($) {
 
     $('#pom-framework-icons-modal input[type="search"]').val('');
 
-    $this.closest('#pom-framework-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_framework_icon_picker.loading + '</span>');
+    setLoadingContent($this.closest('#pom-framework-icons-modal').find('.media-frame-content'));
 
     $('#pom-framework-icons-modal .media-menu-item').removeClass('active').attr('aria-selected', '');
     $this.addClass('active').attr('aria-selected', 'true');
 
     let $library = $this.attr('data-slug');
     let $label = $this.attr('data-label');
-    $this.closest('#pom-framework-icons-modal').find('.media-frame-title').empty().append('<h1>' + $label + '</h1>');
+    setModalTitle($this.closest('#pom-framework-icons-modal').find('.media-frame-title'), $label);
 
     $.ajax({
       url: ajaxurl,
       method: 'POST',
       data: {
         action: 'pom_framework_get_icon_library_icons',
+        nonce: pom_framework_icon_picker.nonce,
         library: $library
       },
       success: function($response) {
@@ -180,6 +193,7 @@ jQuery(function($) {
       method: 'POST',
       data: {
         action: 'pom_framework_get_icon_library_icons',
+        nonce: pom_framework_icon_picker.nonce,
         library: $library,
         offset: $offset + 88
       },
@@ -202,7 +216,10 @@ jQuery(function($) {
 
     setIconPickerValue($wrapper, $icon_url);
 
-    $wrapper.find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
+    $wrapper.find('.icon-wrapper').empty().append($('<img>', {
+      alt: '',
+      src: $icon_url
+    }));
     refreshIconPickerState($wrapper);
 
     $icon_picker_modal.dialog('close');
@@ -230,13 +247,14 @@ jQuery(function($) {
     let $this = $(this);
     let $search = $this.val();
     let $library = $this.closest('#pom-framework-icons-modal').find('.media-menu button.active').attr('data-slug');
-    $this.closest('#pom-framework-icons-modal').find('.media-frame-content').empty().append('<span class="centered-text">' + pom_framework_icon_picker.loading + '</span>');
+    setLoadingContent($this.closest('#pom-framework-icons-modal').find('.media-frame-content'));
 
     $.ajax({
       url: ajaxurl,
       method: 'POST',
       data: {
         action: 'pom_framework_get_icon_by_name',
+        nonce: pom_framework_icon_picker.nonce,
         search: $search,
         library: $library
       },

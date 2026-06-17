@@ -2,6 +2,7 @@
 
 namespace POMFramework\Fields;
 
+use POMFramework\POM_Framework_Ajax;
 use POMFramework\POM_Framework_Helper;
 
 class Icon_Picker {
@@ -22,11 +23,11 @@ class Icon_Picker {
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . esc_attr($args['id']) . '">' . $args['label'] . '</label><br>';
+            echo '<label for="' . esc_attr($args['id']) . '">' . wp_kses_post($args['label']) . '</label><br>';
         }
 
         if (!empty($args['description']) && $args['description_position'] === 'below_label') {
-            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+            echo '<small class="description form-text text-muted">' . wp_kses_post($args['description']) . '</small>';
         }
 
         ?>
@@ -53,7 +54,7 @@ class Icon_Picker {
         (new self())->dialog_html();
 
         if (!empty($args['description']) && $args['description_position'] === 'under_field') {
-            echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
+            echo '<small class="description form-text text-muted">' . wp_kses_post($args['description']) . '</small>';
         }
 
         echo '</div>';
@@ -65,7 +66,8 @@ class Icon_Picker {
             'pom-framework-icon_picker',
             'pom_framework_icon_picker',
             [
-                'loading' => __('Loading...', 'pom-framework')
+                'loading' => __('Loading...', 'pom-framework'),
+                'nonce' => wp_create_nonce(POM_Framework_Ajax::AJAX_NONCE_ACTION),
             ]
         );
     }
@@ -75,14 +77,14 @@ class Icon_Picker {
 
         <div id="pom-framework-icons-modal" class="media-modal wp-core-ui" style="display: none;">
             <button type="button" class="media-modal-close close-icon-picker-modal">
-                <span class="media-modal-icon">
-                    <span class="screen-reader-text"><?php _e('Close modal', 'pom-framework') ?></span>
-                </span>
+	                <span class="media-modal-icon">
+	                    <span class="screen-reader-text"><?php esc_html_e('Close modal', 'pom-framework') ?></span>
+	                </span>
             </button>
             <div class="media-modal-content" role="document">
                 <div  class="media-frame mode-select wp-core-ui">
                     <div class="media-frame-title" id="media-frame-title"></div>
-                    <h2 class="media-frame-menu-heading"><?php _e('Icon libraries', 'pom-framework') ?></h2>
+	                    <h2 class="media-frame-menu-heading"><?php esc_html_e('Icon libraries', 'pom-framework') ?></h2>
                     <div class="media-frame-menu">
                         <div role="tablist" aria-orientation="vertical" class="media-menu">
                             <?php
@@ -91,7 +93,7 @@ class Icon_Picker {
                             foreach ($icon_libraries as $library => $data) {
                                 ?>
 
-                                <button type="button" role="tab" class="media-menu-item" id="menu-item-<?= $library ?>" data-slug="<?= $library ?>" data-label="<?= $data['name'] ?>"><?= $data['name'] ?></button>
+	                                <button type="button" role="tab" class="media-menu-item" id="menu-item-<?= esc_attr($library) ?>" data-slug="<?= esc_attr($library) ?>" data-label="<?= esc_attr($data['name']) ?>"><?= esc_html($data['name']) ?></button>
 
                                 <?php
                             }
@@ -102,17 +104,17 @@ class Icon_Picker {
                     <div class="media-frame-tab-panel">
                         <div class="media-frame-router">
                             <div role="tablist" aria-orientation="horizontal" class="media-router">
-                                <input placeholder="<?php _e('Search icon', 'pom-framework') ?>" aria-label="<?php _e('Search icon', 'pom-framework') ?>" id="icon-search" type="search">
+	                                <input placeholder="<?php esc_attr_e('Search icon', 'pom-framework') ?>" aria-label="<?php esc_attr_e('Search icon', 'pom-framework') ?>" id="icon-search" type="search">
                             </div>
                         </div>
                         <div class="media-frame-content">
-                            <span class="centered-text"><?php _e('Loading...', 'pom-framework') ?></span>
+	                            <span class="centered-text"><?php esc_html_e('Loading...', 'pom-framework') ?></span>
                         </div>
                     </div>
                     <div class="media-frame-toolbar">
                         <div class="media-toolbar">
                             <div class="media-toolbar-primary">
-                                <button class="button media-button button-primary button-large media-button-select pom-framework-icon-select-button disabled" disabled><?php _e('Select icon', 'pom-framework') ?></button>
+	                                <button class="button media-button button-primary button-large media-button-select pom-framework-icon-select-button disabled" disabled><?php esc_html_e('Select icon', 'pom-framework') ?></button>
                             </div>
                         </div>
                     </div>

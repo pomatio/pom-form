@@ -57,7 +57,7 @@ class Settings_Tools_Page {
     }
 
     public function render(): void {
-        if (!current_user_can('edit_posts')) {
+        if (!self::current_user_can_use_tools($this->page_slug)) {
             wp_die(__('You do not have permission to access this page.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
         }
 
@@ -94,6 +94,10 @@ class Settings_Tools_Page {
     private function handle_export(bool $stream_immediately = false): void {
         check_admin_referer('pom_settings_tools_export', 'pom_settings_tools_nonce');
 
+        if (!self::current_user_can_use_tools($this->page_slug)) {
+            wp_die(__('You do not have permission to access this page.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+        }
+
         $selected = isset($_POST['settings']) ? array_map('sanitize_text_field', (array) wp_unslash($_POST['settings'])) : [];
 
         try {
@@ -119,6 +123,10 @@ class Settings_Tools_Page {
     private function handle_import_preview(): void {
         check_admin_referer('pom_settings_tools_import', 'pom_settings_tools_nonce');
 
+        if (!self::current_user_can_use_tools($this->page_slug)) {
+            wp_die(__('You do not have permission to access this page.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+        }
+
         try {
             $preview = $this->importer->prepare_from_upload($_FILES['settings_zip'] ?? []);
             $this->messages[] = ['type' => 'success', 'text' => __('ZIP uploaded. Select the settings you want to import.', 'pom')]; // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
@@ -130,6 +138,10 @@ class Settings_Tools_Page {
 
     private function handle_import_execution(): void {
         check_admin_referer('pom_settings_tools_execute', 'pom_settings_tools_nonce_execute');
+
+        if (!self::current_user_can_use_tools($this->page_slug)) {
+            wp_die(__('You do not have permission to access this page.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
+        }
 
         $selected = isset($_POST['import_settings']) ? array_map('sanitize_text_field', (array) wp_unslash($_POST['import_settings'])) : [];
 
@@ -262,6 +274,12 @@ class Settings_Tools_Page {
         }
 
         return [];
+    }
+
+    private static function current_user_can_use_tools(string $page_slug): bool {
+        $capability = (string) apply_filters('pom_settings_tools_capability', 'edit_posts', $page_slug);
+
+        return $capability === '' || current_user_can($capability);
     }
 
     private function redirect_back(): void {

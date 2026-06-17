@@ -536,6 +536,13 @@ HTACCESS;
             return '';
         }
 
+        $file_name = sanitize_file_name((string) $file_name);
+        $file_extension = strtolower(preg_replace('/[^A-Za-z0-9]/', '', $file_extension));
+
+        if ($file_name === '' || $file_extension === '') {
+            return '';
+        }
+
         $settings_path = (new self)->get_settings_path($settings_dir);
 
         self::write_file($settings_path . $file_name . '.' . $file_extension, $content, LOCK_EX);

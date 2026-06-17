@@ -12,7 +12,11 @@ class POM_Framework_Settings {
          * Skip first array key (fist key should be 'config').
          */
         if (isset($_GET['section'])) {
-            return $_GET['section'];
+            $section = sanitize_key(wp_unslash($_GET['section']));
+
+            if ($section !== 'config' && isset($settings_array[$section])) {
+                return $section;
+            }
         }
 
         $first_key = array_key_first($settings_array);
@@ -21,11 +25,19 @@ class POM_Framework_Settings {
     }
 
     public static function get_current_subsection($settings_array) {
+        $current_tab = self::get_current_tab($settings_array);
+        $tabs = isset($settings_array[$current_tab]['tab']) && is_array($settings_array[$current_tab]['tab'])
+            ? $settings_array[$current_tab]['tab']
+            : [];
+
         if (isset($_GET['tab'])) {
-            return $_GET['tab'];
+            $tab = sanitize_key(wp_unslash($_GET['tab']));
+
+            if (isset($tabs[$tab])) {
+                return $tab;
+            }
         }
 
-        $tabs = $settings_array[self::get_current_tab($settings_array)]['tab'];
         if (!empty($tabs)) {
             return array_key_first($tabs);
         }
@@ -414,7 +426,7 @@ class POM_Framework_Settings {
 
         <div class="pom-framework-settings-nav-heading"><?php // TODO: add class .is-scrolled with js when it is scrolled. ?>
 
-            <h1><?= $settings_array[$current_tab]['tab'][$current_subsection]['title'] ?? '' ?></h1>
+            <h1><?= esc_html($settings_array[$current_tab]['tab'][$current_subsection]['title'] ?? '') ?></h1>
 
         </div>
 
@@ -439,8 +451,8 @@ class POM_Framework_Settings {
 
                 ?>
 
-                <a class="nav-tab<?= $active ?>" href="<?= admin_url($pagenow ."?page=$page_slug&section=$tab_key") ?>">
-                    <?= $tab_data['title'] ?>
+                <a class="nav-tab<?= esc_attr($active) ?>" href="<?= esc_url(admin_url($pagenow . '?page=' . rawurlencode($page_slug) . '&section=' . rawurlencode($tab_key))) ?>">
+                    <?= esc_html($tab_data['title']) ?>
                 </a>
 
                 <?php
@@ -463,17 +475,24 @@ class POM_Framework_Settings {
                 <?php
 
                 foreach ($tabs as $subsection_key => $subsection_data) {
-                    $tab_url = get_admin_url() . $pagenow ."?page=$page_slug&section=$current_tab&tab=$subsection_key";
+                    $tab_url = add_query_arg(
+                        [
+                            'page' => $page_slug,
+                            'section' => $current_tab,
+                            'tab' => $subsection_key,
+                        ],
+                        get_admin_url() . $pagenow
+                    );
                     $current_class = $current_subsection === $subsection_key ? ' class="current"' : '';
                     $next = next($tabs) ? ' | ' : '';
 
                     ?>
 
                     <li>
-                        <a href="<?= $tab_url ?>"<?= $current_class ?>>
-                            <?= $subsection_data['title'] ?>
-                        </a>
-                        <?= $next ?>
+	                        <a href="<?= esc_url($tab_url) ?>"<?= $current_class ?>>
+	                            <?= esc_html($subsection_data['title']) ?>
+	                        </a>
+	                        <?= esc_html($next) ?>
                     </li>
 
                     <?php
@@ -501,7 +520,14 @@ class POM_Framework_Settings {
             return;
         }
 
-        $action_url = admin_url("options-general.php?page=$page_slug&section=$current_tab&tab=$current_subsection");
+        $action_url = add_query_arg(
+            [
+                'page' => $page_slug,
+                'section' => $current_tab,
+                'tab' => $current_subsection,
+            ],
+            admin_url('options-general.php')
+        );
 
 
 
@@ -512,14 +538,14 @@ class POM_Framework_Settings {
         $description = $settings_array[$current_tab]['tab'][$current_subsection]['description'] ?? '';
 
         if (!empty($description)) {
-            echo "<p>$description</p>";
+            echo '<p>' . wp_kses_post($description) . '</p>';
         }
 
         do_action('pom_framework_after_description', $current_tab, $current_subsection);
 
         ?>
 
-        <form method="POST" class="pom-framework-settings-form" action="<?= $action_url ?>">
+        <form method="POST" class="pom-framework-settings-form" action="<?= esc_url($action_url) ?>">
             <?php
 
             wp_nonce_field('pom_framework_save_settings', 'pom_framework_security_check');
@@ -541,18 +567,18 @@ class POM_Framework_Settings {
                 if (!empty($setting['img'])) {
                     ?>
 
-                    <img src="<?= $setting['img'] ?>"/>
+	                    <img src="<?= esc_url($setting['img']) ?>"/>
 
                     <?php
                 }
                 ?>
 
-                <h2 class="title"><?= $setting['title'] ?? '' ?></h2>
+                <h2 class="title"><?= esc_html($setting['title'] ?? '') ?></h2>
 
                 <?php
 
                 if (!empty($setting['description'])) {
-                    echo "<p>{$setting['description']}</p>";
+                    echo '<p>' . wp_kses_post($setting['description']) . '</p>';
                 }
 
                 $requires_initialization = isset($setting['requires_initialization']) && $setting['requires_initialization'] === true;
@@ -567,11 +593,11 @@ class POM_Framework_Settings {
                     <?php } ?>
 
 
-                            <label class="main-label" for="<?= "$setting_key-enabled" ?>">
+                            <label class="main-label" for="<?= esc_attr("$setting_key-enabled") ?>">
                                 <?php
 
                                 if (!empty($setting['heading_checkbox'])) {
-                                    echo $setting['heading_checkbox'];
+	                                    echo wp_kses_post($setting['heading_checkbox']);
                                 } else {
                                     _e('Enable', 'pom-framework');
                                 }
@@ -583,15 +609,15 @@ class POM_Framework_Settings {
                         <td>
                     <?php } ?>
 
-                            <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="no">
-                            <input name="<?= "{$setting_key}_enabled" ?>" id="<?= "$setting_key-enabled" ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
-                            <label for="<?= "$setting_key-enabled" ?>">
+                            <input type="hidden" name="<?= esc_attr("{$setting_key}_enabled") ?>" value="no">
+                            <input name="<?= esc_attr("{$setting_key}_enabled") ?>" id="<?= esc_attr("$setting_key-enabled") ?>" type="checkbox" value="yes" <?= isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1' ? 'checked' : '' ?>>
+                            <label for="<?= esc_attr("$setting_key-enabled") ?>">
                                 <?php
 
                                 if (!empty($setting['label_checkbox'])) {
                                     ?>
 
-                                    <?= $setting['label_checkbox'] ?>
+	                                    <?= wp_kses_post($setting['label_checkbox']) ?>
 
                                     <?php
                                 } else {
@@ -613,7 +639,7 @@ class POM_Framework_Settings {
                             if (!empty($setting['description_checkbox'])) {
                                 ?>
 
-                                <p class="description"><?= $setting['description_checkbox'] ?></p>
+                                <p class="description"><?= wp_kses_post($setting['description_checkbox']) ?></p>
 
                                 <?php
                             }
@@ -633,7 +659,7 @@ class POM_Framework_Settings {
                 }
                 else {
                     ?>
-                    <input type="hidden" name="<?= "{$setting_key}_enabled" ?>" value="yes">
+	                    <input type="hidden" name="<?= esc_attr("{$setting_key}_enabled") ?>" value="yes">
                     <?php
 
                     $has_checkbox_copy = !empty($setting['heading_checkbox']) || !empty($setting['label_checkbox']) || !empty($setting['description_checkbox']);
@@ -647,7 +673,7 @@ class POM_Framework_Settings {
                         <?php } ?>
 
                         <span class="main-label">
-                            <?= !empty($setting['heading_checkbox']) ? $setting['heading_checkbox'] : __('Enable', 'pom-framework') ?>
+                            <?= !empty($setting['heading_checkbox']) ? wp_kses_post($setting['heading_checkbox']) : esc_html__('Enable', 'pom-framework') ?>
                         </span><br>
                         <?php
 
@@ -657,13 +683,13 @@ class POM_Framework_Settings {
                         <?php } ?>
 
                         <div class="pom-framework-setting__auto-enabled-text">
-                            <?= !empty($setting['label_checkbox']) ? $setting['label_checkbox'] : __('Check to enable this setting.', 'pom-framework') ?>
+	                            <?= !empty($setting['label_checkbox']) ? wp_kses_post($setting['label_checkbox']) : esc_html__('Check to enable this setting.', 'pom-framework') ?>
                         </div>
                         <?php
 
                         if (!empty($setting['description_checkbox'])) {
                             ?>
-                            <p class="description"><?= $setting['description_checkbox'] ?></p>
+                            <p class="description"><?= wp_kses_post($setting['description_checkbox']) ?></p>
                             <?php
                         }
 
@@ -685,14 +711,13 @@ class POM_Framework_Settings {
                     (isset($enabled_settings[$setting_key]) && $enabled_settings[$setting_key] === '1')
                 ) {
                     $settings_dir = (
-                        isset($_GET['section'], $_GET['tab']) &&
-                        isset($settings_array[$_GET['section']]['tab']) &&
-                        isset($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']) &&
-                        is_dir($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'])
-                    ) ? $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'] : '';
+                            isset($settings_array[$current_tab]['tab']) &&
+                            isset($settings_array[$current_tab]['tab'][$current_subsection]['settings_dir']) &&
+                            is_dir($settings_array[$current_tab]['tab'][$current_subsection]['settings_dir'])
+	                    ) ? $settings_array[$current_tab]['tab'][$current_subsection]['settings_dir'] : '';
 
                     if (empty($settings_dir)) {
-                        $settings_dir = isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir']) ? $settings_array[$_GET['section']]['settings_dir'] : $settings_array['config']['settings_dir'];
+                        $settings_dir = isset($settings_array[$current_tab]['settings_dir']) && is_dir($settings_array[$current_tab]['settings_dir']) ? $settings_array[$current_tab]['settings_dir'] : $settings_array['config']['settings_dir'];
                     } 
 
                     $fields = self::read_fields($settings_dir, $setting_key);
@@ -734,9 +759,9 @@ class POM_Framework_Settings {
 
                         <tr<?= $data_dependencies ?>>
                             <th scope="row">
-                                <label for="<?= $field['name'] ?? '' ?>">
-                                    <?= $field['label'] ?? '' ?>
-                                </label>
+	                                <label for="<?= esc_attr($field['name'] ?? '') ?>">
+	                                    <?= wp_kses_post($field['label'] ?? '') ?>
+	                                </label>
                             </th>
                             <td>
                                 <?php
@@ -771,7 +796,7 @@ class POM_Framework_Settings {
                                 echo (new POM_Framework())::add_field($field);
 
                                 ?>
-                                <p class="description" id="<?= $field['name'] ?>"><?= $description ?></p>
+                                <p class="description" id="<?= esc_attr($field['name']) ?>"><?= wp_kses_post($description) ?></p>
                             </td>
                         </tr>
 
@@ -825,7 +850,7 @@ class POM_Framework_Settings {
 
     private function render_error_page($settings_array): void {
         if (!$this->is_allowed_role($settings_array)) {
-            echo '<h2>' . __('You do not have access to this page', 'pom-framework') . '</h2>';
+            echo '<h2>' . esc_html__('You do not have access to this page', 'pom-framework') . '</h2>';
         }
     }
 

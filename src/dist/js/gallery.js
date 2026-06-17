@@ -74,7 +74,18 @@ jQuery(function($) {
       $clicked_button.closest('.gallery-wrapper').find('.items-wrapper').empty();
       $i = 0;
       $urls.forEach(function($url) {
-        $clicked_button.closest('.gallery-wrapper').find('.items-wrapper').append('<div class="item-wrapper"><span class="remove-selected-item dashicons dashicons-trash" data-id="' + $ids[$i] + '"></span><img src="' + $url + '" alt=""></div>');
+        $clicked_button.closest('.gallery-wrapper').find('.items-wrapper').append(
+          $('<div>', { class: 'item-wrapper' }).append(
+            $('<span>', {
+              class: 'remove-selected-item dashicons dashicons-trash',
+              'data-id': $ids[$i]
+            }),
+            $('<img>', {
+              src: $url,
+              alt: ''
+            })
+          )
+        );
         $i++;
       });
       

@@ -12,7 +12,15 @@ class POM_Framework_Save {
             return;
         }
 
-        if (!isset($_POST['pom_framework_security_check']) || !wp_verify_nonce($_POST['pom_framework_security_check'], 'pom_framework_save_settings')) {
+        $nonce = isset($_POST['pom_framework_security_check'])
+            ? sanitize_text_field(wp_unslash($_POST['pom_framework_security_check']))
+            : '';
+
+        if (!wp_verify_nonce($nonce, 'pom_framework_save_settings')) {
+            return;
+        }
+
+        if (!POM_Framework_Settings::is_allowed_role($settings_file_path)) {
             return;
         }
 
@@ -247,20 +255,21 @@ class POM_Framework_Save {
 
     private function resolve_settings_dir($settings_array): string {
         $settings_dir = '';
+        $section = POM_Framework_Settings::get_current_tab($settings_array);
+        $tab = POM_Framework_Settings::get_current_subsection($settings_array);
 
         if (
-            isset($_GET['section'], $_GET['tab']) &&
-            isset($settings_array[$_GET['section']]['tab']) &&
-            is_array($settings_array[$_GET['section']]['tab']) &&
-            isset($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir']) &&
-            is_dir($settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'])
+            isset($settings_array[$section]['tab']) &&
+            is_array($settings_array[$section]['tab']) &&
+            isset($settings_array[$section]['tab'][$tab]['settings_dir']) &&
+            is_dir($settings_array[$section]['tab'][$tab]['settings_dir'])
         ) {
-            $settings_dir = $settings_array[$_GET['section']]['tab'][$_GET['tab']]['settings_dir'];
+            $settings_dir = $settings_array[$section]['tab'][$tab]['settings_dir'];
         }
 
         if (empty($settings_dir)) {
-            if (isset($_GET['section'], $settings_array[$_GET['section']]['settings_dir']) && is_dir($settings_array[$_GET['section']]['settings_dir'])) {
-                $settings_dir = $settings_array[$_GET['section']]['settings_dir'];
+            if (isset($settings_array[$section]['settings_dir']) && is_dir($settings_array[$section]['settings_dir'])) {
+                $settings_dir = $settings_array[$section]['settings_dir'];
             }
             else {
                 $settings_dir = $settings_array['config']['settings_dir'];
