@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
 class Image_Picker_Id {
 
@@ -27,7 +27,7 @@ class Image_Picker_Id {
         $preview_url = $attachment_id ? wp_get_attachment_url($attachment_id) : '';
         ?>
 
-        <div class="pomatio-framework-image-wrapper" data-preview-url="<?= esc_attr($preview_url) ?>">
+        <div class="pom-framework-image-wrapper" data-preview-url="<?= esc_attr($preview_url) ?>">
             <span class="remove-selected-image dashicons dashicons-trash"></span>
             <div class="image-wrapper">
                 <?php
@@ -39,7 +39,7 @@ class Image_Picker_Id {
                 ?>
             </div>
             <input type="hidden" name="<?= $args['name'] ?>" value="<?= esc_attr($attachment_id) ?>" data-type="image_picker">
-            <span class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></span>
+            <span class="button open-image-picker"><?php _e('Select image', 'pom-framework') ?></span>
         </div>
 
         <?php
@@ -51,14 +51,14 @@ class Image_Picker_Id {
         echo '</div>';
 
         wp_enqueue_media();
-        wp_enqueue_style('pomatio-framework-image_picker', POM_FORM_SRC_URI . '/dist/css/image-picker.min.css');
-        wp_enqueue_script('pomatio-framework-image_picker',  POM_FORM_SRC_URI . '/dist/js/image_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('pom-framework-image_picker', POM_FRAMEWORK_SRC_URI . '/dist/css/image-picker.min.css');
+        wp_enqueue_script('pom-framework-image_picker',  POM_FRAMEWORK_SRC_URI . '/dist/js/image_picker' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
-            'pomatio-framework-image_picker',
-            'pom_form_image_picker',
+            'pom-framework-image_picker',
+            'pom_framework_image_picker',
             [
-                'title' => __('Choose Image', 'pomatio-framework'),
-                'button' => __('Choose Image', 'pomatio-framework'),
+                'title' => __('Choose Image', 'pom-framework'),
+                'button' => __('Choose Image', 'pom-framework'),
             ]
         );
     }

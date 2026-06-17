@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
 class File {
 

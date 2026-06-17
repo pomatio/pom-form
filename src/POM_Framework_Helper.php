@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Helper {
+class POM_Framework_Helper {
 
     public static function get_path(): string {
         return __DIR__;
@@ -145,11 +145,11 @@ class Pomatio_Framework_Helper {
          * Then the array contains the name and the path.
          */
         $libraries['all'] = [
-            'name' => __('All', 'pomatio-framework'),
+            'name' => __('All', 'pom-framework'),
             'path' => ''
         ];
 
-        return apply_filters('pomatio_framework_icon_libraries', $libraries);
+        return apply_filters('pom_framework_icon_libraries', $libraries);
     }
 
     /**
@@ -414,7 +414,7 @@ class Pomatio_Framework_Helper {
             'pre' => true
         ];
 
-        return apply_filters('pom_form_allowed_html', $allowed_html);
+        return apply_filters('pom_framework_allowed_html', $allowed_html);
     }
 
     /**

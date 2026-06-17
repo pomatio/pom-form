@@ -3,9 +3,9 @@
  * Handle form submissions and sanitization.
  */
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Save {
+class POM_Framework_Save {
 
     public static function save_settings($page_slug, $settings_file_path): void {
         if (!isset($_POST['save_pom_framework_fields'])) {
@@ -16,17 +16,17 @@ class Pomatio_Framework_Save {
             return;
         }
 
-        Pomatio_Framework_Disk::create_settings_dir($page_slug);
+        POM_Framework_Disk::create_settings_dir($page_slug);
 
-        $settings_path = (new Pomatio_Framework_Disk())->get_settings_path($page_slug);
-        $tab = Pomatio_Framework_Settings::get_current_tab($settings_file_path);
-        $subsection = Pomatio_Framework_Settings::get_current_subsection($settings_file_path);
+        $settings_path = (new POM_Framework_Disk())->get_settings_path($page_slug);
+        $tab = POM_Framework_Settings::get_current_tab($settings_file_path);
+        $subsection = POM_Framework_Settings::get_current_subsection($settings_file_path);
         $settings_dirs = (new self)->get_current_tab_settings_dirs($settings_file_path, $tab, $subsection);
 
         require_once 'class-sanitize.php';
 
-        $current_settings = Pomatio_Framework_Helper::get_settings($settings_file_path, $tab, $subsection);
-        $fields_save_as_map = Pomatio_Framework_Disk::read_file('fields_save_as.php', $page_slug, 'array');
+        $current_settings = POM_Framework_Helper::get_settings($settings_file_path, $tab, $subsection);
+        $fields_save_as_map = POM_Framework_Disk::read_file('fields_save_as.php', $page_slug, 'array');
         $fields_save_as_map = is_array($fields_save_as_map) ? $fields_save_as_map : [];
 
         foreach ($settings_dirs as $dir) {
@@ -57,14 +57,14 @@ class Pomatio_Framework_Save {
                     $field_definition = is_array($field_definition) ? $field_definition : [];
                     $normalized_setting_name = $field_definition['name'] ?? $setting_name;
 
-                    if (!Pomatio_Framework_Helper::field_should_persist($field_definition)) {
+                    if (!POM_Framework_Helper::field_should_persist($field_definition)) {
                         unset($fields_metadata[$normalized_setting_name]);
                         continue;
                     }
 
                     $type = $field_definition['type'] ?? (new self)->get_field_type($settings_file_path, $dir, $name) ?? 'text';
                     $type = strtolower($type);
-                    $sanitize_function_name = "sanitize_pom_form_$type";
+                    $sanitize_function_name = "sanitize_pom_framework_$type";
                     $translatable = isset($field_definition['translatable']) && $field_definition['translatable'] === true;
                     $save_target = (new self)->normalize_save_target($field_definition['save_as'] ?? '');
 
@@ -83,7 +83,7 @@ class Pomatio_Framework_Save {
                         $extension = $type === 'tinymce' ? 'html' : str_replace('code_', '', $type);
                         if ($save_target['storage'] === 'default') {
                             unset($fields_metadata[$normalized_setting_name]);
-                            $data[$normalized_setting_name] = Pomatio_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
+                            $data[$normalized_setting_name] = POM_Framework_Disk::save_to_file($name, stripslashes($value), $extension, $page_slug);
                         }
                         else {
                             $sanitized_value = stripslashes($value);
@@ -125,7 +125,7 @@ class Pomatio_Framework_Save {
                 }
             }
 
-            Pomatio_Framework_Translations::register($translatables, $page_slug);
+            POM_Framework_Translations::register($translatables, $page_slug);
 
             if (isset($setting_definition['requires_initialization']) && $setting_definition['requires_initialization'] === false) {
                 $data['enabled'] = 'yes';
@@ -151,14 +151,14 @@ class Pomatio_Framework_Save {
         }
 
         ksort($fields_save_as_map);
-        $fields_metadata_content = (new Pomatio_Framework_Disk)->generate_file_content($fields_save_as_map, 'External storage map for Pomatio settings.');
-        Pomatio_Framework_Disk::write_file($settings_path . 'fields_save_as.php', $fields_metadata_content, LOCK_EX);
+        $fields_metadata_content = (new POM_Framework_Disk)->generate_file_content($fields_save_as_map, 'External storage map for Pomatio settings.');
+        POM_Framework_Disk::write_file($settings_path . 'fields_save_as.php', $fields_metadata_content, LOCK_EX);
 
         if (function_exists('opcache_invalidate')) {
             opcache_invalidate("{$settings_path}fields_save_as.php", true);
         }
 
-        do_action('pomatio_framework_after_save_settings', $page_slug, $tab, $subsection);
+        do_action('pom_framework_after_save_settings', $page_slug, $tab, $subsection);
     }
 
     private function get_current_tab_settings_dirs($settings, $tab, $subsection): array {
@@ -171,13 +171,13 @@ class Pomatio_Framework_Save {
          * 1 = Enabled
          * 0 = Disabled
          */
-        $settings_array = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        $settings_array = POM_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
         $settings_array = is_array($settings_array) ? array_filter($settings_array) : [];
         $settings_array[$setting] = isset($data['enabled']) && $data['enabled'] === 'yes' ? '1' : '0';
 
-        $settings_content = (new Pomatio_Framework_Disk)->generate_file_content($settings_array, "Enabled settings array file.");
-        $settings_path = (new Pomatio_Framework_Disk())->get_settings_path($page_slug);
-        Pomatio_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
+        $settings_content = (new POM_Framework_Disk)->generate_file_content($settings_array, "Enabled settings array file.");
+        $settings_path = (new POM_Framework_Disk())->get_settings_path($page_slug);
+        POM_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
 
         // Don't save enabled/disabled option in tweak settings file.
         unset($data['enabled']);
@@ -188,8 +188,8 @@ class Pomatio_Framework_Save {
          * update setting status.
          */
         if ($settings_array[$setting] === '1' && count($data) > 0) {
-            $setting_file_content = (new Pomatio_Framework_Disk)->generate_file_content($data, "Settings file for $setting.");
-            Pomatio_Framework_Disk::write_file($settings_path . "$setting.php", $setting_file_content, LOCK_EX);
+            $setting_file_content = (new POM_Framework_Disk)->generate_file_content($data, "Settings file for $setting.");
+            POM_Framework_Disk::write_file($settings_path . "$setting.php", $setting_file_content, LOCK_EX);
         }
     }
 
@@ -202,7 +202,7 @@ class Pomatio_Framework_Save {
     private function get_field_definition($settings_array, string $setting_name, $field_name): ?array {
         $settings_dir = $this->resolve_settings_dir($settings_array);
 
-        $fields = Pomatio_Framework_Settings::read_fields($settings_dir, $setting_name);
+        $fields = POM_Framework_Settings::read_fields($settings_dir, $setting_name);
         if (strpos($field_name, "{$setting_name}_") === 0) {
             $field_key = substr($field_name, strlen("{$setting_name}_"));
         } else {

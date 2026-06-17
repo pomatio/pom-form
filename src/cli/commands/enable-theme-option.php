@@ -1,6 +1,6 @@
 <?php
 
-use PomatioFramework\Pomatio_Framework_Disk;
+use POMFramework\POM_Framework_Disk;
 use WP_CLI\ExitException;
 
 if (defined('WP_CLI') && WP_CLI) {
@@ -28,7 +28,7 @@ if (defined('WP_CLI') && WP_CLI) {
                 WP_CLI::error("The --section=<string> argument is required.");
             }
 
-            Pomatio_Framework_Disk::create_settings_dir($assoc_args['settings_dir']);
+            POM_Framework_Disk::create_settings_dir($assoc_args['settings_dir']);
 
             $site = '';
 
@@ -41,14 +41,14 @@ if (defined('WP_CLI') && WP_CLI) {
              * 1 = Enabled
              * 0 = Disabled
              */
-            $settings_array = array_filter((array)Pomatio_Framework_Disk::read_file('enabled_settings.php', $assoc_args['settings_dir'], 'array'));
+            $settings_array = array_filter((array)POM_Framework_Disk::read_file('enabled_settings.php', $assoc_args['settings_dir'], 'array'));
             $settings_array[$assoc_args['section']] = '1';
 
-            $disk_instance = new Pomatio_Framework_Disk();
+            $disk_instance = new POM_Framework_Disk();
             $settings_content = $disk_instance->generate_file_content($settings_array, "Enabled settings array file.");
             $settings_path = $disk_instance->get_settings_path($assoc_args['settings_dir']);
 
-            if (false === Pomatio_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX)) {
+            if (false === POM_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX)) {
                 WP_CLI::error("Failed to write to settings file: " . $settings_path . 'enabled_settings.php');
             }
 

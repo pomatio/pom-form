@@ -50,7 +50,7 @@ jQuery(function($) {
     }
     
     $gallery_modal = wp.media({
-      title: pom_form_gallery.title,
+      title: pom_framework_gallery.title,
       multiple: 'add'
     });
     

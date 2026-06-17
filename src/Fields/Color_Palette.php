@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Color_Palette {
 
@@ -27,8 +27,8 @@ class Color_Palette {
             $value = $args['default'];
         }
 
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
-        $unique_field_name = $args['name'] . '_' . Pomatio_Framework_Helper::generate_random_string(6, false);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
+        $unique_field_name = $args['name'] . '_' . POM_Framework_Helper::generate_random_string(6, false);
 
         echo '<div class="color-palette-wrapper"' . $data_dependencies . ' data-base-name="' . esc_attr($args['name']) . '">';
 
@@ -74,7 +74,7 @@ class Color_Palette {
                 <span class="icon">
                     <span class="dashicons dashicons-undo"></span>
                 </span>
-                <span class="name"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                <span class="name"><?php _e('Restore default', 'pom-framework') ?></span>
             </label>
 
             <?php
@@ -88,8 +88,8 @@ class Color_Palette {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-color-palette', POM_FORM_SRC_URI . '/dist/css/color-palette.min.css');
-        wp_enqueue_script('pomatio-framework-color-palette',  POM_FORM_SRC_URI . '/dist/js/color_palette' . POMATIO_MIN . '.js', [], null, true);
+        wp_enqueue_style('pom-framework-color-palette', POM_FRAMEWORK_SRC_URI . '/dist/css/color-palette.min.css');
+        wp_enqueue_script('pom-framework-color-palette',  POM_FRAMEWORK_SRC_URI . '/dist/js/color_palette' . POM_FRAMEWORK_MIN . '.js', [], null, true);
     }
 
 }

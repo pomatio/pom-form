@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\ImportExport;
+namespace POMFramework\ImportExport;
 
 class Domain_Replacer {
     public static function normalize_domain(?string $url): string {

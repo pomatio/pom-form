@@ -44,8 +44,8 @@ jQuery(function($) {
       }
     }
 
-    const globalMimeTypes = (typeof pom_form_font_picker !== 'undefined' && Array.isArray(pom_form_font_picker.mime_types) && pom_form_font_picker.mime_types.length)
-      ? pom_form_font_picker.mime_types
+    const globalMimeTypes = (typeof pom_framework_font_picker !== 'undefined' && Array.isArray(pom_framework_font_picker.mime_types) && pom_framework_font_picker.mime_types.length)
+      ? pom_framework_font_picker.mime_types
       : ['font/woff2', 'font/woff', 'font/ttf'];
     const mimeTypes = Array.isArray(buttonMimeTypes) && buttonMimeTypes.length
       ? buttonMimeTypes
@@ -54,9 +54,9 @@ jQuery(function($) {
 
     if (!mediaFrames[mimeTypesKey]) {
       mediaFrames[mimeTypesKey] = wp.media({
-        title: pom_form_font_picker.title,
+        title: pom_framework_font_picker.title,
         button: {
-          text: pom_form_font_picker.button
+          text: pom_framework_font_picker.button
         },
         multiple: false,
         library: {

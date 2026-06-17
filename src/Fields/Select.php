@@ -1,15 +1,15 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Select {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
-        $id = isset($args['multiple']) && $args['multiple'] === true ? "{$args['id']}_" . Pomatio_Framework_Helper::generate_random_string() : $args['id'];
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $id = isset($args['multiple']) && $args['multiple'] === true ? "{$args['id']}_" . POM_Framework_Helper::generate_random_string() : $args['id'];
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
 
         if (!isset($args['options'])) {
             return;
@@ -26,7 +26,7 @@ class Select {
 
         $used_for_title = !empty($args['used_for_title']) ? ' use-for-title' : '';
 
-        echo '<select id="' . $id . '" name="' . $name . '" class="pomatio-framework-select form-control ' . $args['class'] . $multiple . $used_for_title . '"' . $data_dependencies . ' data-type="select"' . $disabled . $multiple . '>';
+        echo '<select id="' . $id . '" name="' . $name . '" class="pom-framework-select form-control ' . $args['class'] . $multiple . $used_for_title . '"' . $data_dependencies . ' data-type="select"' . $disabled . $multiple . '>';
 
         foreach ($args['options'] as $select_value => $select_label) {
             // optgroup options
@@ -74,7 +74,7 @@ class Select {
 
         echo '</div>';
 
-        wp_enqueue_script('pomatio-framework-select', POM_FORM_SRC_URI . '/dist/js/select' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_script('pom-framework-select', POM_FRAMEWORK_SRC_URI . '/dist/js/select' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
     }
 
 }

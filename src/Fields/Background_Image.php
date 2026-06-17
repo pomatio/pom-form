@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework;
+use POMFramework\POM_Framework;
 
 
 // Meter input de imagen, con opción a que renderice 2 (normal y mobile por ejemplo)
@@ -15,8 +15,8 @@ class Background_Image {
             <div class="image-wrapper">
                 <?php
 
-                echo (new Pomatio_Framework())::add_field([
-                    'label' => __('Background image', 'pomatio-framework'),
+                echo (new POM_Framework())::add_field([
+                    'label' => __('Background image', 'pom-framework'),
                     'type' => 'Image_Picker',
                     'name' => 'background-image',
                 ]);
@@ -27,26 +27,26 @@ class Background_Image {
             <div class="horizontal-alignment">
                 <?php
 
-                echo (new Pomatio_Framework())::add_field([
-                    'label' => __('Horizontal alignment', 'pomatio-framework'),
+                echo (new POM_Framework())::add_field([
+                    'label' => __('Horizontal alignment', 'pom-framework'),
                     'type' => 'Radio_Icons',
                     'name' => 'horizontal_alignment',
                     'options' => [
                         'left' => [
-                            'label' => __('Left', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-left.svg',
+                            'label' => __('Left', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/horizontal-align-left.svg',
                         ],
                         'center' => [
-                            'label' => __('Center', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-center.svg',
+                            'label' => __('Center', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/horizontal-align-center.svg',
                         ],
                         'right' => [
-                            'label' => __('Right', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-right.svg',
+                            'label' => __('Right', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/horizontal-align-right.svg',
                         ],
                         'custom' => [
-                            'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/horizontal-align-custom.svg',
+                            'label' => __('Custom', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/horizontal-align-custom.svg',
                         ],
                     ],
                     'default' => 'center'
@@ -57,13 +57,13 @@ class Background_Image {
                 <div class="custom-horizontal_alignment-wrapper" style="display: none">
                     <?php
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Number',
-                        'placeholder' => __('Custom', 'pomatio-framework'),
+                        'placeholder' => __('Custom', 'pom-framework'),
                         'name' => 'custom_horizontal_alignment_number'
                     ]);
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Select',
                         'name' => 'custom_horizontal_alignment_unit',
                         'options' => [
@@ -81,26 +81,26 @@ class Background_Image {
             <div class="vertical-alignment">
                 <?php
 
-                echo (new Pomatio_Framework())::add_field([
-                    'label' => __('Vertical alignment', 'pomatio-framework'),
+                echo (new POM_Framework())::add_field([
+                    'label' => __('Vertical alignment', 'pom-framework'),
                     'type' => 'Radio_Icons',
                     'name' => 'vertical_alignment',
                     'options' => [
                         'top' => [
-                            'label' => __('Top', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-top.svg',
+                            'label' => __('Top', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/vertical-align-top.svg',
                         ],
                         'center' => [
-                            'label' => __('Center', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-center.svg',
+                            'label' => __('Center', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/vertical-align-center.svg',
                         ],
                         'bottom' => [
-                            'label' => __('Bottom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-down.svg',
+                            'label' => __('Bottom', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/vertical-align-down.svg',
                         ],
                         'custom' => [
-                            'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/vertical-align-custom.svg',
+                            'label' => __('Custom', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/vertical-align-custom.svg',
                         ],
                     ],
                     'default' => 'center'
@@ -111,13 +111,13 @@ class Background_Image {
                 <div class="custom-vertical_alignment-wrapper" style="display: none">
                     <?php
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Number',
-                        'placeholder' => __('Custom', 'pomatio-framework'),
+                        'placeholder' => __('Custom', 'pom-framework'),
                         'name' => 'custom_vertical_alignment_number'
                     ]);
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Select',
                         'name' => 'custom_vertical_alignment_unit',
                         'options' => [
@@ -134,26 +134,26 @@ class Background_Image {
             </div>
             <?php
 
-            echo (new Pomatio_Framework())::add_field([
+            echo (new POM_Framework())::add_field([
                 'type' => 'Select',
-                'label' => __('Background repeat', 'pomatio-framework'),
+                'label' => __('Background repeat', 'pom-framework'),
                 'name' => 'background-repeat',
                 'options' => [
-                    'repeat' => __('Repeat', 'pomatio-framework'),
-                    'repeat-x' => __('Repeat horizontally', 'pomatio-framework'),
-                    'prepeat-y' => __('Repeat vertically', 'pomatio-framework'),
-                    'no-repeat' => __('No repeat', 'pomatio-framework'),
+                    'repeat' => __('Repeat', 'pom-framework'),
+                    'repeat-x' => __('Repeat horizontally', 'pom-framework'),
+                    'prepeat-y' => __('Repeat vertically', 'pom-framework'),
+                    'no-repeat' => __('No repeat', 'pom-framework'),
                 ],
                 'default' => 'repeat'
             ]);
 
-            echo (new Pomatio_Framework())::add_field([
+            echo (new POM_Framework())::add_field([
                 'type' => 'Select',
-                'label' => __('Background attachment', 'pomatio-framework'),
+                'label' => __('Background attachment', 'pom-framework'),
                 'name' => 'background-attachment',
                 'options' => [
-                    'scroll' => __('Scroll', 'pomatio-framework'),
-                    'fixed' => __('Fixed', 'pomatio-framework'),
+                    'scroll' => __('Scroll', 'pom-framework'),
+                    'fixed' => __('Fixed', 'pom-framework'),
                 ],
                 'default' => 'scroll'
             ]);
@@ -163,26 +163,26 @@ class Background_Image {
             <div class="background-size-wrapper">
                 <?php
 
-                echo (new Pomatio_Framework())::add_field([
+                echo (new POM_Framework())::add_field([
                     'type' => 'Radio_Icons',
-                    'label' => __('Background size', 'pomatio-framework'),
+                    'label' => __('Background size', 'pom-framework'),
                     'name' => 'background-size',
                     'options' => [
                         'auto' => [
-                            'label' => __('Auto', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-auto.svg',
+                            'label' => __('Auto', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/bg-size-auto.svg',
                         ],
                         'cover' => [
-                            'label' => __('Cover', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-cover.svg',
+                            'label' => __('Cover', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/bg-size-cover.svg',
                         ],
                         'contain' => [
-                            'label' => __('Contain', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-contain.svg',
+                            'label' => __('Contain', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/bg-size-contain.svg',
                         ],
                         'custom' => [
-                            'label' => __('Custom', 'pomatio-framework'),
-                            'icon' => POM_FORM_SRC_PATH . '/dist/icons/bg-size-custom.svg',
+                            'label' => __('Custom', 'pom-framework'),
+                            'icon' => POM_FRAMEWORK_SRC_PATH . '/dist/icons/bg-size-custom.svg',
                         ],
                     ],
                     'default' => 'auto'
@@ -193,13 +193,13 @@ class Background_Image {
                 <div class="custom-background-size-wrapper" style="display: none">
                     <?php
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Number',
-                        'placeholder' => __('Custom width', 'pomatio-framework'),
+                        'placeholder' => __('Custom width', 'pom-framework'),
                         'name' => 'custom_background_size_width_number'
                     ]);
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Select',
                         'name' => 'custom_background_size_width_unit',
                         'options' => [
@@ -213,13 +213,13 @@ class Background_Image {
 
                     echo ' x ';
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Number',
-                        'placeholder' => __('Custom height', 'pomatio-framework'),
+                        'placeholder' => __('Custom height', 'pom-framework'),
                         'name' => 'custom_background_size_height_number'
                     ]);
 
-                    echo (new Pomatio_Framework())::add_field([
+                    echo (new POM_Framework())::add_field([
                         'type' => 'Select',
                         'name' => 'custom_background_size_height_unit',
                         'options' => [
@@ -244,8 +244,8 @@ class Background_Image {
             echo '<p class="description">' . $args['description'] . '</p>';
         }
 
-        wp_enqueue_style('pomatio-framework-background-image', POM_FORM_SRC_URI . '/dist/css/background-image.min.css');
-        wp_enqueue_script('pomatio-framework-background-image',  POM_FORM_SRC_URI . '/dist/js/background_image' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('pom-framework-background-image', POM_FRAMEWORK_SRC_URI . '/dist/css/background-image.min.css');
+        wp_enqueue_script('pom-framework-background-image',  POM_FRAMEWORK_SRC_URI . '/dist/js/background_image' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
     }
 
 }

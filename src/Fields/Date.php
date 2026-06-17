@@ -1,14 +1,14 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Date {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
 
         echo '<div class="form-group">';
 

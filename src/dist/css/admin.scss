@@ -32,7 +32,7 @@ $box-shadow-scrolled: 0 8px 16px 0 rgba(85, 93, 102, .3);
   z-index: 7;
 }
 
-.pomatio-framework-settings-nav-heading {
+.pom-framework-settings-nav-heading {
   background: $white;
   box-sizing: border-box;
   position: fixed;
@@ -63,7 +63,7 @@ $box-shadow-scrolled: 0 8px 16px 0 rgba(85, 93, 102, .3);
   }
 }
 
-body.folded .pomatio-framework-settings-nav-heading {
+body.folded .pom-framework-settings-nav-heading {
   left: $admin-menu-width-folded;
   width: calc(100% - #{$admin-menu-width-folded});
 }
@@ -127,7 +127,7 @@ h1.nav-tab-wrapper {
 }
 
 
-.pomatio-framework-settings-form {
+.pom-framework-settings-form {
   padding-bottom: 60px; // Consider a variable like $submit-bar-height
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -143,7 +143,7 @@ h1.nav-tab-wrapper {
     border-radius: 7px;
   }
 
-  .pomatio-framework-setting {
+  .pom-framework-setting {
     border: 1px solid $border-color-medium;
     border-radius: 8px;
     background-color: $white;
@@ -190,7 +190,7 @@ h1.nav-tab-wrapper {
   }
 
   /* Make any direct child that is NOT a setting card span the full width */
-  > *:not(.pomatio-framework-setting) {
+  > *:not(.pom-framework-setting) {
     grid-column: 1 / -1;
   }
 
@@ -206,6 +206,6 @@ input[type=date], input[type=datetime-local], input[type=datetime], input[type=e
   @extend %base-input;
 }
 
-.pomatio-framework-range input {
+.pom-framework-range input {
     width: auto;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\ImportExport;
+namespace POMFramework\ImportExport;
 
 use RuntimeException;
 

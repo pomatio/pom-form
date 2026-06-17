@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
 class Range {
 
@@ -29,7 +29,7 @@ class Range {
 
         ?>
 
-        <div class="pomatio-framework-range">
+        <div class="pom-framework-range">
             <input aria-label="<?= $args['label'] ?? '' ?>"<?= $step ?><?= $min ?><?= $max ?> type="range" id="<?= $args['id'] ?>" class="slider <?= $args['class'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="range"<?= $disabled ?>>
             <input aria-label="<?= $args['label'] ?? '' ?>" class="value" type="number" <?= $step ?><?= $min ?><?= $max ?> name="<?= $args['name'] ?>" value="<?= $value ?>">
 
@@ -50,7 +50,7 @@ class Range {
                     <span class="icon">
                         <span class="dashicons dashicons-undo"></span>
                     </span>
-                    <span class="name"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                    <span class="name"><?php _e('Restore default', 'pom-framework') ?></span>
                 </span>
 
                 <?php
@@ -65,8 +65,8 @@ class Range {
             echo '<small class="description form-text text-muted">' . $args['description'] . '</small>';
         }
 
-        wp_enqueue_style('pomatio-framework-range', POM_FORM_SRC_URI . '/dist/css/range.min.css');
-        wp_enqueue_script('pomatio-framework-range',  POM_FORM_SRC_URI . '/dist/js/range' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('pom-framework-range', POM_FRAMEWORK_SRC_URI . '/dist/css/range.min.css');
+        wp_enqueue_script('pom-framework-range',  POM_FRAMEWORK_SRC_URI . '/dist/js/range' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
     }
 
 }

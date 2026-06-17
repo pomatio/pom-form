@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\ImportExport;
+namespace POMFramework\ImportExport;
 
-use PomatioFramework\Pomatio_Framework_Disk;
+use POMFramework\POM_Framework_Disk;
 use RuntimeException;
 use ZipArchive;
 
@@ -82,7 +82,7 @@ class Settings_Importer {
             throw new RuntimeException(__('The uploaded ZIP does not match the current settings page.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
         }
 
-        Pomatio_Framework_Disk::create_settings_dir($this->page_slug);
+        POM_Framework_Disk::create_settings_dir($this->page_slug);
 
         $destination_domain = Domain_Replacer::normalize_domain(home_url());
         $source_domain = Domain_Replacer::normalize_domain($manifest['source_domain'] ?? '');
@@ -116,11 +116,11 @@ class Settings_Importer {
             $settings_array = Settings_Transfer_Helper::update_asset_paths($settings_array, $manifest_entry['assets'] ?? [], $source_base, $this->base_path);
             $settings_array = Domain_Replacer::replace_in_array($settings_array, $source_domain, $destination_domain);
 
-            $disk = new Pomatio_Framework_Disk();
+            $disk = new POM_Framework_Disk();
             $file_content = $disk->generate_file_content($settings_array, 'Imported settings file.');
             $destination_file = $this->base_path . $manifest_entry['file'];
 
-            Pomatio_Framework_Disk::write_file($destination_file, $file_content, LOCK_EX);
+            POM_Framework_Disk::write_file($destination_file, $file_content, LOCK_EX);
 
             if (function_exists('opcache_invalidate')) {
                 @opcache_invalidate($destination_file, true); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
@@ -222,7 +222,7 @@ class Settings_Importer {
             }
 
             wp_mkdir_p(dirname($destination_file));
-            Pomatio_Framework_Disk::apply_directory_permissions(dirname($destination_file));
+            POM_Framework_Disk::apply_directory_permissions(dirname($destination_file));
 
             $contents = file_get_contents($source_file);
 
@@ -232,7 +232,7 @@ class Settings_Importer {
 
             $contents = Domain_Replacer::replace_in_string($contents, $source_domain, $destination_domain);
 
-            Pomatio_Framework_Disk::write_file($destination_file, $contents, LOCK_EX);
+            POM_Framework_Disk::write_file($destination_file, $contents, LOCK_EX);
             $copied_assets[$clean_relative] = true;
         }
     }

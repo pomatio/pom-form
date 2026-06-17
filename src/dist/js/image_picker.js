@@ -24,11 +24,11 @@ jQuery(function($) {
   };
 
   const renderPreviewFromInput = function($input) {
-    const $wrapper = $input.closest('.pomatio-framework-image-wrapper');
+    const $wrapper = $input.closest('.pom-framework-image-wrapper');
     renderPreview($wrapper, getPreviewUrl($wrapper, $input));
   };
 
-  $('.pomatio-framework-image-wrapper').each(function() {
+  $('.pom-framework-image-wrapper').each(function() {
     const $wrapper = $(this);
     const $input = $wrapper.find('input[data-type="image_picker"]').first();
     if ($input.length) {
@@ -42,7 +42,7 @@ jQuery(function($) {
   $(document).on('click', '.open-image-picker', function(e) {
     e.preventDefault();
 
-    if (!$(this).closest('.pomatio-framework-image-wrapper').find('input[data-type="image_picker"]').length) {
+    if (!$(this).closest('.pom-framework-image-wrapper').find('input[data-type="image_picker"]').length) {
       return;
     }
 
@@ -56,9 +56,9 @@ jQuery(function($) {
 
     // Extend the wp.media object
     $media_modal = wp.media.frames.file_frame = wp.media({
-      title: pom_form_image_picker.title,
+      title: pom_framework_image_picker.title,
       button: {
-        text: pom_form_image_picker.button
+        text: pom_framework_image_picker.button
       },
       multiple: false
     });
@@ -67,7 +67,7 @@ jQuery(function($) {
     $media_modal.on('select', function() {
       let $attachment = $media_modal.state().get('selection').first().toJSON();
 
-      const $wrapper = $clicked_button.closest('.pomatio-framework-image-wrapper');
+      const $wrapper = $clicked_button.closest('.pom-framework-image-wrapper');
       const $input = $wrapper.find('input[data-type="image_picker"]');
 
       if ($input.attr('type') === 'url') {
@@ -84,14 +84,14 @@ jQuery(function($) {
     $media_modal.open();
   });
 
-  $(document).on('input change', '.pomatio-framework-image-wrapper input[data-type="image_picker"]', function() {
+  $(document).on('input change', '.pom-framework-image-wrapper input[data-type="image_picker"]', function() {
     renderPreviewFromInput($(this));
   });
 
-  $(document).on('click', '.pomatio-framework-image-wrapper .remove-selected-image', function(e) {
+  $(document).on('click', '.pom-framework-image-wrapper .remove-selected-image', function(e) {
     e.preventDefault();
 
-    const $wrapper = $(this).closest('.pomatio-framework-image-wrapper');
+    const $wrapper = $(this).closest('.pom-framework-image-wrapper');
     $wrapper.data('previewUrl', '');
     $wrapper.removeAttr('data-preview-url');
     $wrapper.find('input[data-type="image_picker"]').val('').trigger('change');

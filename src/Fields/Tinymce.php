@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Tinymce {
 
@@ -20,7 +20,7 @@ class Tinymce {
         $custom_attrs = [];
 
         if (!empty($args['custom_attrs'])) {
-            $custom_attrs = Pomatio_Framework_Helper::convert_html_attributes_to_array($args['custom_attrs']);
+            $custom_attrs = POM_Framework_Helper::convert_html_attributes_to_array($args['custom_attrs']);
         }
 
         $value = '';

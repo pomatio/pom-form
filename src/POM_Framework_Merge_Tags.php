@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Merge_Tags {
+class POM_Framework_Merge_Tags {
     public static function tokens(string $content): array {
         $tokens = [];
         $offset = 0;

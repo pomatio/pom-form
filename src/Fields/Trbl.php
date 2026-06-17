@@ -1,14 +1,14 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Trbl {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
 
         $units = [];
         if (!empty($args['units']) && is_array($args['units'])) {
@@ -24,10 +24,10 @@ class Trbl {
 
         $default_unit = $units[0];
         $sides = [
-            'top' => __('Top', 'pomatio-framework'),
-            'right' => __('Right', 'pomatio-framework'),
-            'bottom' => __('Bottom', 'pomatio-framework'),
-            'left' => __('Left', 'pomatio-framework'),
+            'top' => __('Top', 'pom-framework'),
+            'right' => __('Right', 'pom-framework'),
+            'bottom' => __('Bottom', 'pom-framework'),
+            'left' => __('Left', 'pom-framework'),
         ];
 
         $value = is_array($args['value']) ? $args['value'] : [];
@@ -55,7 +55,7 @@ class Trbl {
             }
 
             if ($sync_enabled) {
-                $sync_label = $sync_active ? __('Values are locked', 'pomatio-framework') : __('Values are independent', 'pomatio-framework');
+                $sync_label = $sync_active ? __('Values are locked', 'pom-framework') : __('Values are independent', 'pom-framework');
                 $dashicon = $sync_active ? 'dashicons-lock' : 'dashicons-unlock';
 
                 echo '<button type="button" class="button pomatio-trbl__sync ' . ($sync_active ? 'is-locked' : 'is-unlocked') . '" aria-pressed="' . ($sync_active ? 'true' : 'false') . '" aria-label="' . esc_attr($sync_label) . '">';
@@ -126,8 +126,8 @@ class Trbl {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-trbl', POM_FORM_SRC_URI . '/dist/css/trbl' . POMATIO_MIN . '.css');
-        wp_enqueue_script('pomatio-framework-trbl', POM_FORM_SRC_URI . '/dist/js/trbl' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('pom-framework-trbl', POM_FRAMEWORK_SRC_URI . '/dist/css/trbl' . POM_FRAMEWORK_MIN . '.css');
+        wp_enqueue_script('pom-framework-trbl', POM_FRAMEWORK_SRC_URI . '/dist/js/trbl' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
     }
 
 }

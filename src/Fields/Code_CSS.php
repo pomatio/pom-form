@@ -1,13 +1,13 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Code_CSS {
 
     public static function render_field(array $args): void {
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
 
         echo '<div class="form-group">';
 
@@ -29,7 +29,7 @@ class Code_CSS {
 
         ?>
 
-        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pomatio-framework-code-editor-css <?= $args['class'] ?>"<?= $data_dependencies ?> data-type="code_css"><?= $value ?></textarea>
+        <textarea aria-label="<?= $args['label'] ?>" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" class="form-control pom-framework-code-editor-css <?= $args['class'] ?>"<?= $data_dependencies ?> data-type="code_css"><?= $value ?></textarea>
 
         <?php
 
@@ -42,10 +42,10 @@ class Code_CSS {
         $codemirror_settings = wp_enqueue_code_editor([]);
         wp_enqueue_script('wp-theme-plugin-editor');
         wp_enqueue_style('wp-codemirror');
-        wp_enqueue_style('pomatio-framework-code-style', POM_FORM_SRC_URI . '/dist/css/code.min.css', ['wp-codemirror']);
-        wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
+        wp_enqueue_style('pom-framework-code-style', POM_FRAMEWORK_SRC_URI . '/dist/css/code.min.css', ['wp-codemirror']);
+        wp_enqueue_script('pom-framework-code', POM_FRAMEWORK_SRC_URI . '/dist/js/code' . POM_FRAMEWORK_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
         wp_localize_script(
-            'pomatio-framework-code',
+            'pom-framework-code',
             'settings',
             [
                 'codeMirrorSettings' => $codemirror_settings

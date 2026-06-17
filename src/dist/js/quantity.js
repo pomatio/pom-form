@@ -1,5 +1,5 @@
 jQuery(function($) {
-  $(document).on('click', '.pomatio-framework-quantity-wrapper .number-up', function() {
+  $(document).on('click', '.pom-framework-quantity-wrapper .number-up', function() {
     let $input = $(this).siblings('input');
     let max = $input.attr('max') || 9999999;
 
@@ -10,7 +10,7 @@ jQuery(function($) {
     $input.trigger('change');
   });
 
-  $(document).on('click', '.pomatio-framework-quantity-wrapper .number-down', function() {
+  $(document).on('click', '.pom-framework-quantity-wrapper .number-down', function() {
     let $input = $(this).siblings('input');
     let min = $input.attr('min') || -9999999;
 

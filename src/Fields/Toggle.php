@@ -1,15 +1,15 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Toggle {
 
     public static function render_field(array $args): void {
         $disabled = isset($args['disabled']) && $args['disabled'] === true ? ' disabled' : '';
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
-        $random_id = Pomatio_Framework_Helper::generate_random_string(10, false);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
+        $random_id = POM_Framework_Helper::generate_random_string(10, false);
         $id = $args['id'] . "-$random_id";
 
         $checked = '';
@@ -45,7 +45,7 @@ class Toggle {
 
         <?php
 
-        wp_enqueue_style('pomatio-framework-toggle', POM_FORM_SRC_URI . '/dist/css/toggle.min.css');
+        wp_enqueue_style('pom-framework-toggle', POM_FRAMEWORK_SRC_URI . '/dist/css/toggle.min.css');
     }
 
 }

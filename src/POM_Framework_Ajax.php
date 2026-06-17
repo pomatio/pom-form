@@ -1,14 +1,14 @@
 <?php
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Ajax {
+class POM_Framework_Ajax {
 
     public function __construct() {
-        add_action('wp_ajax_pom_form_get_icon_library_icons', [$this, 'get_library_icons']);
-        add_action('wp_ajax_pom_form_get_icon_by_name', [$this, 'get_icon_by_name']);
-        add_action('wp_ajax_pomatio_framework_get_repeater_item_html', [$this, 'get_repeater_item_html']);
-        add_action('wp_ajax_pomatio_framework_restore_repeater_defaults', [$this, 'restore_repeater_defaults']);
+        add_action('wp_ajax_pom_framework_get_icon_library_icons', [$this, 'get_library_icons']);
+        add_action('wp_ajax_pom_framework_get_icon_by_name', [$this, 'get_icon_by_name']);
+        add_action('wp_ajax_pom_framework_get_repeater_item_html', [$this, 'get_repeater_item_html']);
+        add_action('wp_ajax_pom_framework_restore_repeater_defaults', [$this, 'restore_repeater_defaults']);
     }
 
     public function get_library_icons(): void {
@@ -17,11 +17,11 @@ class Pomatio_Framework_Ajax {
         $current_offset = isset($_REQUEST['offset']) ? (int)$_REQUEST['offset'] : 0;
 
         if (empty($library)) {
-            wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pomatio-framework') . '</span>');
+            wp_die('<span class="centered-text">' . __('Choose a library from the menu to see its icons or do a global search on all icon libraries.', 'pom-framework') . '</span>');
         }
 
 
-        $icons = Pomatio_Framework_Helper::get_icon_libraries();
+        $icons = POM_Framework_Helper::get_icon_libraries();
         $glob = [];
 
         ob_start();
@@ -64,7 +64,7 @@ class Pomatio_Framework_Ajax {
             ?>
 
             <div class="load-more-icons">
-                <button class="button button-secondary" data-total="<?= $glob_count ?>" data-offset="<?= $current_offset ?>"><?php _e('Load more', 'pomatio-framework') ?></button>
+                <button class="button button-secondary" data-total="<?= $glob_count ?>" data-offset="<?= $current_offset ?>"><?php _e('Load more', 'pom-framework') ?></button>
                 <img class="icon-picker-spinner" src="<?= admin_url('images/loading.gif') ?>" style="display: none; padding-top: 7px;" alt="Spinner">
             </div>
 
@@ -85,7 +85,7 @@ class Pomatio_Framework_Ajax {
             $this->get_library_icons();
         }
 
-        $icons = Pomatio_Framework_Helper::get_icon_libraries();
+        $icons = POM_Framework_Helper::get_icon_libraries();
         $found_files = 0;
 
         ob_start();
@@ -112,7 +112,7 @@ class Pomatio_Framework_Ajax {
 
         if ($found_files === 0) {
             ob_get_clean();
-            wp_die('<span class="centered-text">' . __('No icons found that match the search criteria.', 'pomatio-framework') . '</span>');
+            wp_die('<span class="centered-text">' . __('No icons found that match the search criteria.', 'pom-framework') . '</span>');
         }
 
         wp_die(ob_get_clean());
@@ -127,7 +127,7 @@ class Pomatio_Framework_Ajax {
             <div class="attachment-preview landscape">
                 <div class="thumbnail">
                     <div class="centered">
-                        <img alt="" src="<?= Pomatio_Framework_Helper::path_to_url($file) ?>">
+                        <img alt="" src="<?= POM_Framework_Helper::path_to_url($file) ?>">
                         <span class="icon-name"><?= pathinfo($file, PATHINFO_FILENAME) ?></span>
                     </div>
                 </div>
@@ -158,7 +158,7 @@ class Pomatio_Framework_Ajax {
 
         ?>
 
-        <?php $repeater_identifier = Pomatio_Framework_Helper::generate_random_string(10, false); ?>
+        <?php $repeater_identifier = POM_Framework_Helper::generate_random_string(10, false); ?>
 
         <div class="repeater new">
             <div class="title"><strong><?= $config['title'] ?></strong><span></span><span class="repeater-identifier"> - ID: <?= $repeater_identifier ?></span></div>
@@ -168,7 +168,7 @@ class Pomatio_Framework_Ajax {
                 <?php
 
                 foreach ($config['fields'] as $field) {
-                    echo (new Pomatio_Framework())::add_field($field);
+                    echo (new POM_Framework())::add_field($field);
                 }
 
                 ?>
@@ -180,14 +180,14 @@ class Pomatio_Framework_Ajax {
                     if (isset($config['cloneable']) && $config['cloneable'] === true) {
                         ?>
 
-                        <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
+                        <span class="clone-repeater"><?php _e('Clone', 'pom-framework') ?></span>
 
                         <?php
                     }
 
                     ?>
 
-                    <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                    <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
                 </div>
             </div>
         </div>
@@ -212,7 +212,7 @@ class Pomatio_Framework_Ajax {
         $fields = json_decode(base64_decode($fields), true);
         foreach ($defaults as $default) {
             $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');
-            $defaults_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
+            $defaults_identifier = POM_Framework_Helper::generate_random_string(10, false);
 
             ?>
 
@@ -229,20 +229,20 @@ class Pomatio_Framework_Ajax {
                     foreach ($fields as $field) {
                         $field['value'] = $default[$field['name']]['value'] ?? '';
                         $field['disabled'] = $default[$field['name']]['disabled'] ?? false;
-                        echo (new Pomatio_Framework())::add_field($field);
+                        echo (new POM_Framework())::add_field($field);
                     }
 
                     ?>
 
                     <div class="repeater-action-row">
-                        <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                        <span class="restore-default"><?php _e('Restore default', 'pom-framework') ?></span>
 
                         <?php
 
                         if (isset($default['can_be_removed']) && $default['can_be_removed']) {
                             ?>
 
-                            <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                            <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
 
                             <?php
                         }
@@ -260,4 +260,4 @@ class Pomatio_Framework_Ajax {
     }
 
 }
-new Pomatio_Framework_Ajax();
+new POM_Framework_Ajax();

@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\ImportExport;
+namespace POMFramework\ImportExport;
 
-use PomatioFramework\Pomatio_Framework_Disk;
+use POMFramework\POM_Framework_Disk;
 
 class Settings_Transfer_Helper {
     public static function normalize_path(string $path): string {
@@ -137,7 +137,7 @@ class Settings_Transfer_Helper {
     }
 
     public static function get_settings_base_path(string $page_slug): string {
-        $disk = new Pomatio_Framework_Disk();
+        $disk = new POM_Framework_Disk();
 
         return self::ensure_trailing_slash(self::normalize_path($disk->get_settings_path($page_slug)));
     }

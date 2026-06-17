@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
 class Color {
 
@@ -28,7 +28,7 @@ class Color {
 
 		?>
 
-		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control pomatio-framework-color-picker<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
+		<input aria-label="<?= $args['label'] ?? '' ?>" type="text" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $value ?>" class="form-control pom-framework-color-picker<?= $used_for_title ?> <?= $args['class'] ?? '' ?>" data-default-color="#fff" data-type="color">
 
 		<?php
 
@@ -39,7 +39,7 @@ class Color {
 		echo '</div>';
 
         wp_enqueue_style('wp-color-picker');
-        wp_enqueue_script('pomatio-framework-color',  POM_FORM_SRC_URI . '/dist/js/color' . POMATIO_MIN . '.js', ['wp-color-picker'], null, true);
+        wp_enqueue_script('pom-framework-color',  POM_FRAMEWORK_SRC_URI . '/dist/js/color' . POM_FRAMEWORK_MIN . '.js', ['wp-color-picker'], null, true);
 	}
 
 }

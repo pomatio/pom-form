@@ -3,9 +3,9 @@
  *
  */
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Settings {
+class POM_Framework_Settings {
 
     public static function get_current_tab($settings_array) {
         /**
@@ -56,17 +56,17 @@ class Pomatio_Framework_Settings {
                 $value = get_option($field_name, $default_value);
             }
             else {
-                $values = Pomatio_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
+                $values = POM_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
                 $value = is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
             }
         }
         else {
-            $values = Pomatio_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
+            $values = POM_Framework_Disk::read_file("$setting_name.php", $page_slug, 'array');
             $value = is_array($values) && isset($values[$field_name]) ? $values[$field_name] : '';
         }
 
         if (!empty($type)) {
-            $sanitize_function_name = "sanitize_pom_form_$type";
+            $sanitize_function_name = "sanitize_pom_framework_$type";
 
             if (function_exists($sanitize_function_name)) {
                 $value = $sanitize_function_name($value);
@@ -303,7 +303,7 @@ class Pomatio_Framework_Settings {
         static $cache = [];
 
         if (!isset($cache[$page_slug])) {
-            $map = Pomatio_Framework_Disk::read_file('fields_save_as.php', $page_slug, 'array');
+            $map = POM_Framework_Disk::read_file('fields_save_as.php', $page_slug, 'array');
             $cache[$page_slug] = is_array($map) ? $map : [];
         }
 
@@ -315,7 +315,7 @@ class Pomatio_Framework_Settings {
             $enabled_settings = self::get_effective_enabled_settings($page_slug, $settings_array);
         }
         else {
-            $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+            $enabled_settings = POM_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
             $enabled_settings = is_array($enabled_settings) ? $enabled_settings : [];
         }
 
@@ -323,9 +323,9 @@ class Pomatio_Framework_Settings {
     }
 
     public static function get_effective_enabled_settings(string $page_slug, array $settings_array): array {
-        Pomatio_Framework_Disk::create_settings_dir($page_slug);
+        POM_Framework_Disk::create_settings_dir($page_slug);
 
-        $enabled_settings = Pomatio_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
+        $enabled_settings = POM_Framework_Disk::read_file('enabled_settings.php', $page_slug, 'array');
         $enabled_settings = is_array($enabled_settings) ? $enabled_settings : [];
         $definitions = self::flatten_settings_definitions($settings_array);
         $needs_write = false;
@@ -342,11 +342,11 @@ class Pomatio_Framework_Settings {
         if ($needs_write) {
             ksort($enabled_settings);
 
-            $disk = new Pomatio_Framework_Disk();
+            $disk = new POM_Framework_Disk();
             $settings_path = $disk->get_settings_path($page_slug);
             $settings_content = $disk->generate_file_content($enabled_settings, 'Enabled settings array file.');
 
-            Pomatio_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
+            POM_Framework_Disk::write_file($settings_path . 'enabled_settings.php', $settings_content, LOCK_EX);
 
             if (function_exists('opcache_invalidate')) {
                 opcache_invalidate($settings_path . 'enabled_settings.php', true);
@@ -379,7 +379,7 @@ class Pomatio_Framework_Settings {
     }
 
     public static function render($page_slug, $settings_file_path): void {
-        Pomatio_Framework_Save::save_settings($page_slug, $settings_file_path);
+        POM_Framework_Save::save_settings($page_slug, $settings_file_path);
 
         ?>
 
@@ -390,7 +390,7 @@ class Pomatio_Framework_Settings {
             <?php
 
             //(new self)->render_tabs($page_slug, $settings_file_path);
-            do_action('pomatio_framework_before_render_content', $page_slug, $settings_file_path);
+            do_action('pom_framework_before_render_content', $page_slug, $settings_file_path);
             (new self)->render_content($page_slug, $settings_file_path);
 
             ?>
@@ -406,13 +406,13 @@ class Pomatio_Framework_Settings {
             return;
         }
 
-        $current_user_role = Pomatio_Framework_Helper::get_current_user_role();
+        $current_user_role = POM_Framework_Helper::get_current_user_role();
         $current_tab = self::get_current_tab($settings_array);
         $current_subsection = self::get_current_subsection($settings_array);
 
         ?>
 
-        <div class="pomatio-framework-settings-nav-heading"><?php // TODO: add class .is-scrolled with js when it is scrolled. ?>
+        <div class="pom-framework-settings-nav-heading"><?php // TODO: add class .is-scrolled with js when it is scrolled. ?>
 
             <h1><?= $settings_array[$current_tab]['tab'][$current_subsection]['title'] ?? '' ?></h1>
 
@@ -515,16 +515,16 @@ class Pomatio_Framework_Settings {
             echo "<p>$description</p>";
         }
 
-        do_action('pomatio_framework_after_description', $current_tab, $current_subsection);
+        do_action('pom_framework_after_description', $current_tab, $current_subsection);
 
         ?>
 
-        <form method="POST" class="pomatio-framework-settings-form" action="<?= $action_url ?>">
+        <form method="POST" class="pom-framework-settings-form" action="<?= $action_url ?>">
             <?php
 
             wp_nonce_field('pom_framework_save_settings', 'pom_framework_security_check');
 
-            $settings = Pomatio_Framework_Helper::get_settings($settings_array, $current_tab, $current_subsection);
+            $settings = POM_Framework_Helper::get_settings($settings_array, $current_tab, $current_subsection);
             $enabled_settings = self::get_effective_enabled_settings($page_slug, $settings_array);
 
             foreach ($settings as $setting_key => $setting) {
@@ -535,7 +535,7 @@ class Pomatio_Framework_Settings {
                 }
 
                 if ($wrapper_is_div) { ?>
-                    <div class="pomatio-framework-setting">
+                    <div class="pom-framework-setting">
                 <?php }
 
                 if (!empty($setting['img'])) {
@@ -573,7 +573,7 @@ class Pomatio_Framework_Settings {
                                 if (!empty($setting['heading_checkbox'])) {
                                     echo $setting['heading_checkbox'];
                                 } else {
-                                    _e('Enable', 'pomatio-framework');
+                                    _e('Enable', 'pom-framework');
                                 }
 
                                 ?>
@@ -595,7 +595,7 @@ class Pomatio_Framework_Settings {
 
                                     <?php
                                 } else {
-                                    _e('Check to enable this setting.', 'pomatio-framework');
+                                    _e('Check to enable this setting.', 'pom-framework');
                                 }
 
 
@@ -647,7 +647,7 @@ class Pomatio_Framework_Settings {
                         <?php } ?>
 
                         <span class="main-label">
-                            <?= !empty($setting['heading_checkbox']) ? $setting['heading_checkbox'] : __('Enable', 'pomatio-framework') ?>
+                            <?= !empty($setting['heading_checkbox']) ? $setting['heading_checkbox'] : __('Enable', 'pom-framework') ?>
                         </span><br>
                         <?php
 
@@ -656,8 +656,8 @@ class Pomatio_Framework_Settings {
                             <td>
                         <?php } ?>
 
-                        <div class="pomatio-framework-setting__auto-enabled-text">
-                            <?= !empty($setting['label_checkbox']) ? $setting['label_checkbox'] : __('Check to enable this setting.', 'pomatio-framework') ?>
+                        <div class="pom-framework-setting__auto-enabled-text">
+                            <?= !empty($setting['label_checkbox']) ? $setting['label_checkbox'] : __('Check to enable this setting.', 'pom-framework') ?>
                         </div>
                         <?php
 
@@ -717,7 +717,7 @@ class Pomatio_Framework_Settings {
 
                             <?php
 
-                            echo (new Pomatio_Framework())::add_field($field);
+                            echo (new POM_Framework())::add_field($field);
 
                             ?>
 
@@ -728,7 +728,7 @@ class Pomatio_Framework_Settings {
                             continue;
                         }
 
-                        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($field);
+                        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($field);
 
                         ?>
 
@@ -745,7 +745,7 @@ class Pomatio_Framework_Settings {
                                 unset($field['label'], $field['description']);
 
                                 $original_field_name = $field['name'];
-                                $field_should_persist = Pomatio_Framework_Helper::field_should_persist($field);
+                                $field_should_persist = POM_Framework_Helper::field_should_persist($field);
                                 $value = $field_should_persist ? self::get_setting_value($page_slug, $setting_key, $original_field_name) : ($field['value'] ?? '');
                                 $storage_metadata = $field_should_persist ? self::get_field_storage_metadata($page_slug, $setting_key, $original_field_name) : [];
                                 $field['name'] = $setting_key . '_' . $original_field_name;
@@ -757,18 +757,18 @@ class Pomatio_Framework_Settings {
                                     $source_value = $value;
 
                                     if ($field_should_persist && empty($storage_metadata)) {
-                                        $source_value = Pomatio_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
+                                        $source_value = POM_Framework_Disk::read_file($field['name'] . '.' . str_replace('code_', '', $field['type']), $page_slug);
                                     }
 
-                                    $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
+                                    $sanitize_function_name = "sanitize_pom_framework_{$field['type']}";
                                     $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($source_value) : $source_value;
                                 }
                                 else {
-                                    $sanitize_function_name = "sanitize_pom_form_{$field['type']}";
+                                    $sanitize_function_name = "sanitize_pom_framework_{$field['type']}";
                                     $field['value'] = function_exists($sanitize_function_name) ? $sanitize_function_name($value) : $value;
                                 }
 
-                                echo (new Pomatio_Framework())::add_field($field);
+                                echo (new POM_Framework())::add_field($field);
 
                                 ?>
                                 <p class="description" id="<?= $field['name'] ?>"><?= $description ?></p>
@@ -804,7 +804,7 @@ class Pomatio_Framework_Settings {
 
             <input type="hidden" name="save_pom_framework_fields" value="1">
 
-            <?php submit_button(__('Save', 'pomatio-framework')) ?>
+            <?php submit_button(__('Save', 'pom-framework')) ?>
         </form>
 
         <?php
@@ -812,7 +812,7 @@ class Pomatio_Framework_Settings {
 
     public static function is_allowed_role($settings_array): bool {
         $current_tab = self::get_current_tab($settings_array);
-        $current_user_role = Pomatio_Framework_Helper::get_current_user_role();
+        $current_user_role = POM_Framework_Helper::get_current_user_role();
         $allowed_roles = $settings_array[$current_tab]['allowed_roles'] ?? [];
         $is_super_admin = is_super_admin(get_current_user_id());
 
@@ -825,7 +825,7 @@ class Pomatio_Framework_Settings {
 
     private function render_error_page($settings_array): void {
         if (!$this->is_allowed_role($settings_array)) {
-            echo '<h2>' . __('You do not have access to this page', 'pomatio-framework') . '</h2>';
+            echo '<h2>' . __('You do not have access to this page', 'pom-framework') . '</h2>';
         }
     }
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-const POM_FORM_VERSION = '0.1.0';
+const POM_FRAMEWORK_VERSION = '0.1.0';
 
-define('POMATIO_MIN', defined('WP_DEBUG') && WP_DEBUG !== true ? '.min' : '');
-define('POM_FORM_SRC_PATH', __DIR__);
-define('POM_FORM_SRC_URI', str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath(POM_FORM_SRC_PATH)));
+define('POM_FRAMEWORK_MIN', defined('WP_DEBUG') && WP_DEBUG !== true ? '.min' : '');
+define('POM_FRAMEWORK_SRC_PATH', __DIR__);
+define('POM_FRAMEWORK_SRC_URI', str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', realpath(POM_FRAMEWORK_SRC_PATH)));
 
-class Pomatio_Framework {
+class POM_Framework {
     private static $settings_page_hooks = [];
 
     public function __construct() {
@@ -16,18 +16,18 @@ class Pomatio_Framework {
         require_once 'cli/init-cli.php';
 
         $classes = [
-            Pomatio_Framework_Helper::class => 'Pomatio_Framework_Helper.php',
-            Pomatio_Framework_Disk::class => 'Pomatio_Framework_Disk.php',
-            Pomatio_Framework_Settings::class => 'Pomatio_Framework_Settings.php',
-            Pomatio_Framework_Ajax::class => 'Pomatio_Framework_Ajax.php',
-            Pomatio_Framework_Save::class => 'Pomatio_Framework_Save.php',
-            Pomatio_Framework_Translations::class => 'Pomatio_Framework_Translations.php',
-            Pomatio_Framework_Merge_Tags::class => 'Pomatio_Framework_Merge_Tags.php',
+            POM_Framework_Helper::class => 'POM_Framework_Helper.php',
+            POM_Framework_Disk::class => 'POM_Framework_Disk.php',
+            POM_Framework_Settings::class => 'POM_Framework_Settings.php',
+            POM_Framework_Ajax::class => 'POM_Framework_Ajax.php',
+            POM_Framework_Save::class => 'POM_Framework_Save.php',
+            POM_Framework_Translations::class => 'POM_Framework_Translations.php',
+            POM_Framework_Merge_Tags::class => 'POM_Framework_Merge_Tags.php',
         ];
 
         foreach ($classes as $class => $file) {
             if (!class_exists($class)) {
-                require_once POM_FORM_SRC_PATH . '/' . $file;
+                require_once POM_FRAMEWORK_SRC_PATH . '/' . $file;
             }
         }
 
@@ -42,8 +42,8 @@ class Pomatio_Framework {
 
     public function enqueue_scripts($hook): void {
         if (in_array($hook, self::$settings_page_hooks, true)) {
-            wp_enqueue_style('pomatio-framework-settings', POM_FORM_SRC_URI . '/dist/css/admin.min.css');
-            wp_enqueue_script('pomatio-framework-dependencies', POM_FORM_SRC_URI . '/dist/js/dependencies' . POMATIO_MIN . '.js', ['jquery'], null, true);
+            wp_enqueue_style('pom-framework-settings', POM_FRAMEWORK_SRC_URI . '/dist/css/admin.min.css');
+            wp_enqueue_script('pom-framework-dependencies', POM_FRAMEWORK_SRC_URI . '/dist/js/dependencies' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
         }
     }
 
@@ -67,7 +67,7 @@ class Pomatio_Framework {
         $field_args['name'] = isset($field_args['name']) ? sanitize_title($field_args['name']) : '';
         $field_args['id'] = $field_args['id'] ?? $field_args['name'];
         $field_args['value'] = $field_args['value'] ?? '';
-        $field_args['class'] = isset($field_args['class']) ? Pomatio_Framework_Helper::sanitize_html_classes($field_args['class']) : '';
+        $field_args['class'] = isset($field_args['class']) ? POM_Framework_Helper::sanitize_html_classes($field_args['class']) : '';
         $field_args['description_position'] = $field_args['description_position'] ?? 'under_field';
         $field_args['options'] = $field_args['options'] ?? [];
         $field_args['prefix'] = $field_args['prefix'] ?? '';
@@ -87,13 +87,13 @@ class Pomatio_Framework {
     public static function add_field(array $args): string {
         $type = ucfirst($args['type']);
 
-        if (!file_exists($filename = Pomatio_Framework_Helper::get_path() . "/Fields/$type.php")) {
+        if (!file_exists($filename = POM_Framework_Helper::get_path() . "/Fields/$type.php")) {
             return '';
         }
 
         include_once $filename;
 
-        $class = "PomatioFramework\\Fields\\$type";
+        $class = "POMFramework\\Fields\\$type";
         $field_class = new $class();
 
         $field_args = self::parse_args($args);
@@ -114,10 +114,10 @@ class Pomatio_Framework {
 
                     wp_enqueue_script('wp-theme-plugin-editor');
                     wp_enqueue_style('wp-codemirror');
-                    wp_enqueue_style('pomatio-framework-code-style', POM_FORM_SRC_URI . '/dist/css/code.min.css', ['wp-codemirror']);
-                    wp_enqueue_script('pomatio-framework-code', POM_FORM_SRC_URI . '/dist/js/code' . POMATIO_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
+                    wp_enqueue_style('pom-framework-code-style', POM_FRAMEWORK_SRC_URI . '/dist/css/code.min.css', ['wp-codemirror']);
+                    wp_enqueue_script('pom-framework-code', POM_FRAMEWORK_SRC_URI . '/dist/js/code' . POM_FRAMEWORK_MIN . '.js', ['jquery', 'wp-theme-plugin-editor'], null, true);
                     wp_localize_script(
-                        'pomatio-framework-code',
+                        'pom-framework-code',
                         'settings',
                         [
                             'codeMirrorSettings' => $codemirror_settings
@@ -126,16 +126,16 @@ class Pomatio_Framework {
                 }
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Select') {
-                    wp_enqueue_script('pomatio-framework-select', POM_FORM_SRC_URI . '/dist/js/select' . POMATIO_MIN . '.js', ['jquery'], null, true);
+                    wp_enqueue_script('pom-framework-select', POM_FRAMEWORK_SRC_URI . '/dist/js/select' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
                 }
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Color') {
                     wp_enqueue_style('wp-color-picker');
-                    wp_enqueue_script('pomatio-framework-color', POM_FORM_SRC_URI . '/dist/js/color' . POMATIO_MIN . '.js', ['wp-color-picker'], null, true);
+                    wp_enqueue_script('pom-framework-color', POM_FRAMEWORK_SRC_URI . '/dist/js/color' . POM_FRAMEWORK_MIN . '.js', ['wp-color-picker'], null, true);
                 }
 
                 if (isset($repeater_field['type']) && $repeater_field['type'] === 'Font_Picker') {
-                    $mime_types = array_values(Pomatio_Framework_Helper::get_allowed_font_types());
+                    $mime_types = array_values(POM_Framework_Helper::get_allowed_font_types());
                     $mime_types = array_merge(
                         $mime_types,
                         [
@@ -149,14 +149,14 @@ class Pomatio_Framework {
                     $mime_types = array_values(array_unique($mime_types));
 
                     wp_enqueue_media();
-                    wp_enqueue_style('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/css/font-picker.min.css');
-                    wp_enqueue_script('pomatio-framework-font_picker', POM_FORM_SRC_URI . '/dist/js/font_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
+                    wp_enqueue_style('pom-framework-font_picker', POM_FRAMEWORK_SRC_URI . '/dist/css/font-picker.min.css');
+                    wp_enqueue_script('pom-framework-font_picker', POM_FRAMEWORK_SRC_URI . '/dist/js/font_picker' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
                     wp_localize_script(
-                        'pomatio-framework-font_picker',
-                        'pom_form_font_picker',
+                        'pom-framework-font_picker',
+                        'pom_framework_font_picker',
                         [
-                            'title' => __('Choose Font', 'pomatio-framework'),
-                            'button' => __('Choose Font', 'pomatio-framework'),
+                            'title' => __('Choose Font', 'pom-framework'),
+                            'button' => __('Choose Font', 'pom-framework'),
                             'mime_types' => $mime_types,
                         ]
                     );
@@ -169,4 +169,4 @@ class Pomatio_Framework {
 
 }
 
-new Pomatio_Framework();
+new POM_Framework();

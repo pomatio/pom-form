@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
 class Image_Picker {
 
@@ -25,7 +25,7 @@ class Image_Picker {
 
         ?>
 
-        <div class="pomatio-framework-image-wrapper">
+        <div class="pom-framework-image-wrapper">
             <span class="remove-selected-image dashicons dashicons-trash"></span>
             <div class="image-wrapper">
                 <?php
@@ -37,7 +37,7 @@ class Image_Picker {
                 ?>
             </div>
             <input aria-label="image-url" type="url" name="<?= $args['name'] ?>" value="<?= $value ?>" data-type="image_picker">
-            <span class="button open-image-picker"><?php _e('Select image', 'pomatio-framework') ?></span>
+            <span class="button open-image-picker"><?php _e('Select image', 'pom-framework') ?></span>
         </div>
 
         <?php
@@ -49,14 +49,14 @@ class Image_Picker {
         echo '</div>';
 
         wp_enqueue_media();
-        wp_enqueue_style('pomatio-framework-image_picker', POM_FORM_SRC_URI . '/dist/css/image-picker.min.css');
-        wp_enqueue_script('pomatio-framework-image_picker',  POM_FORM_SRC_URI . '/dist/js/image_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('pom-framework-image_picker', POM_FRAMEWORK_SRC_URI . '/dist/css/image-picker.min.css');
+        wp_enqueue_script('pom-framework-image_picker',  POM_FRAMEWORK_SRC_URI . '/dist/js/image_picker' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
-            'pomatio-framework-image_picker',
-            'pom_form_image_picker',
+            'pom-framework-image_picker',
+            'pom_framework_image_picker',
             [
-                'title' => __('Choose Image', 'pomatio-framework'),
-                'button' => __('Choose Image', 'pomatio-framework'),
+                'title' => __('Choose Image', 'pom-framework'),
+                'button' => __('Choose Image', 'pom-framework'),
             ]
         );
     }

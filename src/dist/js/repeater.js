@@ -1,5 +1,5 @@
 /**
- * @var pomatio_framework_repeater Object containing the translation strings.
+ * @var pom_framework_repeater Object containing the translation strings.
  */
 
 jQuery(function($) {
@@ -356,7 +356,7 @@ jQuery(function($) {
 
     if ($item_count >= $limit) {
       if (!$('.repeater-limit-warning').length) {
-        $this.after('<span class="repeater-limit-warning">' + pomatio_framework_repeater.limit + '</span>');
+        $this.after('<span class="repeater-limit-warning">' + pom_framework_repeater.limit + '</span>');
       }
 
       setTimeout(function() {
@@ -373,10 +373,10 @@ jQuery(function($) {
     let $config = $this.siblings('[name="config"]').val();
 
     $.ajax({
-      url: pomatio_framework_repeater.ajax_url,
+      url: pom_framework_repeater.ajax_url,
       type: 'POST',
       data: {
-        action: 'pomatio_framework_get_repeater_item_html',
+        action: 'pom_framework_get_repeater_item_html',
         config: $config,
         items: $item_count
       },
@@ -389,11 +389,11 @@ jQuery(function($) {
     // Load custom fields as Select2 or color picker.
     $(document).ajaxComplete(function() {
       if (typeof $.fn.select2 !== 'undefined') {
-        $('.pomatio-framework-select.multiple').select2();
+        $('.pom-framework-select.multiple').select2();
       }
 
       if (typeof $.fn.wpColorPicker !== 'undefined') {
-        $('.pomatio-framework-color-picker').wpColorPicker();
+        $('.pom-framework-color-picker').wpColorPicker();
       }
 
       initializeFieldVisibility();
@@ -410,7 +410,7 @@ jQuery(function($) {
   $(document).on('click', '.repeater-wrapper .delete', function(e) {
     e.preventDefault();
 
-    let $execute = confirm(pomatio_framework_repeater.delete_repeater);
+    let $execute = confirm(pom_framework_repeater.delete_repeater);
     if (!$execute) {
       return;
     }
@@ -461,7 +461,7 @@ jQuery(function($) {
    * Make WordPress Color Picker repeater compatible.
    */
   if (typeof $.fn.wpColorPicker !== 'undefined') {
-    $('.pomatio-framework-color-picker').wpColorPicker({
+    $('.pom-framework-color-picker').wpColorPicker({
       change: function(event, ui) {
         let $color = ui.color.toString();
         let $this = $(event.target);
@@ -471,7 +471,7 @@ jQuery(function($) {
     });
 
     $(document).ajaxComplete(function() {
-      $('.pomatio-framework-color-picker').wpColorPicker({
+      $('.pom-framework-color-picker').wpColorPicker({
         change: function(event, ui) {
           let $color = ui.color.toString();
           let $this = $(event.target);
@@ -585,7 +585,7 @@ jQuery(function($) {
   $(document).on('click', '.restore-repeater-defaults', function(e) {
     e.preventDefault();
 
-    if (!confirm(pomatio_framework_repeater.restore_msg)) {
+    if (!confirm(pom_framework_repeater.restore_msg)) {
       return;
     }
 
@@ -601,7 +601,7 @@ jQuery(function($) {
       url: ajaxurl,
       type: 'POST',
       data: {
-        action: 'pomatio_framework_restore_repeater_defaults',
+        action: 'pom_framework_restore_repeater_defaults',
         defaults: $this.attr('data-defaults'),
         fields: $this.attr('data-fields'),
         title: $this.attr('data-title')
@@ -642,7 +642,7 @@ jQuery(function($) {
     /**
      * If the repeater has code fields replace their id's in order to render Codemirror with unique IDs.
      */
-    let $code_editor = $clone.find('.pomatio-framework-code-editor-html, .pomatio-framework-code-editor-js, .pomatio-framework-code-editor-css');
+    let $code_editor = $clone.find('.pom-framework-code-editor-html, .pom-framework-code-editor-js, .pom-framework-code-editor-css');
     for (let $i = 0; $i < $code_editor.length; $i++) {
       $code_editor[$i].id = $generate_random_string(10, false);
 
@@ -669,7 +669,7 @@ jQuery(function($) {
    * Generate a random string.
    *
    * The same helper exists but in PHP.
-   * @see Pomatio_Framework_Helper::generate_random_string()
+   * @see POM_Framework_Helper::generate_random_string()
    *
    * @param $length
    * @param $numbers

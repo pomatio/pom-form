@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Radio_Icons {
 
@@ -21,12 +21,12 @@ class Radio_Icons {
             $value = $args['default'];
         }
 
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
-        $unique_field_name = $args['name'] . '_' . Pomatio_Framework_Helper::generate_random_string(6, false);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
+        $unique_field_name = $args['name'] . '_' . POM_Framework_Helper::generate_random_string(6, false);
 
         ?>
 
-        <div class="pomatio-framework-radio-icons-wrapper"<?= $data_dependencies ?> data-base-name="<?= esc_attr($args['name']) ?>">
+        <div class="pom-framework-radio-icons-wrapper"<?= $data_dependencies ?> data-base-name="<?= esc_attr($args['name']) ?>">
 
             <?php
 
@@ -61,7 +61,7 @@ class Radio_Icons {
                     <span class="icon">
                         <span class="dashicons dashicons-undo"></span>
                     </span>
-                    <span class="description"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                    <span class="description"><?php _e('Restore default', 'pom-framework') ?></span>
                 </span>
             </label>
 
@@ -75,8 +75,8 @@ class Radio_Icons {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-radio_icons', POM_FORM_SRC_URI . '/dist/css/radio-icons.min.css');
-        wp_enqueue_script('pomatio-framework-radio_icons',  POM_FORM_SRC_URI . '/dist/js/radio_icons' . POMATIO_MIN . '.js', [], null, true);
+        wp_enqueue_style('pom-framework-radio_icons', POM_FRAMEWORK_SRC_URI . '/dist/css/radio-icons.min.css');
+        wp_enqueue_script('pom-framework-radio_icons',  POM_FRAMEWORK_SRC_URI . '/dist/js/radio_icons' . POM_FRAMEWORK_MIN . '.js', [], null, true);
     }
 
 }

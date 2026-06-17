@@ -3,9 +3,9 @@
  * Class used for handling disk-related operations.
  */
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Disk {
+class POM_Framework_Disk {
 
     public function __construct() {
         /**
@@ -52,7 +52,7 @@ class Pomatio_Framework_Disk {
     }
 
     private function add_font_directory_exclusion_to_args(array $args): array {
-        $args['pom_form_font_filter'] = 'exclude';
+        $args['pom_framework_font_filter'] = 'exclude';
 
         return $args;
     }
@@ -62,11 +62,11 @@ class Pomatio_Framework_Disk {
             return;
         }
 
-        $query->set('pom_form_font_filter', 'exclude');
+        $query->set('pom_framework_font_filter', 'exclude');
     }
 
     private function add_font_directory_inclusion_to_args(array $args): array {
-        $args['pom_form_font_filter'] = 'include';
+        $args['pom_framework_font_filter'] = 'include';
 
         return $args;
     }
@@ -76,9 +76,9 @@ class Pomatio_Framework_Disk {
             return $where;
         }
 
-        $filter = $query->get('pom_form_font_filter');
-        if (!$filter && isset($query->query['pom_form_font_filter'])) {
-            $filter = $query->query['pom_form_font_filter'];
+        $filter = $query->get('pom_framework_font_filter');
+        if (!$filter && isset($query->query['pom_framework_font_filter'])) {
+            $filter = $query->query['pom_framework_font_filter'];
         }
         if (!$filter && $this->is_font_picker_request()) {
             $filter = 'include';
@@ -120,7 +120,7 @@ class Pomatio_Framework_Disk {
     }
 
     private function is_font_picker_request($request = null): bool {
-        $allowed_font_mimes = array_values(Pomatio_Framework_Helper::get_allowed_font_types());
+        $allowed_font_mimes = array_values(POM_Framework_Helper::get_allowed_font_types());
         $allowed_font_mimes = array_merge(
             $allowed_font_mimes,
             [
@@ -136,23 +136,23 @@ class Pomatio_Framework_Disk {
         $value = null;
 
         if (is_object($request) && method_exists($request, 'get_param')) {
-            $value = $request->get_param('pom_form_font_picker');
+            $value = $request->get_param('pom_framework_font_picker');
         }
 
-        if ($value === null && isset($_REQUEST['pom_form_font_picker'])) {
-            $value = $_REQUEST['pom_form_font_picker'];
+        if ($value === null && isset($_REQUEST['pom_framework_font_picker'])) {
+            $value = $_REQUEST['pom_framework_font_picker'];
         }
 
         if ($value === null && isset($_REQUEST['query'])) {
             $query = $_REQUEST['query'];
             if (is_string($query)) {
                 $decoded = json_decode($query, true);
-                if (is_array($decoded) && array_key_exists('pom_form_font_picker', $decoded)) {
-                    $value = $decoded['pom_form_font_picker'];
+                if (is_array($decoded) && array_key_exists('pom_framework_font_picker', $decoded)) {
+                    $value = $decoded['pom_framework_font_picker'];
                 }
             }
-            elseif (is_array($query) && array_key_exists('pom_form_font_picker', $query)) {
-                $value = $query['pom_form_font_picker'];
+            elseif (is_array($query) && array_key_exists('pom_framework_font_picker', $query)) {
+                $value = $query['pom_framework_font_picker'];
             }
         }
 
@@ -250,7 +250,7 @@ class Pomatio_Framework_Disk {
             return $path;
         }
 
-        $font_extensions = array_keys(Pomatio_Framework_Helper::get_allowed_font_types());
+        $font_extensions = array_keys(POM_Framework_Helper::get_allowed_font_types());
 
         if (!in_array($extension, $font_extensions, true)) {
             return $path;
@@ -267,7 +267,7 @@ class Pomatio_Framework_Disk {
     }
 
     public function add_allowed_font_mimes_to_upload_types($mimes) {
-        $allowed_fonts = Pomatio_Framework_Helper::get_allowed_font_types();
+        $allowed_fonts = POM_Framework_Helper::get_allowed_font_types();
 
         foreach ($allowed_fonts as $font => $mime) {
             $mimes[$font] = $mime;
@@ -421,7 +421,7 @@ HTACCESS;
             self::write_file($htaccessPath, $htaccessContent);
         }
 
-        $filename = Pomatio_Framework_Helper::generate_random_string(20, false) . '.png';
+        $filename = POM_Framework_Helper::generate_random_string(20, false) . '.png';
         $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
 
         if ($data === false) {
@@ -455,10 +455,10 @@ HTACCESS;
      *
      * @return string
      */
-    public function get_settings_path(string $settings_dir = 'pomatio-framework'): string {
+    public function get_settings_path(string $settings_dir = 'pom-framework'): string {
         $multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
 
-        return WP_CONTENT_DIR . "/settings/pomatio-framework/$multisite_path$settings_dir/";
+        return WP_CONTENT_DIR . "/settings/pom-framework/$multisite_path$settings_dir/";
     }
 
     /**
@@ -469,19 +469,19 @@ HTACCESS;
      *
      * @return void
      */
-    public static function create_settings_dir(string $settings_dir = 'pomatio-framework'): void {
+    public static function create_settings_dir(string $settings_dir = 'pom-framework'): void {
         $settings_path = (new self)->get_settings_path($settings_dir);
         if (!is_dir($settings_path)) {
             $created = wp_mkdir_p($settings_path);
 
             if (!$created) {
-                Pomatio_Framework_Helper::write_log('Error creating tweaks settings dir.');
+                POM_Framework_Helper::write_log('Error creating tweaks settings dir.');
             }
             else {
                 self::apply_directory_permissions($settings_path);
                 (new self)->create_enabled_settings_file($settings_dir);
                 (new self)->create_htaccess_file();
-                Pomatio_Framework_Helper::write_log('Created tweaks settings dir.');
+                POM_Framework_Helper::write_log('Created tweaks settings dir.');
             }
         }
     }
@@ -531,7 +531,7 @@ HTACCESS;
      *
      * @return string Written file path.
      */
-    public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pomatio-framework'): string {
+    public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pom-framework'): string {
         if (empty($file_name) || empty($content)) {
             return '';
         }
@@ -546,7 +546,7 @@ HTACCESS;
     /**
      * Read the content of a file.
      */
-    public static function read_file($filename, $settings_dir = 'pomatio-framework', $return = 'default') {
+    public static function read_file($filename, $settings_dir = 'pom-framework', $return = 'default') {
         $settings_path = (new self)->get_settings_path($settings_dir);
         $path = $settings_path . $filename;
 
@@ -571,7 +571,7 @@ HTACCESS;
      *
      * @return bool
      */
-    public static function delete_file($filename, string $settings_dir = 'pomatio-framework'): bool {
+    public static function delete_file($filename, string $settings_dir = 'pom-framework'): bool {
         $settings_path = (new self)->get_settings_path($settings_dir);
         $filename = $settings_path . $filename;
 

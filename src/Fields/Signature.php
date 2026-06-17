@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
+use POMFramework\POM_Framework_Helper;
 
 class Signature {
 
@@ -34,7 +34,7 @@ class Signature {
             <div class="signature-pad">
                 <canvas class="signature-canvas<?= $disabled ?>"></canvas>
                 <br>
-                <button class="signature-canvas-clear <?= $button_class ?>"><?php _e('Clear', 'pomatio-framework') ?></button>
+                <button class="signature-canvas-clear <?= $button_class ?>"><?php _e('Clear', 'pom-framework') ?></button>
                 <input type="hidden" name="<?= $args['name'] ?>" class="signature-value" value="<?= $value ?>">
             </div>
         </div>
@@ -47,8 +47,8 @@ class Signature {
 
 		echo '</div>';
 
-		wp_enqueue_style('pomatio-framework-signature', POM_FORM_SRC_URI . '/dist/css/signature.min.css');
-		wp_enqueue_script('pomatio-framework-signature', POM_FORM_SRC_URI . '/dist/js/signature' . POMATIO_MIN . '.js', [], null, true);
+		wp_enqueue_style('pom-framework-signature', POM_FRAMEWORK_SRC_URI . '/dist/css/signature.min.css');
+		wp_enqueue_script('pom-framework-signature', POM_FRAMEWORK_SRC_URI . '/dist/js/signature' . POM_FRAMEWORK_MIN . '.js', [], null, true);
 	}
 
 }

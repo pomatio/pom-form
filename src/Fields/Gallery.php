@@ -1,6 +1,6 @@
 <?php
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
 class Gallery {
 
@@ -40,7 +40,7 @@ class Gallery {
 
                 ?>
             </div>
-            <span class="button open-gallery-modal"><?php _e('Select items', 'pomatio-framework') ?></span>
+            <span class="button open-gallery-modal"><?php _e('Select items', 'pom-framework') ?></span>
             <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control <?= $args['class'] ?? '' ?>">
         </div>
 
@@ -52,13 +52,13 @@ class Gallery {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-gallery', POM_FORM_SRC_URI . '/dist/css/gallery.min.css');
-        wp_enqueue_script('pomatio-framework-gallery',  POM_FORM_SRC_URI . '/dist/js/gallery' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('pom-framework-gallery', POM_FRAMEWORK_SRC_URI . '/dist/css/gallery.min.css');
+        wp_enqueue_script('pom-framework-gallery',  POM_FRAMEWORK_SRC_URI . '/dist/js/gallery' . POM_FRAMEWORK_MIN . '.js', ['jquery'], null, true);
         wp_localize_script(
-            'pomatio-framework-gallery',
-            'pom_form_gallery',
+            'pom-framework-gallery',
+            'pom_framework_gallery',
             [
-                'title' => __('Select Media', 'pomatio-framework')
+                'title' => __('Select Media', 'pom-framework')
             ]
         );
     }

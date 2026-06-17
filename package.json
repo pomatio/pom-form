@@ -1,5 +1,5 @@
 {
-  "name": "pomatio-framework",
+  "name": "pom-framework",
   "sideEffects": false,
   "devDependencies": {
     "css-loader": "7.1.2",

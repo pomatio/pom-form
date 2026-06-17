@@ -3,9 +3,9 @@
  *
  */
 
-namespace PomatioFramework;
+namespace POMFramework;
 
-class Pomatio_Framework_Translations {
+class POM_Framework_Translations {
     /**
      * TODO: When a field that has already been translatable is no longer translatable, it does not disappear from the translatable strings.
      */
@@ -23,7 +23,7 @@ class Pomatio_Framework_Translations {
             return;
         }
 
-        $settings_path = (new Pomatio_Framework_Disk)->get_settings_path($this->settings_dir);
+        $settings_path = (new POM_Framework_Disk)->get_settings_path($this->settings_dir);
 
         $strings = [];
         if (file_exists("{$settings_path}translatable_strings.php")) {
@@ -32,14 +32,14 @@ class Pomatio_Framework_Translations {
 
         if (!empty($strings) && is_array($strings)) {
             foreach ($strings as $name => $data) {
-                $string = Pomatio_Framework_Settings::get_setting_value($this->settings_dir, $data['filename'], $name, $data['type']);
+                $string = POM_Framework_Settings::get_setting_value($this->settings_dir, $data['filename'], $name, $data['type']);
                 $type = strtolower($data['type']);
 
                 if (in_array($type, ['code_html', 'tinymce'], true) && file_exists($string)) {
                     $string = file_get_contents($string);
                 }
 
-                pll_register_string($name, $string, 'Pomatio Framework', $data['multiline']);
+                pll_register_string($name, $string, 'POM Framework', $data['multiline']);
             }
         }
     }
@@ -52,15 +52,15 @@ class Pomatio_Framework_Translations {
             return;
         }
 
-        $saved_strings = Pomatio_Framework_Disk::read_file('translatable_strings.php', $settings_dir, 'array');
+        $saved_strings = POM_Framework_Disk::read_file('translatable_strings.php', $settings_dir, 'array');
         $saved_strings = !empty($saved_strings) && is_array($saved_strings) ? $saved_strings : [];
 
         foreach ($translatables as $translatable_key => $translatable_data) {
             $saved_strings[$translatable_key] = $translatable_data;
         }
 
-        $content = (new Pomatio_Framework_Disk())->generate_file_content($saved_strings, 'String translations.');
-        Pomatio_Framework_Disk::save_to_file('translatable_strings', $content, 'php', $settings_dir);
+        $content = (new POM_Framework_Disk())->generate_file_content($saved_strings, 'String translations.');
+        POM_Framework_Disk::save_to_file('translatable_strings', $content, 'php', $settings_dir);
     }
 
     /**

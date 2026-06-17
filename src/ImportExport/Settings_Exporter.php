@@ -1,8 +1,8 @@
 <?php
 
-namespace PomatioFramework\ImportExport;
+namespace POMFramework\ImportExport;
 
-use PomatioFramework\Pomatio_Framework_Disk;
+use POMFramework\POM_Framework_Disk;
 use RuntimeException;
 use ZipArchive;
 
@@ -44,8 +44,8 @@ class Settings_Exporter {
             throw new RuntimeException(__('Select at least one settings file to export.', 'pom')); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
         }
 
-        $disk = new Pomatio_Framework_Disk();
-        Pomatio_Framework_Disk::create_settings_dir($this->page_slug);
+        $disk = new POM_Framework_Disk();
+        POM_Framework_Disk::create_settings_dir($this->page_slug);
 
         $upload_dir = wp_get_upload_dir();
         $export_dir = trailingslashit($upload_dir['basedir']) . 'pom-settings-tools/';
@@ -72,7 +72,7 @@ class Settings_Exporter {
             }
 
             $source_domain = $source_domain ?: Settings_Transfer_Helper::detect_domain_from_file($full_path);
-            $setting_array = Pomatio_Framework_Disk::read_file($file_name, $this->page_slug, 'array');
+            $setting_array = POM_Framework_Disk::read_file($file_name, $this->page_slug, 'array');
 
             if (!is_array($setting_array)) {
                 $notices[] = sprintf(__('Skipped unreadable settings file: %s', 'pom'), esc_html($file_name)); // phpcs:ignore WordPress.WP.I18n.TextDomainMismatch

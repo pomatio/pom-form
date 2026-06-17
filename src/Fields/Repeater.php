@@ -2,13 +2,13 @@
 /**
  * New repeater elements are added via ajax.
  * If changes are made to the HTML of a repeater element,
- * update it in Pomatio_Framework_Ajax.php as well --> get_repeater_item_html().
+ * update it in POM_Framework_Ajax.php as well --> get_repeater_item_html().
  */
 
-namespace PomatioFramework\Fields;
+namespace POMFramework\Fields;
 
-use PomatioFramework\Pomatio_Framework_Helper;
-use PomatioFramework\Pomatio_Framework;
+use POMFramework\POM_Framework_Helper;
+use POMFramework\POM_Framework;
 
 class Repeater {
 
@@ -43,24 +43,24 @@ class Repeater {
 
         $sortable = isset($args['sortable']) && $args['sortable'] === true ? ' sortable' : '';
 
-        $repeater_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
+        $repeater_identifier = POM_Framework_Helper::generate_random_string(10, false);
 
         $limit = isset($args['limit']) ? ' data-limit="' . (int)$args['limit'] . '"' : '';
-        $data_dependencies = Pomatio_Framework_Helper::get_dependencies_data_attr($args);
+        $data_dependencies = POM_Framework_Helper::get_dependencies_data_attr($args);
 
         ?>
 
         <div class="repeater-wrapper<?= $sortable ?>"<?= $limit ?><?= $data_dependencies ?>>
             <div class="repeater-bulk-actions">
-                <button type="button" class="button button-secondary open-all-repeaters"><?php _e('Open all', 'pomatio-framework') ?></button>
-                <button type="button" class="button button-secondary close-all-repeaters"><?php _e('Close all', 'pomatio-framework') ?></button>
+                <button type="button" class="button button-secondary open-all-repeaters"><?php _e('Open all', 'pom-framework') ?></button>
+                <button type="button" class="button button-secondary close-all-repeaters"><?php _e('Close all', 'pom-framework') ?></button>
             </div>
 
             <?php
 
             // Render defaults if set
             if (empty($json['default']) && !empty($args['defaults'])) {
-                $defaults_identifier = Pomatio_Framework_Helper::generate_random_string(10, false);
+                $defaults_identifier = POM_Framework_Helper::generate_random_string(10, false);
 
                 foreach ($args['defaults'] as $default) {
                     $default_json = htmlspecialchars(json_encode($default), ENT_QUOTES, 'UTF-8');
@@ -80,20 +80,20 @@ class Repeater {
                             foreach ($args['fields'] as $field) {
                                 $field['value'] = $default[$field['name']]['value'] ?? '';
                                 $field['disabled'] = $default[$field['name']]['disabled'] ?? false;
-                                echo (new Pomatio_Framework())::add_field($field);
+                                echo (new POM_Framework())::add_field($field);
                             }
 
                             ?>
 
                             <div class="repeater-action-row">
-                                <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                                <span class="restore-default"><?php _e('Restore default', 'pom-framework') ?></span>
 
                                 <?php
 
                                 if (isset($args['cloneable']) && $args['cloneable'] === true) {
                                     ?>
 
-                                    <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
+                                    <span class="clone-repeater"><?php _e('Clone', 'pom-framework') ?></span>
 
                                     <?php
                                 }
@@ -101,7 +101,7 @@ class Repeater {
                                 if (isset($default['can_be_removed']) && $default['can_be_removed']) {
                                     ?>
 
-                                    <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                                    <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
 
                                     <?php
                                 }
@@ -175,7 +175,7 @@ class Repeater {
                                             $field['disabled'] = true;
                                         }
 
-                                        echo (new Pomatio_Framework())::add_field($field);
+                                        echo (new POM_Framework())::add_field($field);
                                     }
 
                                     echo '<div class="repeater-action-row">';
@@ -183,7 +183,7 @@ class Repeater {
                                     if ($repeater_type === 'default' && !empty($repeater_item['default_values'])) {
                                         ?>
 
-                                        <span class="restore-default"><?php _e('Restore default', 'pomatio-framework') ?></span>
+                                        <span class="restore-default"><?php _e('Restore default', 'pom-framework') ?></span>
 
                                         <?php
                                     }
@@ -191,7 +191,7 @@ class Repeater {
                                     if (isset($args['cloneable']) && $args['cloneable'] === true) {
                                         ?>
 
-                                        <span class="clone-repeater"><?php _e('Clone', 'pomatio-framework') ?></span>
+                                        <span class="clone-repeater"><?php _e('Clone', 'pom-framework') ?></span>
 
                                         <?php
                                     }
@@ -199,14 +199,14 @@ class Repeater {
                                     if ($repeater_type === 'default' && isset($repeater_item['default_values']['can_be_removed']) && $repeater_item['default_values']['can_be_removed']) {
                                         ?>
 
-                                        <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                                        <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
 
                                         <?php
                                     }
                                     elseif ($repeater_type === 'new') {
                                         ?>
 
-                                        <span class="delete"><?php _e('Delete', 'pomatio-framework') ?></span>
+                                        <span class="delete"><?php _e('Delete', 'pom-framework') ?></span>
 
                                         <?php
                                     }
@@ -226,7 +226,7 @@ class Repeater {
             if (!isset($args['disable_new']) || $args['disable_new'] !== true) {
                 ?>
 
-                <button class="button add-new-repeater-item"><?php _e('Add new', 'pomatio-framework') ?></button>
+                <button class="button add-new-repeater-item"><?php _e('Add new', 'pom-framework') ?></button>
                 <img class="repeater-spinner" src="<?= admin_url('images/loading.gif') ?>" alt="Spinner">
 
                 <?php
@@ -235,7 +235,7 @@ class Repeater {
             if (!empty($args['defaults'])) {
                 ?>
 
-                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pomatio-framework') ?></button>
+                <button class="button button-secondary right restore-repeater-defaults" data-title="<?= $args['title'] ?>" data-fields="<?= base64_encode(json_encode($args['fields'])) ?>" data-defaults="<?= base64_encode(json_encode($args['defaults'])) ?>"><?php _e('Restore defaults', 'pom-framework') ?></button>
 
                 <?php
             }
@@ -295,22 +295,22 @@ class Repeater {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-repeater', POM_FORM_SRC_URI . '/dist/css/repeater.min.css');
+        wp_enqueue_style('pom-framework-repeater', POM_FRAMEWORK_SRC_URI . '/dist/css/repeater.min.css');
         wp_enqueue_script(
-            'pomatio-framework-repeater',
-            POM_FORM_SRC_URI . '/dist/js/repeater' . POMATIO_MIN . '.js',
-            ['jquery', 'jquery-ui-sortable', 'pomatio-framework-dependencies'],
+            'pom-framework-repeater',
+            POM_FRAMEWORK_SRC_URI . '/dist/js/repeater' . POM_FRAMEWORK_MIN . '.js',
+            ['jquery', 'jquery-ui-sortable', 'pom-framework-dependencies'],
             null,
             true
         );
         wp_localize_script(
-            'pomatio-framework-repeater',
-            'pomatio_framework_repeater',
+            'pom-framework-repeater',
+            'pom_framework_repeater',
             [
                 'ajax_url' => admin_url('admin-ajax.php'),
-                'limit' => __('Element limit reached', 'pomatio-framework'),
-                'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pomatio-framework'),
-                'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pomatio-framework'),
+                'limit' => __('Element limit reached', 'pom-framework'),
+                'restore_msg' => __('Are you sure you want to reset the repeaters?', 'pom-framework'),
+                'delete_repeater' => __('Are you sure you want to delete this repeater?', 'pom-framework'),
             ]
         );
     }

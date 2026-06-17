@@ -24,7 +24,7 @@ jQuery(function($) {
     };
 
     for (const [editorClass, mode] of Object.entries(editors)) {
-      $(`textarea.form-control.pomatio-framework-code-editor-${editorClass}`).each(function() {
+      $(`textarea.form-control.pom-framework-code-editor-${editorClass}`).each(function() {
         let $this = $(this);
 
         if ($this.hasClass('codemirror-rendered')) {
