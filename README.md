@@ -120,8 +120,11 @@ function demo_settings_page() {
 Install the package in your plugin or theme directory with Composer:
 
 ```bash
-composer require pom/pom-framework
+composer require pom-labs/pom-framework
 ```
+
+POM Framework is published on Packagist under the `pom-labs` vendor:
+https://packagist.org/packages/pom-labs/pom-framework
 
 If you bundle the framework in a distributed plugin or theme, include Composer’s autoload file before bootstrapping the framework:
 

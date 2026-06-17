@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
-        'name' => 'pom/form',
+        'name' => 'pom-labs/pom-framework',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'e732334a8f63a0012f3e5035a9ea30d7bd2976e6',
+        'reference' => 'd3c2f002c2f05430132032e18eb76a720e22e9e2',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -19,10 +19,10 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'pom/form' => array(
+        'pom-labs/pom-framework' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'e732334a8f63a0012f3e5035a9ea30d7bd2976e6',
+            'reference' => 'd3c2f002c2f05430132032e18eb76a720e22e9e2',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
