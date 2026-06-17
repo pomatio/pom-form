@@ -1,17 +1,62 @@
 jQuery(function($) {
 
+  const getIconPickerInput = function($wrapper) {
+    return $wrapper.find('input[data-type="icon_picker"]').first();
+  };
+
+  const refreshIconPickerState = function($wrapper) {
+    const $input = getIconPickerInput($wrapper);
+    const value = $input.length ? String($input.val() || '').trim() : '';
+    const hasIcon = value.length > 0 || $wrapper.find('.icon-wrapper img').length > 0;
+
+    $wrapper.toggleClass('has-selected-icon', hasIcon);
+  };
+
+  const refreshIconPickers = function($scope) {
+    $scope.find('.icon-picker-wrapper').addBack('.icon-picker-wrapper').each(function() {
+      refreshIconPickerState($(this));
+    });
+  };
+
+  const setIconPickerValue = function($wrapper, value) {
+    const $input = getIconPickerInput($wrapper);
+
+    if (!$input.length) {
+      return;
+    }
+
+    $input.val(value);
+    $input[0].dispatchEvent(new Event('input', { bubbles: true }));
+    $input[0].dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  refreshIconPickers($(document));
+
+  $(document).ajaxComplete(function() {
+    refreshIconPickers($(document));
+  });
+
+  $(document).on('input change', '.icon-picker-wrapper input[data-type="icon_picker"]', function() {
+    refreshIconPickerState($(this).closest('.icon-picker-wrapper'));
+  });
+
+  $(document).on('click keydown', '.icon-picker-wrapper.is-clearable .remove-selected-icon', function(e) {
+    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') {
+      return;
+    }
+
+    e.preventDefault();
+
+    let $wrapper = $(this).closest('.icon-picker-wrapper');
+
+    $wrapper.find('.icon-wrapper').empty();
+    setIconPickerValue($wrapper, '');
+    refreshIconPickerState($wrapper);
+  });
+
   if (typeof $.fn.dialog === 'undefined') {
     return;
   }
-
-  // Display remove button only if icon is selected.
-  $('.icon-picker-wrapper .icon-wrapper').each(function() {
-    let $this = $(this);
-
-    if ($this.find('img').length) {
-      $(this).closest('.icon-picker-wrapper').find('.remove-selected-icon').css('display', 'inherit');
-    }
-  });
 
   // Store the icon picker button that has been clicked
   let $clicked_button;
@@ -153,13 +198,12 @@ jQuery(function($) {
     e.preventDefault();
 
     let $icon_url = $('#pomatio-framework-icons-modal .attachment.selected img').attr('src');
-    let $input = $clicked_button.closest('.icon-picker-wrapper').find('input[type="hidden"]');
+    let $wrapper = $clicked_button.closest('.icon-picker-wrapper');
 
-    $input.val($icon_url);
-    $input[0].dispatchEvent(new Event('input', { bubbles: true }));
+    setIconPickerValue($wrapper, $icon_url);
 
-    $clicked_button.closest('.icon-picker-wrapper').find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
-    $clicked_button.closest('.icon-picker-wrapper').find('.remove-selected-icon').css('display', 'inherit');
+    $wrapper.find('.icon-wrapper').empty().append('<img alt="" src="' + $icon_url + '">');
+    refreshIconPickerState($wrapper);
 
     $icon_picker_modal.dialog('close');
   });
@@ -201,16 +245,5 @@ jQuery(function($) {
       }
     });
   }, 500));
-
-  $(document).on('click', '.icon-picker-wrapper .remove-selected-icon', function(e) {
-    e.preventDefault();
-
-    let $this = $(this);
-    let $wrapper = $this.closest('.icon-picker-wrapper');
-
-    $wrapper.find('.icon-wrapper').empty();
-    $wrapper.find('input[type="hidden"]').val('');
-    $this.css('display', 'none');
-  });
 
 });

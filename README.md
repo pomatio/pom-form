@@ -491,7 +491,7 @@ The framework ships the following field types. Use this table to pick the right 
 | `font_picker` | Upload field for individual font files inside the font manager. | Sanitises file arrays, stores assets under the custom font directory, and exposes URLs for front-end usage. |
 | `gallery` | WordPress media modal gallery selector. | Returns comma-separated attachment IDs, allows reordering, and sanitises IDs to digits and commas. |
 | `hidden` | Hidden metadata field. | Useful for storing configuration without UI; sanitiser strips unexpected content. |
-| `icon_picker` | SVG and icon font selector. | Lists available icon libraries, supports search, and sanitises selected icon URLs. |
+| `icon_picker` | SVG and icon font selector. | Lists available icon libraries, supports search, sanitises selected icon URLs, and shows a clear action by default. Pass `clearable => false` when a selected icon must always be kept. |
 | `image_picker` | WordPress media modal image selector. | Stores image URLs, supports custom button text, and sanitises to valid URLs. |
 | `image_picker_id` | WordPress media modal image selector that stores attachment IDs. | Keeps a hidden ID input, renders previews from the attachment URL, and sanitises to numeric IDs. |
 | `number` | `<input type="number">`. | Provides placeholder support, respects dependencies, and sanitises the submission to numeric characters. |

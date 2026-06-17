@@ -8,11 +8,21 @@ class Icon_Picker {
 
     public static function render_field(array $args): void {
         $class = !empty($args['class']) ? ' ' . $args[ 'class'] : '';
+        $clearable = self::is_clearable($args);
+        $wrapper_classes = ['icon-picker-wrapper'];
+
+        if ($clearable) {
+            $wrapper_classes[] = 'is-clearable';
+        }
+
+        if (!empty($args['value'])) {
+            $wrapper_classes[] = 'has-selected-icon';
+        }
 
         echo '<div class="form-group">';
 
         if (!empty($args['label'])) {
-            echo '<label for="' . $args['id'] . '">' . $args['label'] . '</label><br>';
+            echo '<label for="' . esc_attr($args['id']) . '">' . $args['label'] . '</label><br>';
         }
 
         if (!empty($args['description']) && $args['description_position'] === 'below_label') {
@@ -21,19 +31,21 @@ class Icon_Picker {
 
         ?>
 
-        <div class="icon-picker-wrapper">
-            <span class="remove-selected-icon dashicons dashicons-trash"></span>
+        <div class="<?= esc_attr(implode(' ', $wrapper_classes)) ?>">
+            <?php if ($clearable) : ?>
+                <span class="remove-selected-icon dashicons dashicons-no-alt" role="button" tabindex="0" aria-label="<?php esc_attr_e('Remove selected icon', 'pomatio-framework') ?>"></span>
+            <?php endif; ?>
             <div class="icon-wrapper">
                 <?php
 
                 if (!empty($args['value'])) {
-                    echo '<img alt="" src="' . $args['value'] . '">';
+                    echo '<img alt="" src="' . esc_url($args['value']) . '">';
                 }
 
                 ?>
             </div>
             <span class="button open-icon-picker-modal"><?php _e('Select icon', 'pomatio-framework') ?></span>
-            <input type="hidden" id="<?= $args['id'] ?>" name="<?= $args['name'] ?>" value="<?= $args['value'] ?>" class="form-control<?= $class ?>" data-type="icon_picker">
+            <input type="hidden" id="<?= esc_attr($args['id']) ?>" name="<?= esc_attr($args['name']) ?>" value="<?= esc_attr($args['value']) ?>" class="form-control<?= esc_attr($class) ?>" data-type="icon_picker">
         </div>
 
         <?php
@@ -46,8 +58,9 @@ class Icon_Picker {
 
         echo '</div>';
 
-        wp_enqueue_style('pomatio-framework-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker.min.css', ['media-views']);
-        wp_enqueue_script('pomatio-framework-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker' . POMATIO_MIN . '.js', ['jquery'], null, true);
+        wp_enqueue_style('wp-jquery-ui-dialog');
+        wp_enqueue_style('pomatio-framework-icon_picker', POM_FORM_SRC_URI . '/dist/css/icon-picker.min.css', ['media-views', 'wp-jquery-ui-dialog']);
+        wp_enqueue_script('pomatio-framework-icon_picker',  POM_FORM_SRC_URI . '/dist/js/icon_picker' . POMATIO_MIN . '.js', ['jquery', 'jquery-ui-dialog'], null, true);
         wp_localize_script(
             'pomatio-framework-icon_picker',
             'pom_form_icon_picker',
@@ -108,6 +121,20 @@ class Icon_Picker {
         </div>
 
         <?php
+    }
+
+    private static function is_clearable(array $args): bool {
+        $value = $args['clearable'] ?? $args['allow_clear'] ?? true;
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return in_array(strtolower($value), ['1', 'true', 'yes', 'on'], true);
+        }
+
+        return !empty($value);
     }
 
 }
