@@ -1,5 +1,5 @@
 {
-  "name": "pom/pom-framework",
+  "name": "pom-labs/pom-framework",
   "description": "A WordPress settings framework for rendering fields and persisting configuration.",
   "type": "library",
   "authors": [
