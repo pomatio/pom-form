@@ -7,7 +7,18 @@ namespace POMFramework;
 
 class POM_Framework_Disk {
 
+    /**
+     * Prevent utility instances from registering the same global WordPress hooks repeatedly.
+     */
+    private static $hooks_registered = false;
+
     public function __construct() {
+        if (self::$hooks_registered) {
+            return;
+        }
+
+        self::$hooks_registered = true;
+
         /**
          * Set allowed font mime types and save the fonts in a custom directory.
          */
@@ -455,7 +466,7 @@ HTACCESS;
      *
      * @return string
      */
-    public function get_settings_path(string $settings_dir = 'pom-framework'): string {
+    public static function get_settings_path(string $settings_dir = 'pom-framework'): string {
         $multisite_path = is_multisite() ? 'sites/' . get_current_blog_id() . '/' : '';
 
         return WP_CONTENT_DIR . "/settings/pom-framework/$multisite_path$settings_dir/";
@@ -470,7 +481,7 @@ HTACCESS;
      * @return void
      */
     public static function create_settings_dir(string $settings_dir = 'pom-framework'): void {
-        $settings_path = (new self)->get_settings_path($settings_dir);
+        $settings_path = self::get_settings_path($settings_dir);
         if (!is_dir($settings_path)) {
             $created = wp_mkdir_p($settings_path);
 
@@ -479,8 +490,9 @@ HTACCESS;
             }
             else {
                 self::apply_directory_permissions($settings_path);
-                (new self)->create_enabled_settings_file($settings_dir);
-                (new self)->create_htaccess_file();
+                $disk = new self();
+                $disk->create_enabled_settings_file($settings_dir);
+                $disk->create_htaccess_file();
                 POM_Framework_Helper::write_log('Created tweaks settings dir.');
             }
         }
@@ -543,7 +555,7 @@ HTACCESS;
             return '';
         }
 
-        $settings_path = (new self)->get_settings_path($settings_dir);
+        $settings_path = self::get_settings_path($settings_dir);
 
         self::write_file($settings_path . $file_name . '.' . $file_extension, $content, LOCK_EX);
 
@@ -554,7 +566,7 @@ HTACCESS;
      * Read the content of a file.
      */
     public static function read_file($filename, $settings_dir = 'pom-framework', $return = 'default') {
-        $settings_path = (new self)->get_settings_path($settings_dir);
+        $settings_path = self::get_settings_path($settings_dir);
         $path = $settings_path . $filename;
 
         if (file_exists($path)) {
@@ -579,7 +591,7 @@ HTACCESS;
      * @return bool
      */
     public static function delete_file($filename, string $settings_dir = 'pom-framework'): bool {
-        $settings_path = (new self)->get_settings_path($settings_dir);
+        $settings_path = self::get_settings_path($settings_dir);
         $filename = $settings_path . $filename;
 
         return file_exists($filename) && unlink($filename);

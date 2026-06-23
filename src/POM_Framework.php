@@ -31,6 +31,9 @@ class POM_Framework {
             }
         }
 
+        // Disk hooks are registered explicitly once instead of as a side effect of every file operation.
+        new POM_Framework_Disk();
+
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
