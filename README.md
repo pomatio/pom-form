@@ -551,7 +551,7 @@ POM Framework exposes several helper classes so you can inspect configuration, g
 ### `POM_Framework_Disk`
 
 - **Automatic directories** – `create_settings_dir()` provisions `wp-content/settings/pom-framework/<site>/<slug>/` (including `.htaccess`) the first time a page saves values, making the storage multisite-aware.
-- **File serialization** – `generate_file_content()` turns an array into a PHP file with metadata headers, while `save_to_file()` writes arbitrary content such as code editor values and returns the saved path.
+- **File serialization** – `generate_file_content()` turns an array into a PHP file with metadata headers, while `save_to_file()` writes arbitrary content such as code editor values, removes the previous managed file when a value is cleared, and returns the saved path.
 - **Reading and cleanup** – `read_file()` and `delete_file()` provide convenient access to stored configuration and let you remove generated assets when a module is disabled.
 - **Font and signature support** – The constructor hooks into `upload_dir`/`upload_mimes` so custom fonts are stored under `/fonts`, only attachments stored under `/uploads/fonts/` are hidden from the standard Media Library (the Pomatio font picker modal can still browse them), and the signature helpers persist base64 canvases under a locked-down directory.
 

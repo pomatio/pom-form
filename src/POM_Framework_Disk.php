@@ -536,6 +536,8 @@ HTACCESS;
     /**
      * Writes the literal value to a file.
      *
+     * Empty editor values remove the previous managed file so a later settings render cannot restore stale content.
+     *
      * @param $file_name
      * @param $content
      * @param string $file_extension
@@ -544,7 +546,7 @@ HTACCESS;
      * @return string Written file path.
      */
     public static function save_to_file($file_name, $content, string $file_extension = 'txt', string $settings_dir = 'pom-framework'): string {
-        if (empty($file_name) || empty($content)) {
+        if (empty($file_name)) {
             return '';
         }
 
@@ -556,10 +558,17 @@ HTACCESS;
         }
 
         $settings_path = self::get_settings_path($settings_dir);
+        $filename = $file_name . '.' . $file_extension;
 
-        self::write_file($settings_path . $file_name . '.' . $file_extension, $content, LOCK_EX);
+        if (empty($content)) {
+            self::delete_file($filename, $settings_dir);
 
-        return $settings_path . $file_name . '.' . $file_extension;
+            return '';
+        }
+
+        self::write_file($settings_path . $filename, $content, LOCK_EX);
+
+        return $settings_path . $filename;
     }
 
     /**
